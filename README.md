@@ -26,4 +26,6 @@ remotes::install_github("nicksunderland/metaboprep2")
 
 ## Getting Started
 
-Please see the dedicated vignettes for common use scenarios.
+Please see the dedicated
+[vignettes](https://nicksunderland.github.io/metaboprep2/) for common
+use scenarios.
