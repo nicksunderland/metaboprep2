@@ -1,0 +1,118 @@
+---
+title: "Using the Metabolites S7 Class"
+author: "Your Name"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Using the Metabolites S7 Class}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+The `Metabolites` class is part of the `metaboprep2` package and is designed to store and manage metabolomic data efficiently. It provides structured access to sample metadata, feature metadata, and metabolite intensity data.
+
+## Installation and Loading
+
+Ensure that you have installed and loaded the `metaboprep2` package before using the `Metabolites` class:
+
+```{r}
+# Install (if necessary)
+# install.packages("metaboprep2")
+
+# Load package
+library(metaboprep2)
+```
+
+## Creating a Metabolites Object
+
+A `Metabolites` object is created using the constructor function. It requires a file path to the raw data and a project name. You will need to specify the format of the raw data file - the available options can be found using
+the function `available_raw_data_formats()`
+
+```{r}
+available_raw_data_formats()
+```
+
+```{r}
+# Example Metabolon (format 1) raw data file
+filepath <- system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2")
+
+# Create a Metabolites object
+metabolites <- Metabolites(filepath, project_name = "ExampleProject", source = "metabolon_v1")
+
+metabolites
+```
+
+## Metabolites Object Structure
+
+A `Metabolites` object consists of three main components:
+
+- **samples**: A `data.table` containing metadata about the samples (e.g., sample IDs, collection details).
+- **features**: A `data.table` describing the metabolites, including feature names and additional annotations.
+- **data**: A multi-dimensional matrix where:
+  - Rows represent individual samples.
+  - Columns correspond to different metabolites.
+  - The third dimension (depth) represents various stages of data processing (e.g., raw, scaled, post-QC).
+
+## Accessing Data
+
+There are two primary ways to access data stored in a `Metabolites` object:
+
+1. **Using the `@` operator** to directly access object slots.
+2. **Using getter functions** like `get_data()` for structured data extraction.
+
+### Accessing Data Using `@` Operator
+
+#### Sample Metadata
+```{r}
+head(metabolites@samples)
+```
+
+#### Feature Metadata
+```{r}
+head(metabolites@features)
+```
+
+#### Raw Metabolite Data
+```{r}
+str(metabolites@data)
+```
+
+### Accessing Data Using Getter Functions
+
+The `get_data()` function allows retrieving metabolite data with optional filtering.
+
+#### Retrieve All Data of a Given Type
+```{r}
+original_data <- get_data(metabolites, type = "OrigScale")
+original_data[1:5, 1:5]
+```
+
+#### Extract Specific Metabolites and Samples
+```{r}
+subset_data <- get_data(metabolites, 
+                        type = "OrigScale", 
+                        metabolite_ids = c("compid_123", "compid_124"), 
+                        sample_ids = c("ind1", "ind2"))
+subset_data
+```
+
+
+## Exporting Data
+
+The `write_data()` method allows saving the structured data to a specified directory.
+
+```{r, eval=FALSE}
+write_data(metabolites, directory = "output_directory")
+```
+
+## Summary
+
+The `Metabolites` class provides an organized way to handle metabolomics data, making it easier to access, manipulate, and export datasets for further analysis. See the other vignettes and functions for quality control reporting and analysis routines.
+
+---

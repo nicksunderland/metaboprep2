@@ -1,2 +1,10 @@
+# R things
 .Rproj.user
 .Rhistory
+
+# The documents
+docs
+inst/doc
+
+# Open excel sheets
+*/~$

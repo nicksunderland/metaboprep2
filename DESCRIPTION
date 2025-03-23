@@ -13,3 +13,8 @@ Imports:
     data.table,
     readxl,
     S7
+URL: https://nicksunderland.github.io/metaboprep2/
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

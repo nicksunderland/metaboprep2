@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_metabolon_v1.R
 \name{read_metabolon_v1}
 \alias{read_metabolon_v1}
-\title{read_metabolon_v1}
+\title{Read Metabolon Data (format 1)}
 \usage{
 read_metabolon_v1(filepath)
 }
@@ -13,5 +13,11 @@ read_metabolon_v1(filepath)
 list,  list(data = 3D matrix, samples = samples data.table, features = features data.table)
 }
 \description{
-read_metabolon_v1
+Read Metabolon Data (format 1)
+}
+\examples{
+filepath <- system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2")
+read_metabolon_v1(filepath)
+
+
 }

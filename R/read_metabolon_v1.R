@@ -1,13 +1,17 @@
 # Silence R CMD check
 globalVariables(c("COMP_ID", "feature_names"), package = "metaboprep2")
 
-#' @title read_metabolon_v1
+#' @title Read Metabolon Data (format 1)
 #' @param filepath character, commercial Metabolon excel sheet with extension .xls or .xlsx
 #' @returns list,  list(data = 3D matrix, samples = samples data.table, features = features data.table)
 #'
+#' @examples
+#' filepath <- system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2")
+#' read_metabolon_v1(filepath)
+#'
+#'
 #' @importFrom readxl excel_sheets read_xlsx
 #' @importFrom data.table setnames as.data.table
-#'
 #' @export
 read_metabolon_v1 <- function(filepath) {
 
