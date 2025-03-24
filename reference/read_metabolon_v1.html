@@ -62,7 +62,7 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">filepath</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"metabolon_v1_example.xlsx"</span>, package <span class="op">=</span> <span class="st">"metaboprep2"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">read_metabolon_v1</span><span class="op">(</span><span class="va">filepath</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> , , OrigScale</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> , , raw</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        compid_123 compid_124 compid_125 compid_126 compid_127 compid_128</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ind1    11.031464  10.799323  11.469142  10.448855   9.236774  11.951774</span>
@@ -1782,7 +1782,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> ind99    7.268095   9.161311   8.653284   8.761803</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ind100  12.129979   8.446440   7.720041  11.644351</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> , , ScaledImp</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> , , scaled</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        compid_123 compid_124 compid_125 compid_126 compid_127 compid_128</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ind1    11.031464  10.799323  11.469142  10.448855   9.236774  11.951774</span>
@@ -3504,7 +3504,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $samples</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      SAMPLE_NAME    NEG    POS RUN_DAY BOX_ID    lot</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      sample_name    neg    pos run_day box_id    lot</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           &lt;char&gt; &lt;char&gt; &lt;char&gt;  &lt;char&gt; &lt;char&gt; &lt;char&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1:        ind1 batch1 batch1    day1   box1 lot250</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   2:        ind2 batch1 batch1    day1   box1 lot250</span>
@@ -3606,10 +3606,10 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>  98:       ind98 batch2 batch3    day2   box3 lot250</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  99:       ind99 batch2 batch3    day2   box3 lot250</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 100:      ind100 batch2 batch3    day2   box3 lot250</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      SAMPLE_NAME    NEG    POS RUN_DAY BOX_ID    lot</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      sample_name    neg    pos run_day box_id    lot</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $features</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      feature_names metabolite_id COMP_ID platform                pathway   kegg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      feature_names metabolite_id comp_id platform                pathway   kegg</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             &lt;char&gt;        &lt;char&gt;  &lt;char&gt;   &lt;char&gt;                 &lt;char&gt; &lt;char&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1:    compid_123          met1     123      neg             xenobiotic   K100</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   2:    compid_124          met2     124      neg             xenobiotic   K100</span>
@@ -3711,110 +3711,110 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>  98:    compid_220         met98     220      pos                 energy   K400</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  99:    compid_221         met99     221      pos                 energy   K400</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 100:    compid_222        met100     222      pos                 energy   K400</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      feature_names metabolite_id COMP_ID platform                pathway   kegg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         HMDB</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;char&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1:   HMDB1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   2:   HMDB2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   3:   HMDB3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   4:   HMDB4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   5:   HMDB5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   6:   HMDB6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   7:   HMDB7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   8:   HMDB8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   9:   HMDB9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  10:  HMDB10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  11:  HMDB11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  12:  HMDB12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  13:  HMDB13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  14:  HMDB14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  15:  HMDB15</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  16:  HMDB16</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  17:  HMDB17</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  18:  HMDB18</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  19:  HMDB19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  20:  HMDB20</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  21:  HMDB21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  22:  HMDB22</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  23:  HMDB23</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  24:  HMDB24</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  25:  HMDB25</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  26:  HMDB26</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  27:  HMDB27</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  28:  HMDB28</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  29:  HMDB29</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  30:  HMDB30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  31:  HMDB31</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  32:  HMDB32</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  33:  HMDB33</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  34:  HMDB34</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  35:  HMDB35</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  36:  HMDB36</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  37:  HMDB37</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  38:  HMDB38</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  39:  HMDB39</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  40:  HMDB40</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  41:  HMDB41</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  42:  HMDB42</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  43:  HMDB43</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  44:  HMDB44</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  45:  HMDB45</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  46:  HMDB46</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  47:  HMDB47</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  48:  HMDB48</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  49:  HMDB49</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  50:  HMDB50</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  51:  HMDB51</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  52:  HMDB52</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  53:  HMDB53</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  54:  HMDB54</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  55:  HMDB55</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  56:  HMDB56</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  57:  HMDB57</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  58:  HMDB58</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  59:  HMDB59</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  60:  HMDB60</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  61:  HMDB61</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  62:  HMDB62</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  63:  HMDB63</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  64:  HMDB64</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  65:  HMDB65</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  66:  HMDB66</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  67:  HMDB67</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  68:  HMDB68</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  69:  HMDB69</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  70:  HMDB70</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  71:  HMDB71</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  72:  HMDB72</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  73:  HMDB73</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  74:  HMDB74</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  75:  HMDB75</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  76:  HMDB76</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  77:  HMDB77</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  78:  HMDB78</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  79:  HMDB79</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  80:  HMDB80</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  81:  HMDB81</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  82:  HMDB82</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  83:  HMDB83</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  84:  HMDB84</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  85:  HMDB85</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  86:  HMDB86</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  87:  HMDB87</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  88:  HMDB88</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  89:  HMDB89</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  90:  HMDB90</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  91:  HMDB91</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  92:  HMDB92</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  93:  HMDB93</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  94:  HMDB94</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  95:  HMDB95</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  96:  HMDB96</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  97:  HMDB97</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  98:  HMDB98</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  99:  HMDB99</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 100: HMDB100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         HMDB</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      feature_names metabolite_id comp_id platform                pathway   kegg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         hmdb derived_feature</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;char&gt;          &lt;lgcl&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1:   HMDB1           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2:   HMDB2           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3:   HMDB3           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4:   HMDB4           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5:   HMDB5           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   6:   HMDB6           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   7:   HMDB7           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   8:   HMDB8           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   9:   HMDB9           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  10:  HMDB10           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  11:  HMDB11           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  12:  HMDB12           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  13:  HMDB13           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  14:  HMDB14           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  15:  HMDB15           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  16:  HMDB16           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  17:  HMDB17           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  18:  HMDB18           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  19:  HMDB19           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  20:  HMDB20           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  21:  HMDB21           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  22:  HMDB22           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  23:  HMDB23           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  24:  HMDB24           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  25:  HMDB25           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  26:  HMDB26           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  27:  HMDB27           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  28:  HMDB28           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  29:  HMDB29           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  30:  HMDB30           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  31:  HMDB31           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  32:  HMDB32           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  33:  HMDB33           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  34:  HMDB34           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  35:  HMDB35           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  36:  HMDB36           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  37:  HMDB37           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  38:  HMDB38           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  39:  HMDB39           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  40:  HMDB40           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  41:  HMDB41           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  42:  HMDB42           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  43:  HMDB43           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  44:  HMDB44           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  45:  HMDB45           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  46:  HMDB46           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  47:  HMDB47           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  48:  HMDB48           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  49:  HMDB49           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  50:  HMDB50           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  51:  HMDB51           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  52:  HMDB52           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  53:  HMDB53           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  54:  HMDB54           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  55:  HMDB55           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  56:  HMDB56           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  57:  HMDB57           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  58:  HMDB58           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  59:  HMDB59           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  60:  HMDB60           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  61:  HMDB61           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  62:  HMDB62           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  63:  HMDB63           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  64:  HMDB64           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  65:  HMDB65           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  66:  HMDB66           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  67:  HMDB67           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  68:  HMDB68           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  69:  HMDB69           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  70:  HMDB70           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  71:  HMDB71           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  72:  HMDB72           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  73:  HMDB73           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  74:  HMDB74           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  75:  HMDB75           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  76:  HMDB76           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  77:  HMDB77           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  78:  HMDB78           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  79:  HMDB79           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  80:  HMDB80           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  81:  HMDB81           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  82:  HMDB82           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  83:  HMDB83           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  84:  HMDB84           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  85:  HMDB85           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  86:  HMDB86           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  87:  HMDB87           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  88:  HMDB88           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  89:  HMDB89           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  90:  HMDB90           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  91:  HMDB91           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  92:  HMDB92           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  93:  HMDB93           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  94:  HMDB94           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  95:  HMDB95           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  96:  HMDB96           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  97:  HMDB97           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  98:  HMDB98           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  99:  HMDB99           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100: HMDB100           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         hmdb derived_feature</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>

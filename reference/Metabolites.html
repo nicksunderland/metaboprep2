@@ -77,12 +77,13 @@
 <span>  data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
 <span>  feature_missingness <span class="op">=</span> <span class="fl">0.2</span>,</span>
 <span>  sample_missingness <span class="op">=</span> <span class="fl">0.2</span>,</span>
-<span>  total_peak_area_SD <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  total_peak_area_sd <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>  outlier_udist <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>  outlier_treatment <span class="op">=</span> <span class="st">"leave_be"</span>,</span>
 <span>  tree_cut_height <span class="op">=</span> <span class="fl">0.5</span>,</span>
-<span>  PC_outlier_SD <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>  derived_var_exclusion <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  pc_outlier_sd <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  derived_var_exclusion <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  xenobiotics_var_exclusion <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -126,6 +127,18 @@
 <dd><p>character, a valid metabolomic data source</p></dd>
 
 
+<dt><code>samples</code></dt>
+<dd><p>data.table,</p></dd>
+
+
+<dt><code>features</code></dt>
+<dd><p>data.table,</p></dd>
+
+
+<dt><code>data</code></dt>
+<dd><p>multi-dimentional matrix,</p></dd>
+
+
 <dt><code>feature_missingness</code></dt>
 <dd><p>numeric 0-1 default 0.2, proportion of missinginess on features used as a QC threshold</p></dd>
 
@@ -134,7 +147,7 @@
 <dd><p>numeric 0-1 default 0.2, proportion of missinginess on samples used as a QC threshold</p></dd>
 
 
-<dt><code>total_peak_area_SD</code></dt>
+<dt><code>total_peak_area_sd</code></dt>
 <dd><p>numeric default 5, number of standard deviation (SD) units from the mean to perform a sample QC based on total abundance. If you would like to exclude total sum abundance as a QC parameter set the value to NA</p></dd>
 
 
@@ -150,12 +163,24 @@
 <dd><p>numeric default 0.5, feature|metabolite independence. To identify "independent" features in your data set, how similar should clustered|grouped features be? tree_cut_height = 1-absolute(spearman's rho), such that a tree_cut_height of 0.2 would indicate a intra-cluster similarity of &gt;0.8, and a tree_cut_height of 0.8 would indicate a intra-cluster similarity of &gt;0.2. Larger tree_cut_height values yield more clustering and thus fewer "representative" or "independent" features.</p></dd>
 
 
-<dt><code>PC_outlier_SD</code></dt>
+<dt><code>pc_outlier_sd</code></dt>
 <dd><p>numeric default 5, the number of standard deviation (SD) units from the mean to perform a sample QC based on principal components. If you would like to exclude PC exclusions as a QC parameter set the value to NA. Setting to NA may be advisable if you expect significant structure among individuals for example your data is derived from different tissues, different geographies/ecologies/environments.</p></dd>
 
 
 <dt><code>derived_var_exclusion</code></dt>
 <dd><p>logical default TRUE, Nightingale derived variable exclusion. Derived variables in Nightingale are all variables derived from two or more variables already present in the data set. In this instance it represents all ratios that Nightingale supply in their data releases.</p></dd>
+
+
+<dt><code>xenobiotics_var_exclusion</code></dt>
+<dd><p>logical default TRUE, whether to exclude Xenobiotics from the missingness estimate</p></dd>
+
+
+<dt><code>feature_tree</code></dt>
+<dd><p>object</p></dd>
+
+
+<dt><code>summary_data</code></dt>
+<dd><p>list</p></dd>
 
 
 </dl></div>

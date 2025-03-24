@@ -8,12 +8,22 @@
 <url><loc>https://nicksunderland.github.io/metaboprep2/index.html</loc></url>
 <url><loc>https://nicksunderland.github.io/metaboprep2/reference/Metabolites.html</loc></url>
 <url><loc>https://nicksunderland.github.io/metaboprep2/reference/available_data_formats.html</loc></url>
+<url><loc>https://nicksunderland.github.io/metaboprep2/reference/batch_normalisation.html</loc></url>
+<url><loc>https://nicksunderland.github.io/metaboprep2/reference/feature_describe.html</loc></url>
+<url><loc>https://nicksunderland.github.io/metaboprep2/reference/feature_summary.html</loc></url>
 <url><loc>https://nicksunderland.github.io/metaboprep2/reference/get_data.html</loc></url>
 <url><loc>https://nicksunderland.github.io/metaboprep2/reference/import_data.html</loc></url>
 <url><loc>https://nicksunderland.github.io/metaboprep2/reference/index.html</loc></url>
+<url><loc>https://nicksunderland.github.io/metaboprep2/reference/metabolite_qc.html</loc></url>
 <url><loc>https://nicksunderland.github.io/metaboprep2/reference/metaboprep2-package.html</loc></url>
+<url><loc>https://nicksunderland.github.io/metaboprep2/reference/missingness.html</loc></url>
+<url><loc>https://nicksunderland.github.io/metaboprep2/reference/outlier_detection.html</loc></url>
+<url><loc>https://nicksunderland.github.io/metaboprep2/reference/pc_and_outliers.html</loc></url>
 <url><loc>https://nicksunderland.github.io/metaboprep2/reference/read_metabolon_v1.html</loc></url>
 <url><loc>https://nicksunderland.github.io/metaboprep2/reference/read_nightingale.html</loc></url>
+<url><loc>https://nicksunderland.github.io/metaboprep2/reference/sample_summary.html</loc></url>
+<url><loc>https://nicksunderland.github.io/metaboprep2/reference/total_peak_area.html</loc></url>
+<url><loc>https://nicksunderland.github.io/metaboprep2/reference/tree_and_independent_features.html</loc></url>
 <url><loc>https://nicksunderland.github.io/metaboprep2/reference/write_data.html</loc></url>
 </urlset>
 
