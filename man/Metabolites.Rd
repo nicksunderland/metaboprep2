@@ -4,14 +4,58 @@
 \alias{Metabolites}
 \title{Metabolites object}
 \usage{
-Metabolites(filepath, project_name, source = "metabolon_v1")
+Metabolites(
+  project_name = "",
+  created = Sys.time(),
+  filepath = character(0),
+  format = "metabolon_v1",
+  samples = (function (.data = list(), row.names = NULL) 
+ {
+     if (is.null(row.names))
+    {
+         list2DF(.data)
+     }
+     else {
+         out <- list2DF(.data,
+    length(row.names))
+         attr(out, "row.names") <- row.names
+         out
+     }
+
+    })(),
+  features = (function (.data = list(), row.names = NULL) 
+ {
+     if
+    (is.null(row.names)) {
+         list2DF(.data)
+     }
+     else {
+         out <-
+    list2DF(.data, length(row.names))
+         attr(out, "row.names") <- row.names
+      
+      out
+     }
+ })(),
+  data = integer(0),
+  feature_missingness = 0.2,
+  sample_missingness = 0.2,
+  total_peak_area_SD = 5,
+  outlier_udist = 5,
+  outlier_treatment = "leave_be",
+  tree_cut_height = 0.5,
+  PC_outlier_SD = 5,
+  derived_var_exclusion = TRUE
+)
 }
 \arguments{
-\item{filepath}{character, path to the original raw data file}
-
 \item{project_name}{character, name for this project}
 
-\item{source}{character, a valid metabolomic data source}
+\item{filepath}{character, path to the original raw data file}
+
+\item{format}{character, a valid metabolomic data format}
+
+\item{...}{optional other slots to fill, see below.}
 }
 \value{
 an S7 class metaboprep2::Metabolites object
@@ -27,5 +71,21 @@ A Metabolites object is a container for matrices of metabolites data and associa
 \item{\code{filepath}}{character, path to the original raw data file}
 
 \item{\code{source}}{character, a valid metabolomic data source}
+
+\item{\code{feature_missingness}}{numeric 0-1 \link{default 0.2}, proportion of missinginess on features used as a QC threshold}
+
+\item{\code{sample_missingness}}{numeric 0-1 \link{default 0.2}, proportion of missinginess on samples used as a QC threshold}
+
+\item{\code{total_peak_area_SD}}{numeric \link{default 5}, number of standard deviation (SD) units from the mean to perform a sample QC based on total abundance. If you would like to exclude total sum abundance as a QC parameter set the value to NA}
+
+\item{\code{outlier_udist}}{numeric \link{default 5}, outlier values for features. The number of interquartile range (IQR) unit distances from the median to call a value an outlier. "Outliers" here are extreme values that are the product of error.}
+
+\item{\code{outlier_treatment}}{character \link{default 'leave_be'}, what to do with outliers for the purposes of the PCA, and for the PCA only. Options: "leave_be" if you would like no action on outliers; "winsorize" if you would like outliers to be winsorized to the 100th quantile of all remaining (non-outlying) values, at a feature; "turn_NA" if you would like outliers converted to NA. This means they will be imputed to the median for the purposes of the PCA.}
+
+\item{\code{tree_cut_height}}{numeric \link{default 0.5}, feature|metabolite independence. To identify "independent" features in your data set, how similar should clustered|grouped features be? tree_cut_height = 1-absolute(spearman's rho), such that a tree_cut_height of 0.2 would indicate a intra-cluster similarity of >0.8, and a tree_cut_height of 0.8 would indicate a intra-cluster similarity of >0.2. Larger tree_cut_height values yield more clustering and thus fewer "representative" or "independent" features.}
+
+\item{\code{PC_outlier_SD}}{numeric \link{default 5}, the number of standard deviation (SD) units from the mean to perform a sample QC based on principal components. If you would like to exclude PC exclusions as a QC parameter set the value to NA. Setting to NA may be advisable if you expect significant structure among individuals for example your data is derived from different tissues, different geographies/ecologies/environments.}
+
+\item{\code{derived_var_exclusion}}{logical \link{default TRUE}, Nightingale derived variable exclusion. Derived variables in Nightingale are all variables derived from two or more variables already present in the data set. In this instance it represents all ratios that Nightingale supply in their data releases.}
 }}
 

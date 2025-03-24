@@ -4,9 +4,9 @@
 \name{metaboprep2-package}
 \alias{metaboprep2}
 \alias{metaboprep2-package}
-\title{metaboprep2: What the Package Does (One Line, Title Case)}
+\title{metaboprep2: Processing and Managing Metabolomic Data Efficiently}
 \description{
-What the package does (one paragraph).
+metaboprep2 is an R package designed for processing and managing metabolomic data efficiently. It provides structured storage and access to metabolomic datasets, including sample metadata, feature metadata, and metabolite intensity data..
 }
 \seealso{
 Useful links:
@@ -16,7 +16,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: First Last \email{first.last@example.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
+\strong{Maintainer}: Nicholas Sunderland \email{nicholas.sunderland@bristol.ac.uk} (\href{https://orcid.org/0000-0003-3625-630X}{ORCID})
 
 }
 \keyword{internal}

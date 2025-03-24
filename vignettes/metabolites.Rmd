@@ -1,7 +1,5 @@
 ---
 title: "Using the Metabolites S7 Class"
-author: "Your Name"
-date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Using the Metabolites S7 Class}
@@ -31,11 +29,11 @@ library(metaboprep2)
 
 ## Creating a Metabolites Object
 
-A `Metabolites` object is created using the constructor function. It requires a file path to the raw data and a project name. You will need to specify the format of the raw data file - the available options can be found using
-the function `available_raw_data_formats()`
+A `Metabolites` object is created using the constructor function. It requires a file path to the data and a project name. You will need to specify the format of the raw data file - the available options can be found using
+the function `available_data_formats()`
 
 ```{r}
-available_raw_data_formats()
+available_data_formats()
 ```
 
 ```{r}
@@ -43,14 +41,20 @@ available_raw_data_formats()
 filepath <- system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2")
 
 # Create a Metabolites object
-metabolites <- Metabolites(filepath, project_name = "ExampleProject", source = "metabolon_v1")
+metabolites <- Metabolites(project_name = "ExampleProject", 
+                           filepath     = filepath,
+                           format       = "metabolon_v1")
 
+# Import the data 
+metabolites <- import_data(metabolites)
+
+# View
 metabolites
 ```
 
 ## Metabolites Object Structure
 
-A `Metabolites` object consists of three main components:
+A `Metabolites` object consists of three main data components:
 
 - **samples**: A `data.table` containing metadata about the samples (e.g., sample IDs, collection details).
 - **features**: A `data.table` describing the metabolites, including feature names and additional annotations.
@@ -58,6 +62,11 @@ A `Metabolites` object consists of three main components:
   - Rows represent individual samples.
   - Columns correspond to different metabolites.
   - The third dimension (depth) represents various stages of data processing (e.g., raw, scaled, post-QC).
+  
+The `Metabolites` object also holds parameters for other analyses, such as quality control routines. There are 
+default values, however these can either be changed during object creation, or later using the `@` operator to 
+access the object's slots. 
+
 
 ## Accessing Data
 
