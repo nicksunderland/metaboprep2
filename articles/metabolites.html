@@ -55,9 +55,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Using the Metabolites S7 Class</h1>
-                        <h4 data-toc-skip class="author">Your Name</h4>
             
-            <h4 data-toc-skip class="date">2025-03-23</h4>
       
 
       <div class="d-none name"><code>metabolites.Rmd</code></div>
@@ -90,26 +88,33 @@ metadata, feature metadata, and metabolite intensity data.</p>
 <h2 id="creating-a-metabolites-object">Creating a Metabolites Object<a class="anchor" aria-label="anchor" href="#creating-a-metabolites-object"></a>
 </h2>
 <p>A <code>Metabolites</code> object is created using the constructor
-function. It requires a file path to the raw data and a project name.
-You will need to specify the format of the raw data file - the available
+function. It requires a file path to the data and a project name. You
+will need to specify the format of the raw data file - the available
 options can be found using the function
-<code><a href="../reference/available_raw_data_formats.html">available_raw_data_formats()</a></code></p>
+<code><a href="../reference/available_data_formats.html">available_data_formats()</a></code></p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/available_raw_data_formats.html">available_raw_data_formats</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/available_data_formats.html">available_data_formats</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "metabolon_v1" "nightingale"</span></span></code></pre>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Example Metabolon (format 1) raw data file</span></span>
 <span><span class="va">filepath</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"metabolon_v1_example.xlsx"</span>, package <span class="op">=</span> <span class="st">"metaboprep2"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Create a Metabolites object</span></span>
-<span><span class="va">metabolites</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Metabolites.html">Metabolites</a></span><span class="op">(</span><span class="va">filepath</span>, project_name <span class="op">=</span> <span class="st">"ExampleProject"</span>, source <span class="op">=</span> <span class="st">"metabolon_v1"</span><span class="op">)</span></span>
+<span><span class="va">metabolites</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Metabolites.html">Metabolites</a></span><span class="op">(</span>project_name <span class="op">=</span> <span class="st">"ExampleProject"</span>, </span>
+<span>                           filepath     <span class="op">=</span> <span class="va">filepath</span>,</span>
+<span>                           format       <span class="op">=</span> <span class="st">"metabolon_v1"</span><span class="op">)</span></span>
 <span></span>
+<span><span class="co"># Import the data </span></span>
+<span><span class="va">metabolites</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/import_data.html">import_data</a></span><span class="op">(</span><span class="va">metabolites</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># View</span></span>
 <span><span class="va">metabolites</span></span></code></pre></div>
 <pre><code><span><span class="co">## &lt;metaboprep2::Metabolites&gt;</span></span>
-<span><span class="co">##  @ project_name: chr "ExampleProject"</span></span>
-<span><span class="co">##  @ filepath    : chr "/home/runner/work/_temp/Library/metaboprep2/extdata/metabolon_v1_example.xlsx"</span></span>
-<span><span class="co">##  @ source      : chr "metabolon_v1"</span></span>
-<span><span class="co">##  @ samples     :Classes 'data.table' and 'data.frame':   100 obs. of  6 variables:</span></span>
+<span><span class="co">##  @ project_name         : chr "ExampleProject"</span></span>
+<span><span class="co">##  @ created              : POSIXct[1:1], format: "2025-03-24 00:12:12"</span></span>
+<span><span class="co">##  @ filepath             : chr "/home/runner/work/_temp/Library/metaboprep2/extdata/metabolon_v1_example.xlsx"</span></span>
+<span><span class="co">##  @ format               : chr "metabolon_v1"</span></span>
+<span><span class="co">##  @ samples              :Classes 'data.table' and 'data.frame':  100 obs. of  6 variables:</span></span>
 <span><span class="co">##  .. $ SAMPLE_NAME: chr  "ind1" "ind2" "ind3" "ind4" ...</span></span>
 <span><span class="co">##  .. $ NEG        : chr  "batch1" "batch1" "batch1" "batch1" ...</span></span>
 <span><span class="co">##  .. $ POS        : chr  "batch1" "batch1" "batch1" "batch1" ...</span></span>
@@ -117,7 +122,7 @@ options can be found using the function
 <span><span class="co">##  .. $ BOX_ID     : chr  "box1" "box1" "box1" "box1" ...</span></span>
 <span><span class="co">##  .. $ lot        : chr  "lot250" "lot250" "lot250" "lot250" ...</span></span>
 <span><span class="co">##  .. - attr(*, ".internal.selfref")=&lt;externalptr&gt; </span></span>
-<span><span class="co">##  @ features    :Classes 'data.table' and 'data.frame':   100 obs. of  7 variables:</span></span>
+<span><span class="co">##  @ features             :Classes 'data.table' and 'data.frame':  100 obs. of  7 variables:</span></span>
 <span><span class="co">##  .. $ feature_names: chr  "compid_123" "compid_124" "compid_125" "compid_126" ...</span></span>
 <span><span class="co">##  .. $ metabolite_id: chr  "met1" "met2" "met3" "met4" ...</span></span>
 <span><span class="co">##  .. $ COMP_ID      : chr  "123" "124" "125" "126" ...</span></span>
@@ -126,16 +131,24 @@ options can be found using the function
 <span><span class="co">##  .. $ kegg         : chr  "K100" "K100" "K100" "K200" ...</span></span>
 <span><span class="co">##  .. $ HMDB         : chr  "HMDB1" "HMDB2" "HMDB3" "HMDB4" ...</span></span>
 <span><span class="co">##  .. - attr(*, ".internal.selfref")=&lt;externalptr&gt; </span></span>
-<span><span class="co">##  @ data        : num [1:100, 1:100, 1:2] 11.03 12.5 NA 6.98 8.56 ...</span></span>
+<span><span class="co">##  @ data                 : num [1:100, 1:100, 1:2] 11.03 12.5 NA 6.98 8.56 ...</span></span>
 <span><span class="co">##  .. - attr(*, "dimnames")=List of 3</span></span>
 <span><span class="co">##  ..  ..$ : chr [1:100] "ind1" "ind2" "ind3" "ind4" ...</span></span>
 <span><span class="co">##  ..  ..$ : chr [1:100] "compid_123" "compid_124" "compid_125" "compid_126" ...</span></span>
-<span><span class="co">##  ..  ..$ : chr [1:2] "OrigScale" "ScaledImp"</span></span></code></pre>
+<span><span class="co">##  ..  ..$ : chr [1:2] "OrigScale" "ScaledImp"</span></span>
+<span><span class="co">##  @ feature_missingness  : num 0.2</span></span>
+<span><span class="co">##  @ sample_missingness   : num 0.2</span></span>
+<span><span class="co">##  @ total_peak_area_SD   : num 5</span></span>
+<span><span class="co">##  @ outlier_udist        : num 5</span></span>
+<span><span class="co">##  @ outlier_treatment    : chr "leave_be"</span></span>
+<span><span class="co">##  @ tree_cut_height      : num 0.5</span></span>
+<span><span class="co">##  @ PC_outlier_SD        : num 5</span></span>
+<span><span class="co">##  @ derived_var_exclusion: logi TRUE</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="metabolites-object-structure">Metabolites Object Structure<a class="anchor" aria-label="anchor" href="#metabolites-object-structure"></a>
 </h2>
-<p>A <code>Metabolites</code> object consists of three main
+<p>A <code>Metabolites</code> object consists of three main data
 components:</p>
 <ul>
 <li>
@@ -154,6 +167,10 @@ processing (e.g., raw, scaled, post-QC).</li>
 </ul>
 </li>
 </ul>
+<p>The <code>Metabolites</code> object also holds parameters for other
+analyses, such as quality control routines. There are default values,
+however these can either be changed during object creation, or later
+using the <code>@</code> operator to access the object’s slots.</p>
 </div>
 <div class="section level2">
 <h2 id="accessing-data">Accessing Data<a class="anchor" aria-label="anchor" href="#accessing-data"></a>
@@ -268,7 +285,7 @@ functions for quality control reporting and analysis routines.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by First Last.</p>
+  <p>Developed by Nicholas Sunderland.</p>
 </div>
 
 <div class="pkgdown-footer-right">

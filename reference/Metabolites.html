@@ -41,23 +41,69 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">Metabolites</span><span class="op">(</span><span class="va">filepath</span>, <span class="va">project_name</span>, source <span class="op">=</span> <span class="st">"metabolon_v1"</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">Metabolites</span><span class="op">(</span></span>
+<span>  project_name <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  created <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  filepath <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
+<span>  format <span class="op">=</span> <span class="st">"metabolon_v1"</span>,</span>
+<span>  samples <span class="op">=</span> <span class="op">(</span><span class="kw">function</span> <span class="op">(</span><span class="va">.data</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">row.names</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> </span>
+<span> <span class="op">{</span></span>
+<span>     <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">row.names</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="op">{</span></span>
+<span>         <span class="fu"><a href="https://rdrr.io/r/base/list2DF.html" class="external-link">list2DF</a></span><span class="op">(</span><span class="va">.data</span><span class="op">)</span></span>
+<span>     <span class="op">}</span></span>
+<span>     <span class="kw">else</span> <span class="op">{</span></span>
+<span>         <span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list2DF.html" class="external-link">list2DF</a></span><span class="op">(</span><span class="va">.data</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">row.names</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">out</span>, <span class="st">"row.names"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">row.names</span></span>
+<span>         <span class="va">out</span></span>
+<span>     <span class="op">}</span></span>
+<span></span>
+<span>    <span class="op">}</span><span class="op">)</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  features <span class="op">=</span> <span class="op">(</span><span class="kw">function</span> <span class="op">(</span><span class="va">.data</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">row.names</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> </span>
+<span> <span class="op">{</span></span>
+<span>     <span class="kw">if</span></span>
+<span>    <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">row.names</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>         <span class="fu"><a href="https://rdrr.io/r/base/list2DF.html" class="external-link">list2DF</a></span><span class="op">(</span><span class="va">.data</span><span class="op">)</span></span>
+<span>     <span class="op">}</span></span>
+<span>     <span class="kw">else</span> <span class="op">{</span></span>
+<span>         <span class="va">out</span> <span class="op">&lt;-</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/list2DF.html" class="external-link">list2DF</a></span><span class="op">(</span><span class="va">.data</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">row.names</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">out</span>, <span class="st">"row.names"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">row.names</span></span>
+<span>      </span>
+<span>      <span class="va">out</span></span>
+<span>     <span class="op">}</span></span>
+<span> <span class="op">}</span><span class="op">)</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
+<span>  feature_missingness <span class="op">=</span> <span class="fl">0.2</span>,</span>
+<span>  sample_missingness <span class="op">=</span> <span class="fl">0.2</span>,</span>
+<span>  total_peak_area_SD <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  outlier_udist <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  outlier_treatment <span class="op">=</span> <span class="st">"leave_be"</span>,</span>
+<span>  tree_cut_height <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  PC_outlier_SD <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  derived_var_exclusion <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-filepath">filepath<a class="anchor" aria-label="anchor" href="#arg-filepath"></a></dt>
-<dd><p>character, path to the original raw data file</p></dd>
-
-
-<dt id="arg-project-name">project_name<a class="anchor" aria-label="anchor" href="#arg-project-name"></a></dt>
+<dl><dt id="arg-project-name">project_name<a class="anchor" aria-label="anchor" href="#arg-project-name"></a></dt>
 <dd><p>character, name for this project</p></dd>
 
 
-<dt id="arg-source">source<a class="anchor" aria-label="anchor" href="#arg-source"></a></dt>
-<dd><p>character, a valid metabolomic data source</p></dd>
+<dt id="arg-filepath">filepath<a class="anchor" aria-label="anchor" href="#arg-filepath"></a></dt>
+<dd><p>character, path to the original raw data file</p></dd>
+
+
+<dt id="arg-format">format<a class="anchor" aria-label="anchor" href="#arg-format"></a></dt>
+<dd><p>character, a valid metabolomic data format</p></dd>
+
+
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
+<dd><p>optional other slots to fill, see below.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -80,6 +126,38 @@
 <dd><p>character, a valid metabolomic data source</p></dd>
 
 
+<dt><code>feature_missingness</code></dt>
+<dd><p>numeric 0-1 default 0.2, proportion of missinginess on features used as a QC threshold</p></dd>
+
+
+<dt><code>sample_missingness</code></dt>
+<dd><p>numeric 0-1 default 0.2, proportion of missinginess on samples used as a QC threshold</p></dd>
+
+
+<dt><code>total_peak_area_SD</code></dt>
+<dd><p>numeric default 5, number of standard deviation (SD) units from the mean to perform a sample QC based on total abundance. If you would like to exclude total sum abundance as a QC parameter set the value to NA</p></dd>
+
+
+<dt><code>outlier_udist</code></dt>
+<dd><p>numeric default 5, outlier values for features. The number of interquartile range (IQR) unit distances from the median to call a value an outlier. "Outliers" here are extreme values that are the product of error.</p></dd>
+
+
+<dt><code>outlier_treatment</code></dt>
+<dd><p>character default 'leave_be', what to do with outliers for the purposes of the PCA, and for the PCA only. Options: "leave_be" if you would like no action on outliers; "winsorize" if you would like outliers to be winsorized to the 100th quantile of all remaining (non-outlying) values, at a feature; "turn_NA" if you would like outliers converted to NA. This means they will be imputed to the median for the purposes of the PCA.</p></dd>
+
+
+<dt><code>tree_cut_height</code></dt>
+<dd><p>numeric default 0.5, feature|metabolite independence. To identify "independent" features in your data set, how similar should clustered|grouped features be? tree_cut_height = 1-absolute(spearman's rho), such that a tree_cut_height of 0.2 would indicate a intra-cluster similarity of &gt;0.8, and a tree_cut_height of 0.8 would indicate a intra-cluster similarity of &gt;0.2. Larger tree_cut_height values yield more clustering and thus fewer "representative" or "independent" features.</p></dd>
+
+
+<dt><code>PC_outlier_SD</code></dt>
+<dd><p>numeric default 5, the number of standard deviation (SD) units from the mean to perform a sample QC based on principal components. If you would like to exclude PC exclusions as a QC parameter set the value to NA. Setting to NA may be advisable if you expect significant structure among individuals for example your data is derived from different tissues, different geographies/ecologies/environments.</p></dd>
+
+
+<dt><code>derived_var_exclusion</code></dt>
+<dd><p>logical default TRUE, Nightingale derived variable exclusion. Derived variables in Nightingale are all variables derived from two or more variables already present in the data set. In this instance it represents all ratios that Nightingale supply in their data releases.</p></dd>
+
+
 </dl></div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -87,7 +165,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by First Last.</p>
+  <p>Developed by Nicholas Sunderland.</p>
 </div>
 
 <div class="pkgdown-footer-right">
