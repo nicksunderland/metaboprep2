@@ -13,3 +13,11 @@ available_data_formats <- function() {
   formats <- sub("^export\\(read_([a-zA-Z0-9_]+)\\)", "\\1", read_functions)
   return(formats)
 }
+
+
+clean_names <- function(names) {
+  n <- gsub(" ", "_", names)
+  n <- gsub("[-\\.]", "", n)
+  tolower(n)
+}
+

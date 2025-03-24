@@ -11,10 +11,33 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Imports: 
     data.table,
+    nFactors,
+    pcaMethods,
+    psych,
     readxl,
-    S7
+    S7,
+    stats
 URL: https://nicksunderland.github.io/metaboprep2/
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
+    MASS
 VignetteBuilder: knitr
+Collate: 
+    'class_metabolites.R'
+    'batch_normalization.R'
+    'check_tables.R'
+    'feature_describe.R'
+    'feature_summary.R'
+    'metabolite_qc.R'
+    'metaboprep2-package.R'
+    'missingness.R'
+    'outlier_detection.R'
+    'pc_and_outliers.R'
+    'read_metabolon_v1.R'
+    'read_nightingale.R'
+    'sample_summary.R'
+    'total_peak_area.R'
+    'tree_and_independent_features.R'
+    'utils.R'
+    'zzz.R'

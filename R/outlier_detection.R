@@ -1,0 +1,58 @@
+#' @title Identify indexes of outliers in data
+#' @description
+#' Given a vector or matrix, this function returns a vector or matrix of 0|1, of the same structure with 1 values indicating outliers.
+#' @param data a matrix of numerical values, samples in row, features in columns
+#' @param nsd the unit distance in SD or IQR from the mean or median estimate, respectively outliers are identified at. Default value is 5.
+#' @param meansd set to TRUE if you would like to estimate outliers using a mean and SD method; set to FALSE if you would like to estimate medians and inter quartile ranges. The default is FALSE.
+#' @param by character, either 'column' to compute along columns or 'row' to compute across rows. Irrelevant for vectors.
+#'
+#' @return a matrix of 0 (not a sample outlier) and 1 (outlier)
+#'
+#' @importFrom stats quantile
+#' @export
+#'
+#' @examples
+#' ex_data = sapply(1:25, function(x){ rnorm(250, 40, 5) })
+#' ## define the data set
+#' rownames(ex_data) = paste0("ind", 1:nrow(ex_data))
+#' colnames(ex_data) = paste0("var", 1:ncol(ex_data))
+#' ## add in some technical error to two samples
+#' m = apply(ex_data, 2, function(x){ mean(x, na.rm = TRUE) })
+#' ex_data[c(1,50), ] = ex_data[1, ] + (m*4)
+#' Omat = outlier_detection(ex_data)
+#' ## how many outliers identified
+#' sum(Omat)
+#'
+outlier_detection <- function(data, nsd = 5, meansd = FALSE, by = "column") {
+
+  by <- match.arg(by, choices = c("row", "column"))
+
+  if (is.vector(data)) {
+    return(outlier_vector(data, nsd, meansd))
+  } else if (is.matrix(data)) {
+    margin <- if (by == "row") 1 else 2
+    return(apply(data, margin, function(x) outlier_vector(x, nsd, meansd)))
+  } else {
+    stop("Input must be a vector or a matrix.")
+  }
+}
+
+outlier_vector <- function(x, nsd, meansd) {
+  if (meansd) {
+    msd <- c(mean(x, na.rm = TRUE), sd(x, na.rm = TRUE))
+    cutoff <- c(msd[1] - (msd[2] * nsd), msd[1] + (msd[2] * nsd))
+  } else {
+    m <- median(x, na.rm = TRUE)
+    p <- quantile(x, probs = c(0.25, 0.75), na.rm = TRUE)
+    iqr <- p[2] - p[1]
+    cutoff <- c(m - (nsd * iqr), m + (nsd * iqr))
+  }
+
+  dataout = rep(0, length(x))
+  w = which(x >= cutoff[2] | x <= cutoff[1] )
+  if(length(w)> 0){
+    dataout[w] = 1
+  }
+  return(dataout)
+}
+

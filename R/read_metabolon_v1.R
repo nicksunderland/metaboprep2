@@ -1,5 +1,5 @@
 # Silence R CMD check
-globalVariables(c("COMP_ID", "feature_names"), package = "metaboprep2")
+globalVariables(c("comp_id", "feature_names", "derived_feature"), package = "metaboprep2")
 
 #' @title Read Metabolon Data (format 1)
 #' @param filepath character, commercial Metabolon excel sheet with extension .xls or .xlsx
@@ -21,6 +21,9 @@ read_metabolon_v1 <- function(filepath) {
 
   sheets <- readxl::excel_sheets(filepath)
   sheets <- sheets[sheets %in% c("OrigScale", "ScaledImp")]
+  std_names <- list("OrigScale" = "raw",
+                    "ScaledImp" = "scaled")
+  names(sheets) <- std_names[sheets]
 
   data_list <- list()
   features <- NULL
@@ -38,35 +41,37 @@ read_metabolon_v1 <- function(filepath) {
 
     if (is.null(comp_ids)) {
       comp_id_col <- which(raw[data_header_row, ] == "COMP_ID")
-      comp_ids <- raw[(data_header_row+1L):nrow(raw), .SD, .SDcols=c(1,comp_id_col)]
-      data.table::setnames(comp_ids, unlist(raw[data_header_row, .SD, .SDcols=c(1,comp_id_col)]))
+      comp_ids    <- raw[(data_header_row+1L):nrow(raw), .SD, .SDcols=c(1,comp_id_col)]
+      cnames      <- clean_names(unlist(raw[data_header_row, .SD, .SDcols=c(1,comp_id_col)]))
+      data.table::setnames(comp_ids, cnames)
     }
 
     if (is.null(features)) {
       features <- raw[(data_header_row+1L):nrow(raw), 1L:batch_header_col]
-      cnames <- gsub(" ","_", unlist(raw[data_header_row, 1L:batch_header_col]))
-      cnames[grep("Group", cnames)] <- "HMDB"
-      data.table::setnames(features, cnames)
-      features[, feature_names := paste0("compid_", COMP_ID)]
+      cnames   <- unlist(raw[data_header_row, 1L:batch_header_col])
+      cnames[grep("Group", cnames)] <- "hmdb"
+      data.table::setnames(features, clean_names(cnames))
+      features[, feature_names := paste0("compid_", comp_id)]
+      features[, derived_feature := FALSE]
       data.table::setcolorder(features, "feature_names")
     }
 
     if (is.null(batch)) {
       samples <- t(raw[1L:(data_header_row-1L), (batch_header_col+1L):ncol(raw)])
       samples <- data.table::as.data.table(samples)
-      cnames <- gsub(" ","_", raw[1L:(data_header_row-1L), ][[batch_header_col]])
-      data.table::setnames(samples, cnames)
+      cnames  <- raw[1L:(data_header_row-1L), ][[batch_header_col]]
+      data.table::setnames(samples, clean_names(cnames))
     }
 
     data           <- t(raw[(data_header_row+1L):nrow(raw), (batch_header_col+1L):ncol(raw)][, lapply(.SD, function(x) as.numeric(gsub(",","",x)))])
-    metab_id_cname <- unname(unlist(raw[(data_header_row), 1]))
+    metab_id_cname <- clean_names(unname(unlist(raw[(data_header_row), 1])))
     metab_ids      <- data.table::setnames(raw[(data_header_row+1L):nrow(raw), 1], metab_id_cname)
     metab_ids      <- metab_ids[comp_ids, on=metab_id_cname]
-    colnames(data) <- paste0("compid_", metab_ids[["COMP_ID"]])
+    colnames(data) <- paste0("compid_", metab_ids[, comp_id])
     rownames(data) <- raw[data_header_row, (batch_header_col+1L):ncol(raw)]
 
 
-    data_list[[sheets[i]]] <- data
+    data_list[[names(sheets)[i]]] <- data
   }
 
   stack_matrices <- function(mat_list, type) {
@@ -81,7 +86,7 @@ read_metabolon_v1 <- function(filepath) {
     }
     return(array(unlist(mat_list, use.names = FALSE),
                  dim = c(nrow(ref_mat), ncol(ref_mat), length(mat_list)),
-                 dimnames = list(rownames(ref_mat), colnames(ref_mat), sheets)))
+                 dimnames = list(rownames(ref_mat), colnames(ref_mat), names(sheets))))
   }
 
   return(list(data     = stack_matrices(data_list, "data"),

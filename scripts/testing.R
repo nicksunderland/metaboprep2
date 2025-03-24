@@ -8,6 +8,24 @@ metabolites <- Metabolites(project_name = "MYPROJECT",
 metabolites <- import_data(metabolites)
 metabolites
 
+
+d <- metabolite_qc(metabolites)
+d
+
+
+d <- pc_and_outliers(metabolites)
+d
+
+d <- feature_summary(metabolites)
+d
+
+d <- sample_summary(metabolites)
+d
+
+d <- batch_normalisation(metabolites)
+d
+
+
 d <- get_data(metabolites, "OrigScale")
 d
 
