@@ -9,12 +9,16 @@ metabolites <- import_data(metabolites)
 metabolites
 
 
+# testing
+metabolites@features[, independent_features_binary := sample(0:1, .N, replace = T)]
+d <- pc_and_outliers(metabolites, type="raw")
+d
+
+
 d <- metabolite_qc(metabolites)
 d
 
 
-d <- pc_and_outliers(metabolites)
-d
 
 d <- feature_summary(metabolites)
 d

@@ -26,7 +26,11 @@ globalVariables(c(""), package = "metaboprep2")
 #' @slot derived_var_exclusion logical default TRUE, Nightingale derived variable exclusion. Derived variables in Nightingale are all variables derived from two or more variables already present in the data set. In this instance it represents all ratios that Nightingale supply in their data releases.
 #' @slot xenobiotics_var_exclusion logical default TRUE, whether to exclude Xenobiotics from the missingness estimate
 #' @slot feature_tree object
-#' @slot summary_data list
+#' @slot pcs matrix
+#' @slot prob_pcs matrix
+#' @slot var_exp matrix
+#' @slot acceleration_factor numeric
+#' @slot n_parallel numeric
 #'
 #' @return an S7 class metaboprep2::Metabolites object
 #'
@@ -53,7 +57,13 @@ Metabolites <- new_class(
     tree_cut_height       = new_property(class_numeric, default=0.5),
     pc_outlier_sd         = new_property(class_numeric, default=5.0),
     derived_var_exclusion     = new_property(class_logical, default=TRUE),
-    xenobiotics_var_exclusion = new_property(class_logical, default=TRUE)
+    xenobiotics_var_exclusion = new_property(class_logical, default=TRUE),
+    feature_tree          = class_list,
+    pcs                   = class_numeric,
+    prob_pcs              = class_numeric,
+    var_exp               = class_numeric,
+    acceleration_factor   = class_numeric,
+    n_parallel            = class_numeric
   ),
   validator = function(self) {
     if ((nrow(self@features)>0 & length(self@data)>0) && (nrow(self@features) != ncol(self@data))) {

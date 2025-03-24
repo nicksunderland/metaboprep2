@@ -18,21 +18,22 @@
 #'
 #' @export
 #'
-pc_and_outliers <- new_generic("pc_and_outliers", c("metabolites"), function(metabolites) { S7_dispatch() })
+pc_and_outliers <- new_generic("pc_and_outliers", c("metabolites"), function(metabolites, type="raw") { S7_dispatch() })
 #' @name pc_and_outliers
-method(pc_and_outliers, Metabolites) <- function(metabolites) {
+method(pc_and_outliers, Metabolites) <- function(metabolites, type="raw") {
 
-  # testing
-  outliers = TRUE
-  metabolites@features[, independent_features_binary := sample(0:1, .N, replace = T)]
-
+  data_names <- dimnames(metabolites@data)[[3]]
+  if (!(type %in% data_names)) {
+    error_msg <- paste("Error: '", type, "' is not a valid type. Valid options are: ", paste(data_names, collapse = ", "), ".", sep = "")
+    stop(error_msg)
+  }
 
   stopifnot("`independent_features_binary` column not found in @features, please run feature_summary() on your metabolites object first" = "independent_features_binary" %in% names(metabolites@features))
 
   ## set data
   indf         <- metabolites@features[independent_features_binary==1, feature_names]
-  pcadata      <- metabolites@data[, indf, "raw"]
-  prob_pcadata <- metabolites@data[, indf, "raw"]
+  pcadata      <- metabolites@data[, indf, type]
+  prob_pcadata <- metabolites@data[, indf, type]
 
   ##############################
   ## impute missingness as medians
@@ -59,6 +60,7 @@ method(pc_and_outliers, Metabolites) <- function(metabolites) {
   })
   ######
   prob_mypca = pcaMethods::ppca(prob_pcadata, method="ppca", nPcs = 10, seed = 1234 , maxIterations = 1000)
+  colnames(prob_mypca@scores) <- paste0("prob_pc", 1:ncol(prob_mypca@scores))
 
   ##############################
   ## find number of sig PCs
@@ -67,29 +69,35 @@ method(pc_and_outliers, Metabolites) <- function(metabolites) {
   ap <- nFactors::parallel(subject=nrow(pcadata),var=ncol(pcadata),
                            rep=100,cent=.05)
   nS <- nFactors::nScree(x=ev$values, aparallel=ap$eigen$qevpea)
-  accelerationfactor = as.numeric( nS[[1]][2] )
+  accelerationfactor = as.numeric( nS[[1]][["naf"]] )
   if(accelerationfactor < 2) { accelerationfactor = 2 }
-  nsig_parrallel = nS[[1]][3]
+  nsig_parrallel = nS[[1]][["nparallel"]]
   ####
 
   ## identify outliers
   Omat3 = outlier_detection(mypca$x[, 1:accelerationfactor], nsd = 3, by = "column")
-  colnames(Omat3) = paste0(colnames(Omat3), "_3_SD_outlier")
+  colnames(Omat3) = paste0(colnames(Omat3), "_3_sd_outlier")
   PCout = cbind(mypca$x[,1:10], Omat3)
   ####
   Omat4 = outlier_detection(mypca$x[, 1:accelerationfactor], nsd = 4, by = "column")
-  colnames(Omat4) = paste0(colnames(Omat4), "_4_SD_outlier")
+  colnames(Omat4) = paste0(colnames(Omat4), "_4_sd_outlier")
   PCout = cbind(PCout, Omat4)
   ####
   Omat5 = outlier_detection(mypca$x[, 1:accelerationfactor], nsd = 5, by = "column")
-  colnames(Omat5) = paste0(colnames(Omat5), "_5_SD_outlier")
+  colnames(Omat5) = paste0(colnames(Omat5), "_5_sd_outlier")
   PCout = cbind(PCout, Omat5)
+  colnames(PCout) <- tolower(colnames(PCout))
 
+  ## add to object
 
-  ## build list to return
-  dataout = list(pcs = PCout, varexp = varexp, accelerationfactor = accelerationfactor, nsig_parrallel = nsig_parrallel, prob_pca = prob_mypca@scores  )
+  # var exp
+  metabolites@var_exp <- add_layer(metabolites@var_exp, varexp, type)
+  metabolites@acceleration_factor[[type]] <- accelerationfactor
+  metabolites@n_parallel[[type]] <- nsig_parrallel
+  metabolites@pcs <- add_layer(metabolites@pcs, PCout, type)
+  metabolites@prob_pcs <- add_layer(metabolites@prob_pcs, prob_mypca@scores, type)
 
-  return(dataout)
+  return(metabolites)
 }
 
 
