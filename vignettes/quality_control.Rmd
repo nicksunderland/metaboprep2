@@ -1,0 +1,103 @@
+---
+title: "Metabolite Quality Control"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Metabolite Quality Control}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## **Introduction**  
+
+Metabolomics data often contain missing values, outliers, and features that require filtering before downstream analysis. The `metabolite_qc()` function provides an efficient and automated way to perform **quality control (QC)** on a `Metabolites` object.  
+
+This vignette walks through the key parameters and steps for **performing QC** using this function.  
+
+---
+
+## **Creating a Metabolites Object**  
+
+Before performing QC, you need a `Metabolites` object, which contains metabolomics data along with metadata.  
+
+```{r setup}
+library(metaboprep2)
+
+# Example Metabolon (format 1) raw data file
+filepath <- system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2")
+
+# Create a Metabolites object with the desired parameters
+metabolites <- Metabolites(project_name              = "ExampleProject", 
+                           filepath                  = filepath,
+                           format                    = "metabolon_v1",   
+                           feature_missingness       = 0.2,
+                           sample_missingness        = 0.2,
+                           total_peak_area_sd        = 5,
+                           outlier_udist             = 5,
+                           outlier_treatment         = "leave_be",
+                           winsorize_quantile        = 1,
+                           tree_cut_height           = 0.5,
+                           pc_outlier_sd             = 5,
+                           derived_var_exclusion     = TRUE,
+                           xenobiotics_var_exclusion = TRUE)
+
+# Import the data 
+metabolites <- import_data(metabolites)
+```
+
+## **Performing Metabolite Quality Control**
+
+The metabolite_qc() function applies multiple QC filters based on missingness, outlier detection, PCA-based QC. This generates another layer to the data matrices named `post_qc`.
+
+```{r}
+metabolites <- metabolite_qc(metabolites, source = "raw", destination = "post_qc")
+```
+
+### Accessing QC'd data
+
+There are two primary ways to access data stored in a `Metabolites` object:
+
+1. **Using the `@` operator** to directly access object slots.
+2. **Using getter functions** like `get_data()` for structured data extraction.
+
+#### Accessing Data Using `@` Operator
+```{r}
+metabolites@data[, , "post_qc"][1:5,1:5]
+```
+
+#### Accessing Data Using Getter Functions
+```{r}
+get_data(metabolites, type="post_qc", apply_exclusions = FALSE)[1:5,1:5]
+```
+
+#### Accessing Only Data Passing QC
+```{r}
+get_data(metabolites, type="post_qc", apply_exclusions = TRUE)[1:5,1:5]
+```
+
+### Exclusions
+The underlying data still has all respresentations of the samples and features, however, the QC process builds a matrix of exclusions reasons.
+
+#### Accessing the Exclusions Matrix
+```{r}
+metabolites@exclusions[, , "post_qc"][1:5,1:5]
+```
+#### Accessing the Exclusions Codes
+```{r}
+get_exclusion_codes(verbose=TRUE)
+```
+
+### Figures
+Currently the feature tree object is stored in the metabolites object. 
+
+More DataViz to come....
+```{r, fig.width=14, fig.height=8, out.width="100%"}
+plot(metabolites@feature_tree[["post_qc"]])
+```
+

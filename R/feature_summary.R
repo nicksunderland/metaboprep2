@@ -2,21 +2,29 @@
 #' @description
 #' This function estimates feature statistics for samples in a matrix of metabolite features.
 #' @param metabolites an object of class Metabolites
+#' @param type character, the data type/source
+#' @param output character, the output format options: "object", "data.table", "matrix", "list"
 #' @include class_metabolites.R
 #' @export
-feature_summary <- new_generic("feature_summary", c("metabolites"), function(metabolites, type="raw") { S7_dispatch() })
+feature_summary <- new_generic("feature_summary", c("metabolites"), function(metabolites, type="raw", output="object") { S7_dispatch() })
 #' @name feature_summary
-method(feature_summary, Metabolites) <- function(metabolites, type="raw"){
+method(feature_summary, Metabolites) <- function(metabolites, type="raw", output="object") {
+
+  # options
+  output <- match.arg(output, choices = c("object", "data.table", "matrix", "list"))
+
+  # the data to work with
+  dat <- get_data(metabolites, type, apply_exclusions=TRUE)
 
   ## feature missingness
-  featuremis = missingness(metabolites@data[, , type], by="column", exclude_features = NA)
+  featuremis = missingness(dat, by="column", exclude_features = NA)
 
   ### distribution discritions
-  description = data.table::as.data.table(feature_describe(metabolites@data[, , type]), keep.rownames = TRUE)
+  description <- feature_describe(dat) |> data.table::as.data.table(keep.rownames = TRUE)
   data.table::setnames(description, "rn", "feature_id")
 
   ### count of sample outliers per feature
-  omat     <- outlier_detection(metabolites@data[, , type], nsd = metabolites@outlier_udist, meansd = FALSE, by = "column")
+  omat     <- outlier_detection(dat, nsd = metabolites@outlier_udist, meansd = FALSE, by = "column")
   sumomat  <- apply(omat, 2, sum)
   outliers <- data.table::data.table(feature_id    = names(sumomat),
                                      outlier_count = sumomat)
@@ -29,7 +37,7 @@ method(feature_summary, Metabolites) <- function(metabolites, type="raw"){
   # }
   ## ** ALL FEATURES THAT GO INTO THE DENDROGRAM AND CAN BE REPRESENTITIVE
   ##    FEATURES MUST HAVE > 80% Presence or <= 20% missing
-  min_sample_size = floor( nrow(metabolites@data[, , type]) * 0.8 )
+  min_sample_size = floor( nrow(dat) * 0.8 )
 
   # features to exclude
   exclude_features <- character()
@@ -38,14 +46,40 @@ method(feature_summary, Metabolites) <- function(metabolites, type="raw"){
   }
 
   ##
-  indf = tree_and_independent_features(data,
+  indf = tree_and_independent_features(dat,
                                        minimum_samplesize = min_sample_size,
                                        tree_cut_height    = metabolites@tree_cut_height,
                                        exclude_features   = exclude_features )
 
+  # combine summary data
   dt_list <- list(featuremis, outliers, description, indf$dat)
-  out <- Reduce(function(x, y) merge(x, y, by = "feature_id", all = TRUE), dt_list)
+  out <- Reduce(function(x, y) data.table::merge.data.table(x, y, by = "feature_id", all = TRUE), dt_list)
 
-  return(  list( table = out, tree = indf$speartree ) )
+  # ensure correct order (use the unfiltered data to get the col names, inject NAs if absent from filtered data)
+  ordered_base_ids <- data.table::data.table(feature_id = colnames(metabolites@data[, , type]))
+  out <- out[ordered_base_ids, on="feature_id", nomatch = NA]
+
+  # as matrix
+  mat <- as.matrix(out[, !("feature_id")])
+  rownames(mat) <- out$feature_id
+  mat <- t(mat) # keep convension that features are in columns
+
+  # add to sample_summary matrix
+  metabolites@feature_summary <- add_layer(current    = metabolites@feature_summary,
+                                           layer      = mat,
+                                           layer_name = type)
+
+  # add tree to object
+  metabolites@feature_tree[[type]] <- indf$speartree
+
+  # return desired output
+  return(
+    switch(output,
+           "object"     = metabolites,
+           "data.table" = out,
+           "matrix"     = mat,
+           "list"       = list(table = out, tree = indf$speartree)
+    )
+  )
 }
 

@@ -2,204 +2,195 @@
 #' @description
 #' This function is a wrapper function that performs the key quality controls steps on a metabolomics data set.
 #' @param metabolites an object of class Metabolites
+#' @param source character
+#' @param destination character
 #' @include class_metabolites.R
 #' @importFrom stats quantile
 #' @export
-metabolite_qc <- new_generic("metabolite_qc", c("metabolites"), function(metabolites, type="raw") { S7_dispatch() })
+metabolite_qc <- new_generic("metabolite_qc", c("metabolites"), function(metabolites, source="raw", destination="post_qc") { S7_dispatch() })
 #' @name metabolite_qc
-method(metabolite_qc, Metabolites) <- function(metabolites, type="raw"){
+method(metabolite_qc, Metabolites) <- function(metabolites, source="raw", destination="post_qc"){
+
+  source <- match.arg(source, choices = dimnames(metabolites@data)[[3]])
+  stopifnot("`destination` parameter is fixed to `post_qc` and only present to help document where the QCd data will land" = destination=="post_qc")
 
   # principles:
   # 1. keep the underlying data as it is
   # 2. build an exclusion matrix mask, accumulating codes for exclusion reasons
   # -> analysis -> ids of QC fails -> add to exclusion matrix -> apply exclusions to copy of data -> more analysis
 
-  # exclusions codes
-  excl_codes <- list("derived_feature" = 1,
-                     "xenobiotic_feature" = 2,
-                     "extreme_sample_missingness" = 3,
-                     "extreme_feature_missingness" = 4,
-                     "user_defined_sample_missingness" = 5,
-                     "user_defined_feature_missingness" = 6,
-                     "user_defined_sample_totalpeakarea" = 7,
-                     "user_defined_sample_pca_outlier" = 8)
+  # data to work from and add another layer - we now work with the 'destination data', plus any exclusions, from now on
+  dat <- get_data(metabolites, type = source, apply_exclusions = FALSE)
+  metabolites@data <- add_layer(current    = metabolites@data,
+                                layer      = dat,
+                                layer_name = destination)
 
-  # exclusions sparse matrix
-  excl_matrix <- matrix(NA_character_, nrow = nrow(metabolites@data), ncol = ncol(metabolites@data),
-                        dimnames = dimnames(metabolites@data)[1:2])
+  # add the source of this new layer
+  metabolites@source <- c(metabolites@source, stats::setNames(source, destination))
 
+  # add an exclusions sparse matrix, copy the source exclusions if it exists
+  if (source %in% dimnames(metabolites@exclusions)[[3]]) {
+    excl_mat <- metabolites@exclusions[, , source, drop=FALSE]
+  } else {
+    excl_mat <- SparseArray::SparseArray(array("",
+                                               dim = dim(metabolites@data[, , destination]),
+                                               dimnames = dimnames(metabolites@data[, , destination])[1:2]),
+                                         type="character")
+  }
+  metabolites@exclusions <- add_layer(current    = metabolites@exclusions,
+                                      layer      = excl_mat,
+                                      layer_name = destination)
 
 
   # derived features to exclude
   derived_feature_excl <- character()
   if (metabolites@derived_var_exclusion) {
     derived_feature_excl <- metabolites@features[derived_feature==TRUE, feature_names]
-    metabolites <- update_exclusions(metabolites, type=type, code = excl_codes[["derived_feature"]], feature_ids = derived_feature_excl)
+    metabolites <- update_exclusions(metabolites,
+                                     type        = destination,
+                                     code        = get_exclusion_codes(verbose=FALSE)[["derived_feature"]],
+                                     feature_ids = derived_feature_excl)
   }
 
   # xenobiotic features to exclude
   if (metabolites@derived_var_exclusion) {
     xenobiotic_feature_excl <- metabolites@features[grepl("(?i)xenobiotic", pathway), feature_names]
-    metabolites <- update_exclusions(metabolites, type=type, code = excl_codes[["xenobiotic_feature"]], feature_ids = xenobiotic_feature_excl)
+    metabolites <- update_exclusions(metabolites,
+                                     type        = destination,
+                                     code        = get_exclusion_codes(verbose=FALSE)[["xenobiotic_feature"]],
+                                     feature_ids = xenobiotic_feature_excl)
   }
 
   # very bad sample missingness
-  samplemis = missingness(metabolites@data[, , type], by="row", exclude_features = derived_feature_excl)
+  dat <- get_data(metabolites, type = destination, apply_exclusions = TRUE)
+  samplemis = missingness(dat, by="row", exclude_features = derived_feature_excl)
   if (!all(is.na(samplemis$missingness_w_exclusions))) {
     sample_ids <- samplemis[missingness_w_exclusions >= 0.8, sample_id]
   } else {
     sample_ids <- samplemis[missingness >= 0.8, sample_id]
   }
-  metabolites <- update_exclusions(metabolites, type=type, code = excl_codes[["extreme_sample_missingness"]], sample_ids = sample_ids)
+  metabolites <- update_exclusions(metabolites,
+                                   type       = destination,
+                                   code       = get_exclusion_codes(verbose=FALSE)[["extreme_sample_missingness"]],
+                                   sample_ids = sample_ids)
 
   # very bad feature missingness
-  featuremis  <- missingness(data = get_data(metabolites, type), by="column")
+  dat <- get_data(metabolites, type = destination, apply_exclusions = TRUE)
+  featuremis  <- missingness(dat, by="column")
   feature_ids <- featuremis[missingness >= 0.8, feature_id]
-  metabolites <- update_exclusions(metabolites, type=type, code = excl_codes[["extreme_feature_missingness"]], feature_ids = feature_ids)
+  metabolites <- update_exclusions(metabolites,
+                                   type        = destination,
+                                   code        = get_exclusion_codes(verbose=FALSE)[["extreme_feature_missingness"]],
+                                   feature_ids = feature_ids)
 
   # re-estimate sample missingness
-  filtered_data <- get_data(metabolites, type, apply_exclusions=TRUE)
-  samplemis <- missingness(filtered_data, by="row", exclude_features = derived_feature_excl)
+  dat <- get_data(metabolites, type = destination, apply_exclusions = TRUE)
+  samplemis <- missingness(dat, by="row", exclude_features = derived_feature_excl)
   if (!all(is.na(samplemis$missingness_w_exclusions))) {
     sample_ids <- samplemis[missingness_w_exclusions >= metabolites@sample_missingness, sample_id]
   } else {
     sample_ids <- samplemis[missingness >= metabolites@sample_missingness, sample_id]
   }
-  metabolites <- update_exclusions(metabolites, type=type, code = excl_codes[["user_defined_sample_missingness"]], sample_ids = sample_ids)
+  metabolites <- update_exclusions(metabolites,
+                                   type       = destination,
+                                   code       = get_exclusion_codes(verbose=FALSE)[["user_defined_sample_missingness"]],
+                                   sample_ids = sample_ids)
 
   # re-estimate feature missingness
-  filtered_data <- get_data(metabolites, type, apply_exclusions=TRUE)
-  featuremis    <- missingness(filtered_data, by="column")
-  feature_ids   <- featuremis[missingness >= metabolites@feature_missingness, feature_id]
-  metabolites   <- update_exclusions(metabolites, type=type, code = excl_codes[["user_defined_feature_missingness"]], feature_ids = feature_ids)
+  dat         <- get_data(metabolites, type = destination, apply_exclusions = TRUE)
+  featuremis  <- missingness(dat, by="column")
+  feature_ids <- featuremis[missingness >= metabolites@feature_missingness, feature_id]
+  metabolites <- update_exclusions(metabolites,
+                                   type        = destination,
+                                   code        = get_exclusion_codes(verbose=FALSE)[["user_defined_feature_missingness"]],
+                                   feature_ids = feature_ids)
 
   # total peak area
-  filtered_data <- get_data(metabolites, type, apply_exclusions=TRUE)
-  tpa <- total_peak_area(filtered_data, features_exclude = derived_feature_excl)
+  dat <- get_data(metabolites, type = destination, apply_exclusions = TRUE)
+  tpa <- total_peak_area(dat, features_exclude = derived_feature_excl)
   tpa[, `:=`(sdev = sd(tpa_total),
              mean = mean(tpa_total))]
   tpa[, `:=`(UL   = mean + sdev * metabolites@total_peak_area_sd,
              LL   = mean - sdev * metabolites@total_peak_area_sd)]
   sample_ids <- tpa[!data.table::between(tpa_total, LL, UL), sample_id]
-  metabolites   <- update_exclusions(metabolites, type=type, code = excl_codes[["user_defined_sample_totalpeakarea"]], sample_ids = sample_ids)
+  metabolites   <- update_exclusions(metabolites,
+                                     type       = destination,
+                                     code       = get_exclusion_codes(verbose=FALSE)[["user_defined_sample_totalpeakarea"]],
+                                     sample_ids = sample_ids)
 
   # PCA data
-  filtered_data <- get_data(metabolites, type, apply_exclusions=TRUE)
+  dat <- get_data(metabolites, type = destination, apply_exclusions = TRUE)
   if (metabolites@outlier_treatment != "leave_be") {
-    omat <- outlier_detection(data = filtered_data, nsd = metabolites@outlier_udist, meansd = FALSE, by="column")
-    # indices <- which(omat == 1, arr.ind = TRUE)
-    # rn <- rownames(omat)[indices[, 1]]
-    # cn <- colnames(omat)[indices[, 2]]
+
+    omat <- outlier_detection(dat, nsd = metabolites@outlier_udist, meansd = FALSE, by="column")
+
+    # which samples and features to set NA
+    indices <- which(omat == 1, arr.ind = TRUE)
+    adjust_row_names <- rownames(omat)[indices[,1]]
+    adjust_col_names <- colnames(omat)[indices[,2]]
+
     if(metabolites@outlier_treatment == "turn_NA") {
 
-      filtered_data[omat == 1] <- NA_real_
+      # turn NA in actual destination data
+      metabolites@data[adjust_row_names, adjust_col_names, destination] <- NA_real_
+
+      # log in exclusion matrix
+      metabolites   <- update_exclusions(metabolites,
+                                         type        = destination,
+                                         code        = get_exclusion_codes(verbose=FALSE)[["outlier_udist_turned_na"]],
+                                         sample_ids  = adjust_row_names,
+                                         feature_ids = adjust_col_names,
+                                         arr_ids     = TRUE)
 
     } else if (outlier_treatment == "winsorize") {
 
-      for(i in 1:ncol(filtered_data)) {
-        ## identify any outliers
-        w = which(omat[,i] == 1)
-        if(length(w) > 0) {
-          ## estimate the 'Q' quantile value from all non-outlier samples
-          quantile_value = quantile(filtered_data[-w,i], probs = c(metabolites@winsorize_quantile), na.rm = TRUE)
-          ## set outliers to the quantile value
-          filtered_data[w,i] = quantile_value
-        }
+      for(feature_id in adjust_col_names) {
+
+        # quantile value of the feature, minus the outliers
+        quantile_value = quantile(dat[!rownames(dat) %in% adjust_row_names, feature_id], probs = c(metabolites@winsorize_quantile), na.rm = TRUE)
+
+        # set in the destination data
+        metabolites@data[adjust_row_names, feature_id, destination] <- quantile_value
+
+        # log in the exclusion matrix
+        metabolites   <- update_exclusions(metabolites,
+                                           type        = destination,
+                                           code        = get_exclusion_codes(verbose=FALSE)[["outlier_udist_winsorized"]],
+                                           sample_ids  = adjust_row_names,
+                                           feature_ids = adjust_col_names,
+                                           arr_ids     = TRUE)
       }
-      cat(paste0("\t\t- Outliers were winsorized to the ", winsorize_quantile * 100 ," quantile of remaining (non outlying) values.\n") )
     }
+  }#end dealing with PCA based adjustments
+
+  # re-identify feature independence and PC outliers (feature_summary will use the current exclusions internally)
+  metabolites <- feature_summary(metabolites, type = destination)
+
+  # identify PC outliers using the newly populated @feature_summary data
+  metabolites <- pc_and_outliers(metabolites, type = destination)
+
+  # extract PCs 1-2 or 1-number of Acceleration factor PCs
+  af <- metabolites@acceleration_factor[[destination]]
+  if(af < 2) {
+    pcs = metabolites@pcs[, 1:2, destination]
+  } else {
+    pcs = metabolites@pcs[, 1:af, destination]
   }
 
-  # add the data
+  # perform exclusion on top PCs to ID outliers
+  if (!is.na(metabolites@pc_outlier_sd)) {
 
+    outliers <- outlier_detection(pcs, nsd = metabolites@pc_outlier_sd, meansd = TRUE)
+    indices <- which(outliers == 1, arr.ind = TRUE)
+    excl_col_names <- unique(colnames(outliers)[indices[,2]])
 
-  # re-identify feature independence and PC outliers
-  #featuresumstats = feature_summary(wdata = pcadata, sammis = samplemis, tree_cut_height = tree_cut_height, outlier_udist = outlier_udist, feature_names_2_exclude = derived_colnames_2_exclude)
-    #     } else {
-    #       featuresumstats = feature.sum.stats( wdata = pcadata, sammis = samplemis, tree_cut_height = tree_cut_height, outlier_udist = outlier_udist,  feature_names_2_exclude = NA)
-    #     }
+    # log in exclusion matrix
+    metabolites <- update_exclusions(metabolites,
+                                     type        = destination,
+                                     code        = get_exclusion_codes(verbose=FALSE)[["user_defined_sample_pca_outlier"]],
+                                     sample_ids  = excl_col_names)
+  }
 
-
-
-
-  metabolites
-
+  # return the metabolites with underlying data (+/- adjustments) and exclusion matrix
+  return(metabolites)
 }
-
-
-#     ###########################
-#     ### 12) re-identify feature independence and PC outliers
-#     ###########################
-#     cat( paste0("\t\t- QCstep: re-identify independent features through correlation analysis and dendrogram clustering.\n") )
-#     cat( paste0("\t\t\t- using currently QCd data.\n") )
-#
-#     ###########################
-#     ## re-estimate independent features using the qc-data to this point
-#     ###########################
-#     if( !is.na(derived_colnames_2_exclude[1]) ){
-#       featuresumstats = feature.sum.stats( wdata = pcadata, sammis = samplemis, tree_cut_height = tree_cut_height, outlier_udist = outlier_udist, feature_names_2_exclude = derived_colnames_2_exclude)
-#     } else {
-#       featuresumstats = feature.sum.stats( wdata = pcadata, sammis = samplemis, tree_cut_height = tree_cut_height, outlier_udist = outlier_udist,  feature_names_2_exclude = NA)
-#     }
-#
-#     ###########################
-#     ## extract independent feature list
-#     ###########################
-#     w = which(featuresumstats$table$independent_features_binary == 1)
-#     ind_feature_names = rownames(featuresumstats$table)[w]
-#     cat( paste0("\t\t\t* ", length(ind_feature_names), " independent features identified.\n") )
-#
-#     ###########################
-#     ## identify PC outliers
-#     ###########################
-#     cat( paste0("\t\t- QCstep: Perform Principle Componenet Analysis of currently QC'd data.\n") )
-#     PCs_outliers = pc.and.outliers(metabolitedata =  pcadata,
-#                                    indfeature_names = ind_feature_names )
-#
-#     ###########################
-#     ## extract PCs 1-2 or 1-number of Acceleration factor PCs
-#     ###########################
-#     af = as.numeric( PCs_outliers[[3]] )
-#     if(af<2){
-#       pcs = PCs_outliers[[1]][, 1:2]
-#     } else {
-#       pcs = PCs_outliers[[1]][, 1:af]
-#     }
-#
-#     ###########################
-#     ## perform exclusion on top PCs to ID outliers
-#     ###########################
-#     cat( paste0("\t\t- QCstep: Identify PC 1-",af," outliers >= +/-", PC_out_SD , "SD of the mean.\n") )
-#     if( is.na(PC_out_SD) == FALSE){
-#       outliers = outlier.matrix(pcs, nsd = PC_out_SD, meansd = TRUE)
-#       outliers = apply(outliers, 1, sum)
-#       w = which(outliers>0)
-#
-#       exclusion_data[6,1] = length(w)
-#
-#       if(length(w)>0){
-#         cat( paste0("\t\t\t* ", length(w), " samples excluded as PC outliers.\n") )
-#         wdata = wdata[-w, ]
-#       } else {
-#         cat( paste0("\t\t\t* 0 samples excluded as PC outliers.\n") )
-#       }
-#     } else {
-#       cat( paste0("\t\t\tYou have chosen NOT to apply a QC-filter on individuals based on their PC eigenvectors.\n") )
-#       cat( paste0("\t\t\tPC_outlier_udist in the parameter file was set to NA.\n") )
-#     }
-#
-#     ###########################
-#     ## 13) put the exclusion features back
-#     ###########################
-#     if( exists("exdata") ){
-#       cat( paste0("\t\t- QCstep: placing the initially extracted exclusion features back into the data frame.\n") )
-#       ## match sample ids
-#       m = match(rownames(wdata), rownames(exdata))
-#       wdata = cbind(wdata, exdata[m, ])
-#     }
-#
-#     ##
-#     return( list( wdata = wdata, featuresumstats = featuresumstats, pca = PCs_outliers, exclusion_data = exclusion_data) )
-#   }
-
-

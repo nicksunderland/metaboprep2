@@ -7,19 +7,15 @@
 pc_and_outliers(metabolites, type = "raw")
 }
 \arguments{
-\item{metabolitedata}{the metabolite data matrix. samples in row, metabolites in columns}
+\item{metabolites}{an object of class Metabolites}
 
-\item{indfeature_names}{a vector of independent feature names | column names.}
-
-\item{outliers}{defaulted to TRUE, a TRUE|FALSE binary flagging if you would like outliers identified.}
+\item{type}{character, type/source of data to use}
 }
 \value{
-a list object of length five, with (1) a data frame of PC loadings, (2) a vector of variance explained estimates for each PC, (3) an estimate of the number of informative or top PCs determined by the acceleration factor analysis, (4) an estimate of the number of informative or top PCs determined by parrallel analysis, (5) a data frame of the probablisitic PC loadings
+a an object of class Metabolites with slots \verb{@acceleration_factor}, \verb{@n_parallel}, \verb{@var_exp}, \verb{@pcs}, and \verb{@prob_pcs} filled.
 }
 \description{
 This function performs two principal component analysis. In the first, missing data is imputed to the median. In the second a probablistic PCA is run to account for the missingness.
 Subsequent to the derivation of the PC, the median imputed PC data is used to identify the number of informative or "significant" PC by (1) an acceleration analysis, and (2) a parrallel analysis.
 Finally the number of sample outliers are determined at 3, 4, and 5 standard deviations from the mean on the top PCs as determined by the acceleration factor analysis.
 }
-\keyword{PCA}
-\keyword{probalistic}

@@ -75,24 +75,19 @@ read_metabolon_v1 <- function(filepath) {
   }
 
   ref_mat <- data_list[[1]]
-  for (mat in data_list) {
-    if (!identical(rownames(ref_mat), rownames(mat))) {
-      stop(paste("Row names of", type, "matrix do not match across sheets!", call.=FALSE))
+  for (i in seq_along(data_list)) {
+    if (!identical(rownames(data_list[[1]]), rownames(data_list[[i]]))) {
+      stop(paste("Row names of", sheets[i], "matrix do not match across sheets!", call.=FALSE))
     }
-    if (!identical(colnames(ref_mat), colnames(mat))) {
-      stop(paste("Column names of", type, "matrix do not match across sheets!", call.=FALSE))
+    if (!identical(colnames(data_list[[1]]), colnames(data_list[[i]]))) {
+      stop(paste("Column names of", sheets[i], "matrix do not match across sheets!", call.=FALSE))
       }
   }
   data <- array(unlist(data_list, use.names = FALSE),
-                dim = c(nrow(ref_mat), ncol(ref_mat), length(data_list)),
-                dimnames = list(rownames(ref_mat), colnames(ref_mat), names(sheets)))
-
-  exclusions <- array(NA_character_,
-                      dim = dim(data),
-                      dimnames = dimnames(data))
+                dim = c(nrow(data_list[[1]]), ncol(data_list[[1]]), length(data_list)),
+                dimnames = list(rownames(data_list[[1]]), colnames(data_list[[1]]), names(sheets)))
 
   return(list(data       = data,
               samples    = samples,
-              features   = features,
-              exclusions = exclusions))
+              features   = features))
 }

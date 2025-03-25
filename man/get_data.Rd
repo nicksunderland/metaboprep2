@@ -18,6 +18,8 @@ get_data(
 
 \item{type}{character, type of data to extract}
 
+\item{apply_exclusions}{logical, whether to exclude samples/features based on the current \verb{@exclusions} matrix}
+
 \item{feature_ids}{optional, a vector of row names to extract (default is NULL, meaning all rows)}
 
 \item{sample_ids}{optional, a vector of column names to extract (default is NULL, meaning all columns)}

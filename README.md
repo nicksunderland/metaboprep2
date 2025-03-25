@@ -4,6 +4,11 @@
 # metaboprep2
 
 <!-- badges: start -->
+
+[![Codecov test
+coverage](https://codecov.io/gh/nicksunderland/metaboprep2/graph/badge.svg)](https://app.codecov.io/gh/nicksunderland/metaboprep2)
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
 `metaboprep2` is an R package designed for processing and managing

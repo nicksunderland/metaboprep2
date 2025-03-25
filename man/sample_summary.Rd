@@ -4,10 +4,14 @@
 \alias{sample_summary}
 \title{Sample Summary Statistics}
 \usage{
-sample_summary(metabolites, type = "raw")
+sample_summary(metabolites, type = "raw", output = "object")
 }
 \arguments{
 \item{metabolites}{an object of class Metabolites}
+
+\item{type}{character}
+
+\item{output}{character}
 }
 \description{
 Sample Summary Statistics

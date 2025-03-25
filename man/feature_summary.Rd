@@ -4,10 +4,14 @@
 \alias{feature_summary}
 \title{Feature Summary Statistics}
 \usage{
-feature_summary(metabolites, type = "raw")
+feature_summary(metabolites, type = "raw", output = "object")
 }
 \arguments{
 \item{metabolites}{an object of class Metabolites}
+
+\item{type}{character, the data type/source}
+
+\item{output}{character, the output format options: "object", "data.table", "matrix", "list"}
 }
 \description{
 This function estimates feature statistics for samples in a matrix of metabolite features.

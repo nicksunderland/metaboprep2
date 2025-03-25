@@ -27,12 +27,12 @@ total_peak_area <- function(data, features_exclude = NA_character_, ztransform =
 
   ## z-transformed data frame
   if(ztransform == TRUE){
-    cat(paste0("\t\t\t- z-transformed data for total abundance estimation.\n") )
+    # cat(paste0("\t\t\t- z-transformed data for total abundance estimation.\n") )
     data = apply(data, 2, function(x){
       ( x - mean(x, na.rm = TRUE) ) / sd(x, na.rm = TRUE)
     })
     ## add absolute(minimum) value to all values
-    cat(paste0("\t\t\t- adding absolute minimum observed value to all values to make all values positive.\n") )
+    # cat(paste0("\t\t\t- adding absolute minimum observed value to all values to make all values positive.\n") )
     data = data + abs(min(data, na.rm = TRUE))
   }
 

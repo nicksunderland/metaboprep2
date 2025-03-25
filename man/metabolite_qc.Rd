@@ -4,10 +4,14 @@
 \alias{metabolite_qc}
 \title{Metabolite Quality Control}
 \usage{
-metabolite_qc(metabolites, type = "raw")
+metabolite_qc(metabolites, source = "raw", destination = "post_qc")
 }
 \arguments{
 \item{metabolites}{an object of class Metabolites}
+
+\item{source}{character}
+
+\item{destination}{character}
 }
 \description{
 This function is a wrapper function that performs the key quality controls steps on a metabolomics data set.

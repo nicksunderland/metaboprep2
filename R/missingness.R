@@ -1,3 +1,6 @@
+# Silence R CMD check
+globalVariables(c("missingness_w_exclusions", "i.missingness_w_exclusions"), package = "metaboprep2")
+
 #' @title Estimate Missingness
 #' @description
 #' This function estimates missingness in a matrix of data and provides an option to exclude certain columns or features from the analysis, such as xenobiotics (with high missingness rates) in metabolomics data sets.

@@ -16,12 +16,17 @@ Imports:
     psych,
     readxl,
     S7,
-    stats
+    SparseArray,
+    stats,
+    utils
 URL: https://nicksunderland.github.io/metaboprep2/
 Suggests: 
     knitr,
     rmarkdown,
     MASS
+Remotes:
+    bioc::3.19/SparseArray,
+    bioc::3.19/pcaMethods
 VignetteBuilder: knitr
 Collate: 
     'class_metabolites.R'
