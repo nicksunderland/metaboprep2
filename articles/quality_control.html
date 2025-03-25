@@ -111,9 +111,9 @@ which contains metabolomics data along with metadata.</p>
 <h2 id="performing-metabolite-quality-control">
 <strong>Performing Metabolite Quality Control</strong><a class="anchor" aria-label="anchor" href="#performing-metabolite-quality-control"></a>
 </h2>
-<p>The metabolite_qc() function applies multiple QC filters based on
-missingness, outlier detection, PCA-based QC. This generates another
-layer to the data matrices named <code>post_qc</code>.</p>
+<p>The <code><a href="../reference/metabolite_qc.html">metabolite_qc()</a></code> function applies multiple QC filters
+based on missingness, outlier detection, PCA-based QC. This generates
+another layer to the data matrices named <code>post_qc</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">metabolites</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/metabolite_qc.html">metabolite_qc</a></span><span class="op">(</span><span class="va">metabolites</span>, source <span class="op">=</span> <span class="st">"raw"</span>, destination <span class="op">=</span> <span class="st">"post_qc"</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">

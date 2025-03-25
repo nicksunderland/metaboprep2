@@ -112,7 +112,7 @@ options can be found using the function
 <span><span class="va">metabolites</span></span>
 <span><span class="co">#&gt; &lt;metaboprep2::Metabolites&gt;</span></span>
 <span><span class="co">#&gt;  @ project_name             : chr "ExampleProject"</span></span>
-<span><span class="co">#&gt;  @ created                  : POSIXct[1:1], format: "2025-03-25 16:28:47"</span></span>
+<span><span class="co">#&gt;  @ created                  : POSIXct[1:1], format: "2025-03-25 16:35:03"</span></span>
 <span><span class="co">#&gt;  @ filepath                 : chr "/home/runner/work/_temp/Library/metaboprep2/extdata/metabolon_v1_example.xlsx"</span></span>
 <span><span class="co">#&gt;  @ format                   : chr "metabolon_v1"</span></span>
 <span><span class="co">#&gt;  @ source                   : chr(0) </span></span>
@@ -187,6 +187,12 @@ metabolites, including feature names and additional annotations.</li>
 processing (e.g., raw, scaled, post-QC).</li>
 </ul>
 </li>
+<li>
+<strong>exclusions</strong>: A multi-dimensional sparse character
+matrix in which each layer is a mask for the corresponding layer in the
+<span class="citation">@data</span> matrix slot. The cells contain a
+comma separated string of exclusion codes (see the Quality Control
+article).</li>
 </ul>
 <p>The <code>Metabolites</code> object also holds parameters for other
 analyses, such as quality control routines. There are default values,
