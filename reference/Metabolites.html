@@ -75,15 +75,23 @@
 <span>     <span class="op">}</span></span>
 <span> <span class="op">}</span><span class="op">)</span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
+<span>  exclusions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
 <span>  feature_missingness <span class="op">=</span> <span class="fl">0.2</span>,</span>
 <span>  sample_missingness <span class="op">=</span> <span class="fl">0.2</span>,</span>
 <span>  total_peak_area_sd <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>  outlier_udist <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>  outlier_treatment <span class="op">=</span> <span class="st">"leave_be"</span>,</span>
+<span>  winsorize_quantile <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  tree_cut_height <span class="op">=</span> <span class="fl">0.5</span>,</span>
 <span>  pc_outlier_sd <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>  derived_var_exclusion <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  xenobiotics_var_exclusion <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  xenobiotics_var_exclusion <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  feature_tree <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  pcs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
+<span>  prob_pcs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
+<span>  var_exp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
+<span>  acceleration_factor <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
+<span>  n_parallel <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -139,6 +147,10 @@
 <dd><p>multi-dimentional matrix,</p></dd>
 
 
+<dt><code>exclusions</code></dt>
+<dd><p>matrix???</p></dd>
+
+
 <dt><code>feature_missingness</code></dt>
 <dd><p>numeric 0-1 default 0.2, proportion of missinginess on features used as a QC threshold</p></dd>
 
@@ -157,6 +169,10 @@
 
 <dt><code>outlier_treatment</code></dt>
 <dd><p>character default 'leave_be', what to do with outliers for the purposes of the PCA, and for the PCA only. Options: "leave_be" if you would like no action on outliers; "winsorize" if you would like outliers to be winsorized to the 100th quantile of all remaining (non-outlying) values, at a feature; "turn_NA" if you would like outliers converted to NA. This means they will be imputed to the median for the purposes of the PCA.</p></dd>
+
+
+<dt><code>winsorize_quantile</code></dt>
+<dd><p>numeric defailt 1, winsorize to what quantile of remaining (not outlier) values</p></dd>
 
 
 <dt><code>tree_cut_height</code></dt>
@@ -179,8 +195,24 @@
 <dd><p>object</p></dd>
 
 
-<dt><code>summary_data</code></dt>
-<dd><p>list</p></dd>
+<dt><code>pcs</code></dt>
+<dd><p>matrix</p></dd>
+
+
+<dt><code>prob_pcs</code></dt>
+<dd><p>matrix</p></dd>
+
+
+<dt><code>var_exp</code></dt>
+<dd><p>matrix</p></dd>
+
+
+<dt><code>acceleration_factor</code></dt>
+<dd><p>numeric</p></dd>
+
+
+<dt><code>n_parallel</code></dt>
+<dd><p>numeric</p></dd>
 
 
 </dl></div>

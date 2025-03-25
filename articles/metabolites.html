@@ -111,7 +111,7 @@ options can be found using the function
 <span><span class="va">metabolites</span></span></code></pre></div>
 <pre><code><span><span class="co">## &lt;metaboprep2::Metabolites&gt;</span></span>
 <span><span class="co">##  @ project_name             : chr "ExampleProject"</span></span>
-<span><span class="co">##  @ created                  : POSIXct[1:1], format: "2025-03-24 16:46:53"</span></span>
+<span><span class="co">##  @ created                  : POSIXct[1:1], format: "2025-03-25 01:20:03"</span></span>
 <span><span class="co">##  @ filepath                 : chr "/home/runner/work/_temp/Library/metaboprep2/extdata/metabolon_v1_example.xlsx"</span></span>
 <span><span class="co">##  @ format                   : chr "metabolon_v1"</span></span>
 <span><span class="co">##  @ samples                  :Classes 'data.table' and 'data.frame':  100 obs. of  6 variables:</span></span>
@@ -137,11 +137,17 @@ options can be found using the function
 <span><span class="co">##  ..  ..$ : chr [1:100] "ind1" "ind2" "ind3" "ind4" ...</span></span>
 <span><span class="co">##  ..  ..$ : chr [1:100] "compid_123" "compid_124" "compid_125" "compid_126" ...</span></span>
 <span><span class="co">##  ..  ..$ : chr [1:2] "raw" "scaled"</span></span>
+<span><span class="co">##  @ exclusions               : chr [1:100, 1:100, 1:2] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA ...</span></span>
+<span><span class="co">##  .. - attr(*, "dimnames")=List of 3</span></span>
+<span><span class="co">##  ..  ..$ : chr [1:100] "ind1" "ind2" "ind3" "ind4" ...</span></span>
+<span><span class="co">##  ..  ..$ : chr [1:100] "compid_123" "compid_124" "compid_125" "compid_126" ...</span></span>
+<span><span class="co">##  ..  ..$ : chr [1:2] "raw" "scaled"</span></span>
 <span><span class="co">##  @ feature_missingness      : num 0.2</span></span>
 <span><span class="co">##  @ sample_missingness       : num 0.2</span></span>
 <span><span class="co">##  @ total_peak_area_sd       : num 5</span></span>
 <span><span class="co">##  @ outlier_udist            : num 5</span></span>
 <span><span class="co">##  @ outlier_treatment        : chr "leave_be"</span></span>
+<span><span class="co">##  @ winsorize_quantile       : num 1</span></span>
 <span><span class="co">##  @ tree_cut_height          : num 0.5</span></span>
 <span><span class="co">##  @ pc_outlier_sd            : num 5</span></span>
 <span><span class="co">##  @ derived_var_exclusion    : logi TRUE</span></span>
@@ -268,7 +274,7 @@ data with optional filtering.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">subset_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_data.html">get_data</a></span><span class="op">(</span><span class="va">metabolites</span>, </span>
 <span>                        type <span class="op">=</span> <span class="st">"raw"</span>, </span>
-<span>                        metabolite_ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"compid_123"</span>, <span class="st">"compid_124"</span><span class="op">)</span>, </span>
+<span>                        feature_ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"compid_123"</span>, <span class="st">"compid_124"</span><span class="op">)</span>, </span>
 <span>                        sample_ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ind1"</span>, <span class="st">"ind2"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">subset_data</span></span></code></pre></div>
 <pre><code><span><span class="co">##      compid_123 compid_124</span></span>
