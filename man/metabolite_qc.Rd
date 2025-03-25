@@ -4,7 +4,7 @@
 \alias{metabolite_qc}
 \title{Metabolite Quality Control}
 \usage{
-metabolite_qc(metabolites)
+metabolite_qc(metabolites, type = "raw")
 }
 \arguments{
 \item{metabolites}{an object of class Metabolites}

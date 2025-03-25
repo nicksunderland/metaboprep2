@@ -16,11 +16,13 @@ globalVariables(c(""), package = "metaboprep2")
 #' @slot samples data.table,
 #' @slot features data.table,
 #' @slot data multi-dimentional matrix,
+#' @slot exclusions matrix???
 #' @slot feature_missingness numeric 0-1 default 0.2, proportion of missinginess on features used as a QC threshold
 #' @slot sample_missingness  numeric 0-1 default 0.2, proportion of missinginess on samples used as a QC threshold
 #' @slot total_peak_area_sd numeric default 5, number of standard deviation (SD) units from the mean to perform a sample QC based on total abundance. If you would like to exclude total sum abundance as a QC parameter set the value to NA
 #' @slot outlier_udist numeric default 5, outlier values for features. The number of interquartile range (IQR) unit distances from the median to call a value an outlier. "Outliers" here are extreme values that are the product of error.
 #' @slot outlier_treatment character default 'leave_be', what to do with outliers for the purposes of the PCA, and for the PCA only. Options: "leave_be" if you would like no action on outliers; "winsorize" if you would like outliers to be winsorized to the 100th quantile of all remaining (non-outlying) values, at a feature; "turn_NA" if you would like outliers converted to NA. This means they will be imputed to the median for the purposes of the PCA.
+#' @slot winsorize_quantile numeric defailt 1, winsorize to what quantile of remaining (not outlier) values
 #' @slot tree_cut_height numeric default 0.5, feature|metabolite independence. To identify "independent" features in your data set, how similar should clustered|grouped features be? tree_cut_height = 1-absolute(spearman's rho), such that a tree_cut_height of 0.2 would indicate a intra-cluster similarity of >0.8, and a tree_cut_height of 0.8 would indicate a intra-cluster similarity of >0.2. Larger tree_cut_height values yield more clustering and thus fewer "representative" or "independent" features.
 #' @slot pc_outlier_sd numeric default 5, the number of standard deviation (SD) units from the mean to perform a sample QC based on principal components. If you would like to exclude PC exclusions as a QC parameter set the value to NA. Setting to NA may be advisable if you expect significant structure among individuals for example your data is derived from different tissues, different geographies/ecologies/environments.
 #' @slot derived_var_exclusion logical default TRUE, Nightingale derived variable exclusion. Derived variables in Nightingale are all variables derived from two or more variables already present in the data set. In this instance it represents all ratios that Nightingale supply in their data releases.
@@ -49,13 +51,15 @@ Metabolites <- new_class(
     samples               = class_data.frame,
     features              = class_data.frame,
     data                  = class_numeric,
-    feature_missingness   = new_property(class_numeric, default=0.2),
-    sample_missingness    = new_property(class_numeric, default=0.2),
-    total_peak_area_sd    = new_property(class_numeric, default=5.0),
-    outlier_udist         = new_property(class_numeric, default=5.0),
-    outlier_treatment     = new_property(class_character, default="leave_be", validator = function(value) if (value %in% c("leave_be", "winsorize", "turn_NA")) NULL else "@outlier_treatment should be one of leave_be|winsorize|turn_NA"),
-    tree_cut_height       = new_property(class_numeric, default=0.5),
-    pc_outlier_sd         = new_property(class_numeric, default=5.0),
+    exclusions            = class_character,
+    feature_missingness   = new_property(class_numeric, default=0.2, validator = function(value) if (data.table::between(value, 0, 1)) NULL else "should be a value between 0 and 1, inclusive"),
+    sample_missingness    = new_property(class_numeric, default=0.2, validator = function(value) if (data.table::between(value, 0, 1)) NULL else "should be a value between 0 and 1, inclusive"),
+    total_peak_area_sd    = new_property(class_numeric, default=5.0, validator = function(value) if (value>0) NULL else "should be a value >0"),
+    outlier_udist         = new_property(class_numeric, default=5.0, validator = function(value) if (value>0) NULL else "should be a value >0"),
+    outlier_treatment     = new_property(class_character, default="leave_be", validator = function(value) if (value %in% c("leave_be", "winsorize", "turn_NA")) NULL else "should be one of leave_be|winsorize|turn_NA"),
+    winsorize_quantile    = new_property(class_numeric, default=1.0),
+    tree_cut_height       = new_property(class_numeric, default=0.5, validator = function(value) if (value>=0) NULL else "should be a value >=0"),
+    pc_outlier_sd         = new_property(class_numeric, default=5.0, validator = function(value) if (value>0) NULL else "should be a value >0"),
     derived_var_exclusion     = new_property(class_logical, default=TRUE),
     xenobiotics_var_exclusion = new_property(class_logical, default=TRUE),
     feature_tree          = class_list,
@@ -91,29 +95,61 @@ method(import_data, Metabolites) <- function(metabolites) {
   format <- match.arg(metabolites@format, choices=available_data_formats())
 
   data_list <- switch(format,
-                      metabolon_v1 = read_metabolon_v1(filepath))
-  #metabolon_v2 = read_metabolon_v2(filepath))
+                      metabolon_v1 = read_metabolon_v1(metabolites@filepath))
+  #metabolon_v2 = read_metabolon_v2(metabolites@filepath))
 
-  metabolites@samples  <- data_list[["samples"]]
-  metabolites@features <- data_list[["features"]]
-  metabolites@data     <- data_list[["data"]]
+  metabolites@samples    <- data_list[["samples"]]
+  metabolites@features   <- data_list[["features"]]
+  metabolites@data       <- data_list[["data"]]
+  metabolites@exclusions <- data_list[["exclusions"]]
 
   return(metabolites)
 }
 
 
 
+#' @title update_exclusions
+#' @param metabolites an object of class Metabolites
+#' @param type character, type of data
+#' @param code integer, exclusions code
+#' @param feature_ids optional, a vector of row names to extract (default is NULL, meaning all rows)
+#' @param sample_ids optional, a vector of column names to extract (default is NULL, meaning all columns)
+#' @param arr_ids logical, whether ids are array indices
+#' @export
+update_exclusions <- new_generic("update_exclusions", c("metabolites", "type"), function(metabolites, type, code, sample_ids = NULL, feature_ids = NULL, arr_ids = FALSE) { S7_dispatch() })
+#' @name get_data
+method(update_exclusions, list(Metabolites, class_character)) <- function(metabolites, type, code, sample_ids = NULL, feature_ids = NULL, arr_ids = FALSE) {
+
+  if (arr_ids) {
+    stopifnot("Indicated sample_ids and feature_ids are array IDs, but they are of different lengths" = !is.null(feature_ids) && !is.null(sample_ids) && length(sample_ids)==length(feature_ids))
+    idxs <- data.frame(row = sample_ids, col = feature_ids)
+    for (i in nrow(idxs)) {
+      metabolites@exclusions[idxs[i,1], idxs[i,2], type] <- sub("^NA,","", paste(metabolites@exclusions[idxs[i,1], idxs[i,2], type], code, sep=","))
+    }
+  } else {
+    if (!is.null(sample_ids) && length(sample_ids) > 0) {
+      s <- which( rownames(metabolites@exclusions) %in% sample_ids )
+      metabolites@exclusions[s, ,type] <- sub("^NA,","", paste(metabolites@exclusions[s, , type], code, sep=","))
+    }
+    if (!is.null(feature_ids) && length(feature_ids) > 0) {
+      f <- which( colnames(metabolites@exclusions) %in% feature_ids )
+      metabolites@exclusions[, f, type] <- sub("^NA,","", paste(metabolites@exclusions[, f, type], code, sep=","))
+    }
+  }
+  return(metabolites)
+}
+
 
 #' @title get_data
 #' @param metabolites an object of class Metabolites
 #' @param type character, type of data to extract
-#' @param metabolite_ids optional, a vector of row names to extract (default is NULL, meaning all rows)
+#' @param feature_ids optional, a vector of row names to extract (default is NULL, meaning all rows)
 #' @param sample_ids optional, a vector of column names to extract (default is NULL, meaning all columns)
 #' @param as_df logical, whether to return the result as a data.frame (default is FALSE, meaning it returns a matrix)
 #' @export
-get_data <- new_generic("get_data", c("metabolites", "type"), function(metabolites, type, metabolite_ids = NULL, sample_ids = NULL, as_df = FALSE) { S7_dispatch() })
+get_data <- new_generic("get_data", c("metabolites", "type"), function(metabolites, type, apply_exclusions = TRUE, feature_ids = NULL, sample_ids = NULL, as_df = FALSE) { S7_dispatch() })
 #' @name get_data
-method(get_data, list(Metabolites, class_character)) <- function(metabolites, type, metabolite_ids = NULL, sample_ids = NULL, as_df = FALSE) {
+method(get_data, list(Metabolites, class_character)) <- function(metabolites, type, apply_exclusions = TRUE, feature_ids = NULL, sample_ids = NULL, as_df = FALSE) {
 
   data_names <- dimnames(metabolites@data)[[3]]
   if (!(type %in% data_names)) {
@@ -123,16 +159,25 @@ method(get_data, list(Metabolites, class_character)) <- function(metabolites, ty
 
   data <- metabolites@data[, , type]
 
-  if (!is.null(metabolite_ids)) {
-    if (!all(metabolite_ids %in% colnames(data))) {
-      stop("Error: Some of the specified col names are not found in the data.")
+  # apply exclusions
+  if (apply_exclusions==TRUE) {
+    excl <- metabolites@exclusions[, , type]
+    ex_f <- which(apply(excl, 2, function(x) all(!is.na(x))))
+    ex_s <- which(apply(excl, 1, function(x) all(!is.na(x))))
+    if (length(ex_s) > 0) data <- data[-ex_s, , drop = FALSE]
+    if (length(ex_f) > 0) data <- data[, -ex_f, drop = FALSE]
+  }
+
+  if (!is.null(feature_ids)) {
+    if (!all(feature_ids %in% colnames(data))) {
+      stop("Error: Some of the specified col names are not found in the data. If exclusons==TRUE, check they are not excluded for some reason.")
     }
-    data <- data[, metabolite_ids, drop = FALSE]
+    data <- data[, feature_ids, drop = FALSE]
   }
 
   if (!is.null(sample_ids)) {
     if (!all(sample_ids %in% rownames(data))) {
-      stop("Error: Some of the specified row names are not found in the data.")
+      stop("Error: Some of the specified row names are not found in the data. If exclusons==TRUE, check they are not excluded for some reason.")
     }
     data <- data[sample_ids, , drop = FALSE]
   }

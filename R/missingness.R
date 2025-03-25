@@ -26,20 +26,36 @@ missingness <- function(data, exclude_features = NA, by = "row") {
 
   if (by == "row") {
     margin <- 1
+    id_col <- "sample_id"
   } else if (by == "column") {
     margin <- 2
+    id_col <- "feature_id"
     stopifnot("`exclude_features` is only relevated when calculating missingness for samples, set NA for feature missingness" =  is.na(exclude_features))
   }
 
-  out <- data.frame(missingness = apply(data, margin, function(x) { sum(is.na(x)) / length(x) }),
-                    missingness_w_exclusions = NA_real_)
+  miss <- apply(data, margin, function(x) { sum(is.na(x)) / length(x) })
+  out <- data.table::data.table(ids         = names(miss),
+                                missingness = miss,
+                                missingness_w_exclusions = NA_real_)
 
   if( !all(is.na(exclude_features)) || length(exclude_features)>0 ) {
 
     r = which(colnames(data) %in% exclude_features)
-    out$missingness_w_exclusions <- apply(data[, -r, drop = FALSE], 1, function(x) { sum(is.na(x)) / length(x) })
+
+    if (length(r) > 0) {
+
+      miss2 <- apply(data[, -r, drop = FALSE], margin, function(x) { sum(is.na(x)) / length(x) })
+
+      out2  <- data.table::data.table(ids = names(miss2),
+                                      missingness_w_exclusions = miss2)
+
+      out[out2, missingness_w_exclusions := i.missingness_w_exclusions, on="ids"]
+
+    }
 
   }
 
-  return(as.data.frame(out))
+  data.table::setnames(out, "ids", id_col)
+
+  return(out)
 }

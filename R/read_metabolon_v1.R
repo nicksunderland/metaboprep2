@@ -74,22 +74,25 @@ read_metabolon_v1 <- function(filepath) {
     data_list[[names(sheets)[i]]] <- data
   }
 
-  stack_matrices <- function(mat_list, type) {
-    ref_mat <- mat_list[[1]]
-    for (mat in mat_list) {
-      if (!identical(rownames(ref_mat), rownames(mat))) {
-        stop(paste("Row names of", type, "matrix do not match across sheets!", call.=FALSE))
-      }
-      if (!identical(colnames(ref_mat), colnames(mat))) {
-        stop(paste("Column names of", type, "matrix do not match across sheets!", call.=FALSE))
-      }
+  ref_mat <- data_list[[1]]
+  for (mat in data_list) {
+    if (!identical(rownames(ref_mat), rownames(mat))) {
+      stop(paste("Row names of", type, "matrix do not match across sheets!", call.=FALSE))
     }
-    return(array(unlist(mat_list, use.names = FALSE),
-                 dim = c(nrow(ref_mat), ncol(ref_mat), length(mat_list)),
-                 dimnames = list(rownames(ref_mat), colnames(ref_mat), names(sheets))))
+    if (!identical(colnames(ref_mat), colnames(mat))) {
+      stop(paste("Column names of", type, "matrix do not match across sheets!", call.=FALSE))
+      }
   }
+  data <- array(unlist(data_list, use.names = FALSE),
+                dim = c(nrow(ref_mat), ncol(ref_mat), length(data_list)),
+                dimnames = list(rownames(ref_mat), colnames(ref_mat), names(sheets)))
 
-  return(list(data     = stack_matrices(data_list, "data"),
-              samples  = samples,
-              features = features))
+  exclusions <- array(NA_character_,
+                      dim = dim(data),
+                      dimnames = dimnames(data))
+
+  return(list(data       = data,
+              samples    = samples,
+              features   = features,
+              exclusions = exclusions))
 }

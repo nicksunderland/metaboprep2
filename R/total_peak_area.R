@@ -44,6 +44,7 @@ total_peak_area <- function(data, features_exclude = NA_character_, ztransform =
   ## TPA with complete features
   completeF_tpa = apply(data[, completefeatures], 1, function(x){ sum(x, na.rm = TRUE) })
   ##
-  out = data.frame(tpa_total = total_tpa, tpa_complete_features = completeF_tpa)
+
+  out = data.table::data.table(sample_id = names(total_tpa), tpa_total = total_tpa, tpa_complete_features = completeF_tpa)
   return(out)
 }

@@ -132,12 +132,13 @@ tree_and_independent_features = function(data, minimum_samplesize = 50, tree_cut
   independent_features_binary = rep(0, length(fids))
   independent_features_binary[w] = 1
 
-  out = data.frame( feature_ID = fids, k = k,
-                    independent_features_binary = independent_features_binary)
+  out = data.table::data.table(feature_id = fids,
+                               k = k,
+                               independent_features_binary = independent_features_binary)
 
   dataout = list(speartree = stree,
                  independent_features = independent_features,
-                 dataframe = out)
+                 dat = out)
 
   return(dataout)
 }

@@ -4,7 +4,7 @@
 \alias{pc_and_outliers}
 \title{principal component analysis}
 \usage{
-pc_and_outliers(metabolites)
+pc_and_outliers(metabolites, type = "raw")
 }
 \arguments{
 \item{metabolitedata}{the metabolite data matrix. samples in row, metabolites in columns}

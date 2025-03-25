@@ -38,15 +38,23 @@ Metabolites(
      }
  })(),
   data = integer(0),
+  exclusions = character(0),
   feature_missingness = 0.2,
   sample_missingness = 0.2,
   total_peak_area_sd = 5,
   outlier_udist = 5,
   outlier_treatment = "leave_be",
+  winsorize_quantile = 1,
   tree_cut_height = 0.5,
   pc_outlier_sd = 5,
   derived_var_exclusion = TRUE,
-  xenobiotics_var_exclusion = TRUE
+  xenobiotics_var_exclusion = TRUE,
+  feature_tree = list(),
+  pcs = integer(0),
+  prob_pcs = integer(0),
+  var_exp = integer(0),
+  acceleration_factor = integer(0),
+  n_parallel = integer(0)
 )
 }
 \arguments{
@@ -79,6 +87,8 @@ A Metabolites object is a container for matrices of metabolites data and associa
 
 \item{\code{data}}{multi-dimentional matrix,}
 
+\item{\code{exclusions}}{matrix???}
+
 \item{\code{feature_missingness}}{numeric 0-1 default 0.2, proportion of missinginess on features used as a QC threshold}
 
 \item{\code{sample_missingness}}{numeric 0-1 default 0.2, proportion of missinginess on samples used as a QC threshold}
@@ -88,6 +98,8 @@ A Metabolites object is a container for matrices of metabolites data and associa
 \item{\code{outlier_udist}}{numeric default 5, outlier values for features. The number of interquartile range (IQR) unit distances from the median to call a value an outlier. "Outliers" here are extreme values that are the product of error.}
 
 \item{\code{outlier_treatment}}{character default 'leave_be', what to do with outliers for the purposes of the PCA, and for the PCA only. Options: "leave_be" if you would like no action on outliers; "winsorize" if you would like outliers to be winsorized to the 100th quantile of all remaining (non-outlying) values, at a feature; "turn_NA" if you would like outliers converted to NA. This means they will be imputed to the median for the purposes of the PCA.}
+
+\item{\code{winsorize_quantile}}{numeric defailt 1, winsorize to what quantile of remaining (not outlier) values}
 
 \item{\code{tree_cut_height}}{numeric default 0.5, feature|metabolite independence. To identify "independent" features in your data set, how similar should clustered|grouped features be? tree_cut_height = 1-absolute(spearman's rho), such that a tree_cut_height of 0.2 would indicate a intra-cluster similarity of >0.8, and a tree_cut_height of 0.8 would indicate a intra-cluster similarity of >0.2. Larger tree_cut_height values yield more clustering and thus fewer "representative" or "independent" features.}
 
@@ -99,6 +111,14 @@ A Metabolites object is a container for matrices of metabolites data and associa
 
 \item{\code{feature_tree}}{object}
 
-\item{\code{summary_data}}{list}
+\item{\code{pcs}}{matrix}
+
+\item{\code{prob_pcs}}{matrix}
+
+\item{\code{var_exp}}{matrix}
+
+\item{\code{acceleration_factor}}{numeric}
+
+\item{\code{n_parallel}}{numeric}
 }}
 

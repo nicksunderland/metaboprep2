@@ -7,7 +7,8 @@
 get_data(
   metabolites,
   type,
-  metabolite_ids = NULL,
+  apply_exclusions = TRUE,
+  feature_ids = NULL,
   sample_ids = NULL,
   as_df = FALSE
 )
@@ -17,7 +18,7 @@ get_data(
 
 \item{type}{character, type of data to extract}
 
-\item{metabolite_ids}{optional, a vector of row names to extract (default is NULL, meaning all rows)}
+\item{feature_ids}{optional, a vector of row names to extract (default is NULL, meaning all rows)}
 
 \item{sample_ids}{optional, a vector of column names to extract (default is NULL, meaning all columns)}
 

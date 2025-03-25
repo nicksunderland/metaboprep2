@@ -106,7 +106,7 @@ original_data[1:5, 1:5]
 ```{r}
 subset_data <- get_data(metabolites, 
                         type = "raw", 
-                        metabolite_ids = c("compid_123", "compid_124"), 
+                        feature_ids = c("compid_123", "compid_124"), 
                         sample_ids = c("ind1", "ind2"))
 subset_data
 ```

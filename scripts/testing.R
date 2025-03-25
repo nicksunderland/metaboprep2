@@ -4,10 +4,14 @@ load_all()
 
 metabolites <- Metabolites(project_name = "MYPROJECT",
                            format = "metabolon_v1",
+                           total_peak_area_sd = Inf,
                            filepath = "/Users/xx20081/git/metaboprep/example_data/excel/metabolon_v1_example.xlsx")
 metabolites <- import_data(metabolites)
 metabolites
 
+
+d <- metabolite_qc(metabolites, type="raw")
+d
 
 # testing
 metabolites@features[, independent_features_binary := sample(0:1, .N, replace = T)]

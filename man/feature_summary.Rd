@@ -4,7 +4,7 @@
 \alias{feature_summary}
 \title{Feature Summary Statistics}
 \usage{
-feature_summary(metabolites)
+feature_summary(metabolites, type = "raw")
 }
 \arguments{
 \item{metabolites}{an object of class Metabolites}

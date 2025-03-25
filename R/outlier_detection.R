@@ -30,8 +30,14 @@ outlier_detection <- function(data, nsd = 5, meansd = FALSE, by = "column") {
   if (is.vector(data)) {
     return(outlier_vector(data, nsd, meansd))
   } else if (is.matrix(data)) {
-    margin <- if (by == "row") 1 else 2
-    return(apply(data, margin, function(x) outlier_vector(x, nsd, meansd)))
+    if (by == "row") {
+      out <- apply(data, 1, function(x) outlier_vector(x, nsd, meansd))
+      rownames(out) <- colnames(data)
+    } else {
+      out <- apply(data, 2, function(x) outlier_vector(x, nsd, meansd))
+      rownames(out) <- rownames(data)
+    }
+    return(out)
   } else {
     stop("Input must be a vector or a matrix.")
   }
