@@ -65,6 +65,7 @@ A `Metabolites` object consists of three main data components:
   - Rows represent individual samples.
   - Columns correspond to different metabolites.
   - The third dimension (depth) represents various stages of data processing (e.g., raw, scaled, post-QC).
+- **exclusions**: A multi-dimensional sparse character matrix in which each layer is a mask for the corresponding layer in the @data matrix slot. The cells contain a comma separated string of exclusion codes (see the Quality Control article).
   
 The `Metabolites` object also holds parameters for other analyses, such as quality control routines. There are 
 default values, however these can either be changed during object creation, or later using the `@` operator to 

@@ -53,7 +53,7 @@ metabolites <- import_data(metabolites)
 
 ## **Performing Metabolite Quality Control**
 
-The metabolite_qc() function applies multiple QC filters based on missingness, outlier detection, PCA-based QC. This generates another layer to the data matrices named `post_qc`.
+The `metabolite_qc()` function applies multiple QC filters based on missingness, outlier detection, PCA-based QC. This generates another layer to the data matrices named `post_qc`.
 
 ```{r}
 metabolites <- metabolite_qc(metabolites, source = "raw", destination = "post_qc")
