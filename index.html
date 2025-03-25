@@ -36,6 +36,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="articles/metabolites.html">Using the Metabolites S7 Class</a></li>
+    <li><a class="dropdown-item" href="articles/quality_control.html">Metabolite Quality Control</a></li>
   </ul>
 </li>
       </ul>
@@ -54,8 +55,8 @@
 <div class="page-header"><h1 id="metaboprep2">metaboprep2<a class="anchor" aria-label="anchor" href="#metaboprep2"></a>
 </h1></div>
 <!-- badges: start -->
-<!-- badges: end -->
-<p><code>metaboprep2</code> is an R package designed for processing and managing metabolomic data efficiently. It provides structured storage and access to metabolomic datasets, including sample metadata, feature metadata, and metabolite intensity data.</p>
+
+<p><code>metaboprep2</code> is an R package designed for processing and managing metabolomic data efficiently. It provides structured storage and access to metabolomic datasets, including sample metadata, feature metadata, and metabolite intensity data. Whilst the class structure is new, the underlying routines are based on the excellent work from the authors of <a href="https://github.com/MRCIEU/metaboprep" class="external-link">metaboprep</a>. Until this project is stable and tested it is recommended you use the original <code>metaboprep</code> pipeline.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -96,7 +97,13 @@
 </ul>
 </div>
 
-
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://app.codecov.io/gh/nicksunderland/metaboprep2" class="external-link"><img src="https://codecov.io/gh/nicksunderland/metaboprep2/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
+</ul>
+</div>
 
   </aside>
 </div>

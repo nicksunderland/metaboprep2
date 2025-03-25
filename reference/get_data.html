@@ -19,6 +19,7 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/metabolites.html">Using the Metabolites S7 Class</a></li>
+    <li><a class="dropdown-item" href="../articles/quality_control.html">Metabolite Quality Control</a></li>
   </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -61,6 +62,10 @@
 
 <dt id="arg-type">type<a class="anchor" aria-label="anchor" href="#arg-type"></a></dt>
 <dd><p>character, type of data to extract</p></dd>
+
+
+<dt id="arg-apply-exclusions">apply_exclusions<a class="anchor" aria-label="anchor" href="#arg-apply-exclusions"></a></dt>
+<dd><p>logical, whether to exclude samples/features based on the current <code>@exclusions</code> matrix</p></dd>
 
 
 <dt id="arg-feature-ids">feature_ids<a class="anchor" aria-label="anchor" href="#arg-feature-ids"></a></dt>

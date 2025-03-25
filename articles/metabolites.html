@@ -34,6 +34,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/metabolites.html">Using the Metabolites S7 Class</a></li>
+    <li><a class="dropdown-item" href="../articles/quality_control.html">Metabolite Quality Control</a></li>
   </ul>
 </li>
       </ul>
@@ -93,9 +94,9 @@ will need to specify the format of the raw data file - the available
 options can be found using the function
 <code><a href="../reference/available_data_formats.html">available_data_formats()</a></code></p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/available_data_formats.html">available_data_formats</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] "metabolon_v1" "nightingale"</span></span></code></pre>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/available_data_formats.html">available_data_formats</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "metabolon_v1" "nightingale"</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Example Metabolon (format 1) raw data file</span></span>
 <span><span class="va">filepath</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"metabolon_v1_example.xlsx"</span>, package <span class="op">=</span> <span class="st">"metaboprep2"</span><span class="op">)</span></span>
 <span></span>
@@ -108,56 +109,62 @@ options can be found using the function
 <span><span class="va">metabolites</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/import_data.html">import_data</a></span><span class="op">(</span><span class="va">metabolites</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># View</span></span>
-<span><span class="va">metabolites</span></span></code></pre></div>
-<pre><code><span><span class="co">## &lt;metaboprep2::Metabolites&gt;</span></span>
-<span><span class="co">##  @ project_name             : chr "ExampleProject"</span></span>
-<span><span class="co">##  @ created                  : POSIXct[1:1], format: "2025-03-25 01:20:03"</span></span>
-<span><span class="co">##  @ filepath                 : chr "/home/runner/work/_temp/Library/metaboprep2/extdata/metabolon_v1_example.xlsx"</span></span>
-<span><span class="co">##  @ format                   : chr "metabolon_v1"</span></span>
-<span><span class="co">##  @ samples                  :Classes 'data.table' and 'data.frame':  100 obs. of  6 variables:</span></span>
-<span><span class="co">##  .. $ sample_name: chr  "ind1" "ind2" "ind3" "ind4" ...</span></span>
-<span><span class="co">##  .. $ neg        : chr  "batch1" "batch1" "batch1" "batch1" ...</span></span>
-<span><span class="co">##  .. $ pos        : chr  "batch1" "batch1" "batch1" "batch1" ...</span></span>
-<span><span class="co">##  .. $ run_day    : chr  "day1" "day1" "day1" "day1" ...</span></span>
-<span><span class="co">##  .. $ box_id     : chr  "box1" "box1" "box1" "box1" ...</span></span>
-<span><span class="co">##  .. $ lot        : chr  "lot250" "lot250" "lot250" "lot250" ...</span></span>
-<span><span class="co">##  .. - attr(*, ".internal.selfref")=&lt;externalptr&gt; </span></span>
-<span><span class="co">##  @ features                 :Classes 'data.table' and 'data.frame':  100 obs. of  8 variables:</span></span>
-<span><span class="co">##  .. $ feature_names  : chr  "compid_123" "compid_124" "compid_125" "compid_126" ...</span></span>
-<span><span class="co">##  .. $ metabolite_id  : chr  "met1" "met2" "met3" "met4" ...</span></span>
-<span><span class="co">##  .. $ comp_id        : chr  "123" "124" "125" "126" ...</span></span>
-<span><span class="co">##  .. $ platform       : chr  "neg" "neg" "neg" "neg" ...</span></span>
-<span><span class="co">##  .. $ pathway        : chr  "xenobiotic" "xenobiotic" "xenobiotic" "lipid" ...</span></span>
-<span><span class="co">##  .. $ kegg           : chr  "K100" "K100" "K100" "K200" ...</span></span>
-<span><span class="co">##  .. $ hmdb           : chr  "HMDB1" "HMDB2" "HMDB3" "HMDB4" ...</span></span>
-<span><span class="co">##  .. $ derived_feature: logi  FALSE FALSE FALSE FALSE FALSE FALSE ...</span></span>
-<span><span class="co">##  .. - attr(*, ".internal.selfref")=&lt;externalptr&gt; </span></span>
-<span><span class="co">##  @ data                     : num [1:100, 1:100, 1:2] 11.03 12.5 NA 6.98 8.56 ...</span></span>
-<span><span class="co">##  .. - attr(*, "dimnames")=List of 3</span></span>
-<span><span class="co">##  ..  ..$ : chr [1:100] "ind1" "ind2" "ind3" "ind4" ...</span></span>
-<span><span class="co">##  ..  ..$ : chr [1:100] "compid_123" "compid_124" "compid_125" "compid_126" ...</span></span>
-<span><span class="co">##  ..  ..$ : chr [1:2] "raw" "scaled"</span></span>
-<span><span class="co">##  @ exclusions               : chr [1:100, 1:100, 1:2] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA ...</span></span>
-<span><span class="co">##  .. - attr(*, "dimnames")=List of 3</span></span>
-<span><span class="co">##  ..  ..$ : chr [1:100] "ind1" "ind2" "ind3" "ind4" ...</span></span>
-<span><span class="co">##  ..  ..$ : chr [1:100] "compid_123" "compid_124" "compid_125" "compid_126" ...</span></span>
-<span><span class="co">##  ..  ..$ : chr [1:2] "raw" "scaled"</span></span>
-<span><span class="co">##  @ feature_missingness      : num 0.2</span></span>
-<span><span class="co">##  @ sample_missingness       : num 0.2</span></span>
-<span><span class="co">##  @ total_peak_area_sd       : num 5</span></span>
-<span><span class="co">##  @ outlier_udist            : num 5</span></span>
-<span><span class="co">##  @ outlier_treatment        : chr "leave_be"</span></span>
-<span><span class="co">##  @ winsorize_quantile       : num 1</span></span>
-<span><span class="co">##  @ tree_cut_height          : num 0.5</span></span>
-<span><span class="co">##  @ pc_outlier_sd            : num 5</span></span>
-<span><span class="co">##  @ derived_var_exclusion    : logi TRUE</span></span>
-<span><span class="co">##  @ xenobiotics_var_exclusion: logi TRUE</span></span>
-<span><span class="co">##  @ feature_tree             : list()</span></span>
-<span><span class="co">##  @ pcs                      : int(0) </span></span>
-<span><span class="co">##  @ prob_pcs                 : int(0) </span></span>
-<span><span class="co">##  @ var_exp                  : int(0) </span></span>
-<span><span class="co">##  @ acceleration_factor      : int(0) </span></span>
-<span><span class="co">##  @ n_parallel               : int(0)</span></span></code></pre>
+<span><span class="va">metabolites</span></span>
+<span><span class="co">#&gt; &lt;metaboprep2::Metabolites&gt;</span></span>
+<span><span class="co">#&gt;  @ project_name             : chr "ExampleProject"</span></span>
+<span><span class="co">#&gt;  @ created                  : POSIXct[1:1], format: "2025-03-25 16:15:35"</span></span>
+<span><span class="co">#&gt;  @ filepath                 : chr "/home/runner/work/_temp/Library/metaboprep2/extdata/metabolon_v1_example.xlsx"</span></span>
+<span><span class="co">#&gt;  @ format                   : chr "metabolon_v1"</span></span>
+<span><span class="co">#&gt;  @ source                   : chr(0) </span></span>
+<span><span class="co">#&gt;  @ feature_missingness      : num 0.2</span></span>
+<span><span class="co">#&gt;  @ sample_missingness       : num 0.2</span></span>
+<span><span class="co">#&gt;  @ total_peak_area_sd       : num 5</span></span>
+<span><span class="co">#&gt;  @ outlier_udist            : num 5</span></span>
+<span><span class="co">#&gt;  @ outlier_treatment        : chr "leave_be"</span></span>
+<span><span class="co">#&gt;  @ winsorize_quantile       : num 1</span></span>
+<span><span class="co">#&gt;  @ tree_cut_height          : num 0.5</span></span>
+<span><span class="co">#&gt;  @ pc_outlier_sd            : num 5</span></span>
+<span><span class="co">#&gt;  @ derived_var_exclusion    : logi TRUE</span></span>
+<span><span class="co">#&gt;  @ xenobiotics_var_exclusion: logi TRUE</span></span>
+<span><span class="co">#&gt;  @ samples                  :Classes 'data.table' and 'data.frame':  100 obs. of  6 variables:</span></span>
+<span><span class="co">#&gt;  .. $ sample_name: chr  "ind1" "ind2" "ind3" "ind4" ...</span></span>
+<span><span class="co">#&gt;  .. $ neg        : chr  "batch1" "batch1" "batch1" "batch1" ...</span></span>
+<span><span class="co">#&gt;  .. $ pos        : chr  "batch1" "batch1" "batch1" "batch1" ...</span></span>
+<span><span class="co">#&gt;  .. $ run_day    : chr  "day1" "day1" "day1" "day1" ...</span></span>
+<span><span class="co">#&gt;  .. $ box_id     : chr  "box1" "box1" "box1" "box1" ...</span></span>
+<span><span class="co">#&gt;  .. $ lot        : chr  "lot250" "lot250" "lot250" "lot250" ...</span></span>
+<span><span class="co">#&gt;  .. - attr(*, ".internal.selfref")=&lt;externalptr&gt; </span></span>
+<span><span class="co">#&gt;  @ features                 :Classes 'data.table' and 'data.frame':  100 obs. of  8 variables:</span></span>
+<span><span class="co">#&gt;  .. $ feature_names  : chr  "compid_123" "compid_124" "compid_125" "compid_126" ...</span></span>
+<span><span class="co">#&gt;  .. $ metabolite_id  : chr  "met1" "met2" "met3" "met4" ...</span></span>
+<span><span class="co">#&gt;  .. $ comp_id        : chr  "123" "124" "125" "126" ...</span></span>
+<span><span class="co">#&gt;  .. $ platform       : chr  "neg" "neg" "neg" "neg" ...</span></span>
+<span><span class="co">#&gt;  .. $ pathway        : chr  "xenobiotic" "xenobiotic" "xenobiotic" "lipid" ...</span></span>
+<span><span class="co">#&gt;  .. $ kegg           : chr  "K100" "K100" "K100" "K200" ...</span></span>
+<span><span class="co">#&gt;  .. $ hmdb           : chr  "HMDB1" "HMDB2" "HMDB3" "HMDB4" ...</span></span>
+<span><span class="co">#&gt;  .. $ derived_feature: logi  FALSE FALSE FALSE FALSE FALSE FALSE ...</span></span>
+<span><span class="co">#&gt;  .. - attr(*, ".internal.selfref")=&lt;externalptr&gt; </span></span>
+<span><span class="co">#&gt;  @ data                     : num [1:100, 1:100, 1:2] 11.03 12.5 NA 6.98 8.56 ...</span></span>
+<span><span class="co">#&gt;  .. - attr(*, "dimnames")=List of 3</span></span>
+<span><span class="co">#&gt;  ..  ..$ : chr [1:100] "ind1" "ind2" "ind3" "ind4" ...</span></span>
+<span><span class="co">#&gt;  ..  ..$ : chr [1:100] "compid_123" "compid_124" "compid_125" "compid_126" ...</span></span>
+<span><span class="co">#&gt;  ..  ..$ : chr [1:2] "raw" "scaled"</span></span>
+<span><span class="co">#&gt;  @ exclusions               :Formal class 'SVT_SparseMatrix' [package "SparseArray"] with 5 slots</span></span>
+<span><span class="co">#&gt;  ..  ..@ type        : chr "character"</span></span>
+<span><span class="co">#&gt;  ..  ..@ SVT         : NULL</span></span>
+<span><span class="co">#&gt;  ..  ..@ .svt_version: int 1</span></span>
+<span><span class="co">#&gt;  ..  ..@ dim         : int [1:2] 0 1</span></span>
+<span><span class="co">#&gt;  ..  ..@ dimnames    :List of 2</span></span>
+<span><span class="co">#&gt;  ..  .. ..$ : NULL</span></span>
+<span><span class="co">#&gt;  ..  .. ..$ : NULL</span></span>
+<span><span class="co">#&gt;  @ feature_summary          : int(0) </span></span>
+<span><span class="co">#&gt;  @ feature_tree             : list()</span></span>
+<span><span class="co">#&gt;  @ sample_summary           : int(0) </span></span>
+<span><span class="co">#&gt;  @ pcs                      : int(0) </span></span>
+<span><span class="co">#&gt;  @ prob_pcs                 : int(0) </span></span>
+<span><span class="co">#&gt;  @ var_exp                  : int(0) </span></span>
+<span><span class="co">#&gt;  @ acceleration_factor      : int(0) </span></span>
+<span><span class="co">#&gt;  @ n_parallel               : int(0)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="metabolites-object-structure">Metabolites Object Structure<a class="anchor" aria-label="anchor" href="#metabolites-object-structure"></a>
@@ -205,49 +212,49 @@ for structured data extraction.</li>
 <div class="section level4">
 <h4 id="sample-metadata">Sample Metadata<a class="anchor" aria-label="anchor" href="#sample-metadata"></a>
 </h4>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">metabolites</span><span class="op">@</span><span class="va">samples</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##    sample_name    neg    pos run_day box_id    lot</span></span>
-<span><span class="co">##         &lt;char&gt; &lt;char&gt; &lt;char&gt;  &lt;char&gt; &lt;char&gt; &lt;char&gt;</span></span>
-<span><span class="co">## 1:        ind1 batch1 batch1    day1   box1 lot250</span></span>
-<span><span class="co">## 2:        ind2 batch1 batch1    day1   box1 lot250</span></span>
-<span><span class="co">## 3:        ind3 batch1 batch1    day1   box1 lot250</span></span>
-<span><span class="co">## 4:        ind4 batch1 batch1    day1   box1 lot250</span></span>
-<span><span class="co">## 5:        ind5 batch1 batch1    day1   box1 lot250</span></span>
-<span><span class="co">## 6:        ind6 batch1 batch1    day1   box1 lot250</span></span></code></pre>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">metabolites</span><span class="op">@</span><span class="va">samples</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    sample_name    neg    pos run_day box_id    lot</span></span>
+<span><span class="co">#&gt;         &lt;char&gt; &lt;char&gt; &lt;char&gt;  &lt;char&gt; &lt;char&gt; &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1:        ind1 batch1 batch1    day1   box1 lot250</span></span>
+<span><span class="co">#&gt; 2:        ind2 batch1 batch1    day1   box1 lot250</span></span>
+<span><span class="co">#&gt; 3:        ind3 batch1 batch1    day1   box1 lot250</span></span>
+<span><span class="co">#&gt; 4:        ind4 batch1 batch1    day1   box1 lot250</span></span>
+<span><span class="co">#&gt; 5:        ind5 batch1 batch1    day1   box1 lot250</span></span>
+<span><span class="co">#&gt; 6:        ind6 batch1 batch1    day1   box1 lot250</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="feature-metadata">Feature Metadata<a class="anchor" aria-label="anchor" href="#feature-metadata"></a>
 </h4>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">metabolites</span><span class="op">@</span><span class="va">features</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##    feature_names metabolite_id comp_id platform    pathway   kegg   hmdb</span></span>
-<span><span class="co">##           &lt;char&gt;        &lt;char&gt;  &lt;char&gt;   &lt;char&gt;     &lt;char&gt; &lt;char&gt; &lt;char&gt;</span></span>
-<span><span class="co">## 1:    compid_123          met1     123      neg xenobiotic   K100  HMDB1</span></span>
-<span><span class="co">## 2:    compid_124          met2     124      neg xenobiotic   K100  HMDB2</span></span>
-<span><span class="co">## 3:    compid_125          met3     125      neg xenobiotic   K100  HMDB3</span></span>
-<span><span class="co">## 4:    compid_126          met4     126      neg      lipid   K200  HMDB4</span></span>
-<span><span class="co">## 5:    compid_127          met5     127      neg      lipid   K200  HMDB5</span></span>
-<span><span class="co">## 6:    compid_128          met6     128      neg      lipid   K200  HMDB6</span></span>
-<span><span class="co">##    derived_feature</span></span>
-<span><span class="co">##             &lt;lgcl&gt;</span></span>
-<span><span class="co">## 1:           FALSE</span></span>
-<span><span class="co">## 2:           FALSE</span></span>
-<span><span class="co">## 3:           FALSE</span></span>
-<span><span class="co">## 4:           FALSE</span></span>
-<span><span class="co">## 5:           FALSE</span></span>
-<span><span class="co">## 6:           FALSE</span></span></code></pre>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">metabolites</span><span class="op">@</span><span class="va">features</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    feature_names metabolite_id comp_id platform    pathway   kegg   hmdb</span></span>
+<span><span class="co">#&gt;           &lt;char&gt;        &lt;char&gt;  &lt;char&gt;   &lt;char&gt;     &lt;char&gt; &lt;char&gt; &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1:    compid_123          met1     123      neg xenobiotic   K100  HMDB1</span></span>
+<span><span class="co">#&gt; 2:    compid_124          met2     124      neg xenobiotic   K100  HMDB2</span></span>
+<span><span class="co">#&gt; 3:    compid_125          met3     125      neg xenobiotic   K100  HMDB3</span></span>
+<span><span class="co">#&gt; 4:    compid_126          met4     126      neg      lipid   K200  HMDB4</span></span>
+<span><span class="co">#&gt; 5:    compid_127          met5     127      neg      lipid   K200  HMDB5</span></span>
+<span><span class="co">#&gt; 6:    compid_128          met6     128      neg      lipid   K200  HMDB6</span></span>
+<span><span class="co">#&gt;    derived_feature</span></span>
+<span><span class="co">#&gt;             &lt;lgcl&gt;</span></span>
+<span><span class="co">#&gt; 1:           FALSE</span></span>
+<span><span class="co">#&gt; 2:           FALSE</span></span>
+<span><span class="co">#&gt; 3:           FALSE</span></span>
+<span><span class="co">#&gt; 4:           FALSE</span></span>
+<span><span class="co">#&gt; 5:           FALSE</span></span>
+<span><span class="co">#&gt; 6:           FALSE</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="raw-metabolite-data">Raw Metabolite Data<a class="anchor" aria-label="anchor" href="#raw-metabolite-data"></a>
 </h4>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">metabolites</span><span class="op">@</span><span class="va">data</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##  num [1:100, 1:100, 1:2] 11.03 12.5 NA 6.98 8.56 ...</span></span>
-<span><span class="co">##  - attr(*, "dimnames")=List of 3</span></span>
-<span><span class="co">##   ..$ : chr [1:100] "ind1" "ind2" "ind3" "ind4" ...</span></span>
-<span><span class="co">##   ..$ : chr [1:100] "compid_123" "compid_124" "compid_125" "compid_126" ...</span></span>
-<span><span class="co">##   ..$ : chr [1:2] "raw" "scaled"</span></span></code></pre>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">metabolites</span><span class="op">@</span><span class="va">data</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  num [1:100, 1:100, 1:2] 11.03 12.5 NA 6.98 8.56 ...</span></span>
+<span><span class="co">#&gt;  - attr(*, "dimnames")=List of 3</span></span>
+<span><span class="co">#&gt;   ..$ : chr [1:100] "ind1" "ind2" "ind3" "ind4" ...</span></span>
+<span><span class="co">#&gt;   ..$ : chr [1:100] "compid_123" "compid_124" "compid_125" "compid_126" ...</span></span>
+<span><span class="co">#&gt;   ..$ : chr [1:2] "raw" "scaled"</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
@@ -258,28 +265,28 @@ data with optional filtering.</p>
 <div class="section level4">
 <h4 id="retrieve-all-data-of-a-given-type">Retrieve All Data of a Given Type<a class="anchor" aria-label="anchor" href="#retrieve-all-data-of-a-given-type"></a>
 </h4>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">original_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_data.html">get_data</a></span><span class="op">(</span><span class="va">metabolites</span>, type <span class="op">=</span> <span class="st">"raw"</span><span class="op">)</span></span>
-<span><span class="va">original_data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span></code></pre></div>
-<pre><code><span><span class="co">##      compid_123 compid_124 compid_125 compid_126 compid_127</span></span>
-<span><span class="co">## ind1  11.031464   10.79932  11.469142  10.448855   9.236774</span></span>
-<span><span class="co">## ind2  12.495436   13.73833  12.322201   7.752219  11.166760</span></span>
-<span><span class="co">## ind3         NA   14.38583         NA  10.649357   7.933557</span></span>
-<span><span class="co">## ind4   6.976256   10.85471  12.287431   7.776786  10.040024</span></span>
-<span><span class="co">## ind5   8.559816   12.42402   8.768468  12.604741   8.134009</span></span></code></pre>
+<span><span class="va">original_data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
+<span><span class="co">#&gt;      compid_123 compid_124 compid_125 compid_126 compid_127</span></span>
+<span><span class="co">#&gt; ind1  11.031464   10.79932  11.469142  10.448855   9.236774</span></span>
+<span><span class="co">#&gt; ind2  12.495436   13.73833  12.322201   7.752219  11.166760</span></span>
+<span><span class="co">#&gt; ind3         NA   14.38583         NA  10.649357   7.933557</span></span>
+<span><span class="co">#&gt; ind4   6.976256   10.85471  12.287431   7.776786  10.040024</span></span>
+<span><span class="co">#&gt; ind5   8.559816   12.42402   8.768468  12.604741   8.134009</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="extract-specific-metabolites-and-samples">Extract Specific Metabolites and Samples<a class="anchor" aria-label="anchor" href="#extract-specific-metabolites-and-samples"></a>
 </h4>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">subset_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_data.html">get_data</a></span><span class="op">(</span><span class="va">metabolites</span>, </span>
 <span>                        type <span class="op">=</span> <span class="st">"raw"</span>, </span>
 <span>                        feature_ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"compid_123"</span>, <span class="st">"compid_124"</span><span class="op">)</span>, </span>
 <span>                        sample_ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ind1"</span>, <span class="st">"ind2"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">subset_data</span></span></code></pre></div>
-<pre><code><span><span class="co">##      compid_123 compid_124</span></span>
-<span><span class="co">## ind1   11.03146   10.79932</span></span>
-<span><span class="co">## ind2   12.49544   13.73833</span></span></code></pre>
+<span><span class="va">subset_data</span></span>
+<span><span class="co">#&gt;      compid_123 compid_124</span></span>
+<span><span class="co">#&gt; ind1   11.03146   10.79932</span></span>
+<span><span class="co">#&gt; ind2   12.49544   13.73833</span></span></code></pre></div>
 </div>
 </div>
 </div>
@@ -288,7 +295,7 @@ data with optional filtering.</p>
 </h2>
 <p>The <code><a href="../reference/write_data.html">write_data()</a></code> method allows saving the structured
 data to a specified directory.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/write_data.html">write_data</a></span><span class="op">(</span><span class="va">metabolites</span>, directory <span class="op">=</span> <span class="st">"output_directory"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
