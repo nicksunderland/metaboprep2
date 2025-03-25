@@ -14,7 +14,11 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 `metaboprep2` is an R package designed for processing and managing
 metabolomic data efficiently. It provides structured storage and access
 to metabolomic datasets, including sample metadata, feature metadata,
-and metabolite intensity data.
+and metabolite intensity data. Whilst the class structure is new, the
+underlying routines are based on the excellent work from the authors of
+[metaboprep](https://github.com/MRCIEU/metaboprep). Until this project
+is stable and tested it is recommended you use the original `metaboprep`
+pipeline.
 
 ## Installation
 
