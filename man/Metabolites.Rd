@@ -20,34 +20,8 @@ Metabolites(
   pc_outlier_sd = 5,
   derived_var_exclusion = TRUE,
   xenobiotics_var_exclusion = TRUE,
-  samples = (function (.data = list(), row.names = NULL) 
- {
-     if (is.null(row.names))
-    {
-         list2DF(.data)
-     }
-     else {
-         out <- list2DF(.data,
-    length(row.names))
-         attr(out, "row.names") <- row.names
-         out
-     }
-
-    })(),
-  features = (function (.data = list(), row.names = NULL) 
- {
-     if
-    (is.null(row.names)) {
-         list2DF(.data)
-     }
-     else {
-         out <-
-    list2DF(.data, length(row.names))
-         attr(out, "row.names") <- row.names
-      
-      out
-     }
- })(),
+  samples = data.table::data.table(),
+  features = data.table::data.table(),
   data = integer(0),
   exclusions = new("SVT_SparseMatrix", type = "character", SVT = NULL, .svt_version = 0L,
     dim = 0:1, dimnames = list(NULL, NULL)),

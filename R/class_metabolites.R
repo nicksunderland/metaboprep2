@@ -86,8 +86,8 @@ Metabolites <- new_class(
     derived_var_exclusion     = new_property(class_logical, default=TRUE),
     xenobiotics_var_exclusion = new_property(class_logical, default=TRUE),
     # data objects
-    samples               = class_data.frame,
-    features              = class_data.frame,
+    samples               = new_property(class_data.frame, default=quote(data.table::data.table())),
+    features              = new_property(class_data.frame, default=quote(data.table::data.table())),
     data                  = class_numeric,
     exclusions            = new_property(class_any, default=SparseArray::SparseArray(matrix(character())), validator = function(value) if (SparseArray::is_sparse(value)) NULL else "should be a SparseArray"),
     feature_summary       = class_numeric,

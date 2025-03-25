@@ -82,7 +82,7 @@ get_data(metabolites, type="post_qc", apply_exclusions = TRUE)[1:5,1:5]
 ```
 
 ### Exclusions
-The underlying data still has all respresentations of the samples and features, however, the QC process builds a matrix of exclusions reasons.
+The underlying data still has all respresentations of the samples and features, however, the QC process builds a matrix of exclusion reasons.
 
 #### Accessing the Exclusions Matrix
 ```{r}
