@@ -25,8 +25,8 @@ Suggests:
     rmarkdown,
     MASS
 Remotes:
-    bioc::3.19/SparseArray,
-    bioc::3.19/pcaMethods
+    Bioconductor/SparseArray,
+    hredestig/pcaMethods
 VignetteBuilder: knitr
 Collate: 
     'class_metabolites.R'
