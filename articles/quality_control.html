@@ -115,7 +115,34 @@ which contains metabolomics data along with metadata.</p>
 based on missingness, outlier detection, PCA-based QC. This generates
 another layer to the data matrices named <code>post_qc</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">metabolites</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/metabolite_qc.html">metabolite_qc</a></span><span class="op">(</span><span class="va">metabolites</span>, source <span class="op">=</span> <span class="st">"raw"</span>, destination <span class="op">=</span> <span class="st">"post_qc"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">metabolites</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/metabolite_qc.html">metabolite_qc</a></span><span class="op">(</span><span class="va">metabolites</span>, source <span class="op">=</span> <span class="st">"raw"</span>, destination <span class="op">=</span> <span class="st">"post_qc"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Starting Metabolite QC Process</span> <span style="color: #00BBBB;">──────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Validating input parameters...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Input validation complete.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Copying raw data to new post_qc data layer...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> post_qc data ready for QC.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Analysing exclusions...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Applying exclusion of derived features...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Derived features exclusions assessment complete. (0 features excluded)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Applying exclusion of xenobiotic features...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Xenobiotic features exclusions assessment complete. (3 features excluded)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assessing for extreme sample missingness &gt;=80%...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Extreme sample missingness exclusions assessment complete. (0 samples excluded)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assessing for extreme feature missingness &gt;=80%...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Extreme feature missingness exclusions assessment complete. (0 features excluded})</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assessing for sample missingness at specified level of &gt;=20%...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Sample missingness exclusions assessment complete. (2 samples excluded)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assessing for feature missingness at specified level of &gt;=20%...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Feature missingness exclusions assessment complete. (0 features excluded)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Calculating total peak abundance outliers at +/- 5 Sdev...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Total peak abundance outlier exclusions assessment complete. (0 samples excluded)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Running principal component outlier analysis at +/- 5 Sdev...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> PCA outlier analysis complete.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Re-identify feature independence and PC outliers...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> PCA outlier analysis 2 complete.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Metabolite QC Process Completed</span> <span style="color: #00BBBB;">─────────────────────────────────────────────</span></span></span></code></pre></div>
 <div class="section level3">
 <h3 id="accessing-qcd-data">Accessing QC’d data<a class="anchor" aria-label="anchor" href="#accessing-qcd-data"></a>
 </h3>
