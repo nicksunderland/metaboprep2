@@ -1,7 +1,7 @@
 # Silence R CMD check
-globalVariables(c("feature_id", "pathway", "sample_id", "derived_feature"), package = "metaboprep2")
+globalVariables(c("derived_feature", "feature_id", "pathway", "sample_id"), package = "metaboprep2")
 
-#' @title Read Metabolon Data (format 1)
+#' @title Read Metabolon Data (format 2)
 #' @param filepath character, commercial Metabolon excel sheet with extension .xls or .xlsx
 #' @returns list,  list(data = 3D matrix, samples = samples data.table, features = features data.table)
 #'
@@ -13,16 +13,16 @@ globalVariables(c("feature_id", "pathway", "sample_id", "derived_feature"), pack
 #' @importFrom readxl excel_sheets read_xlsx
 #' @importFrom data.table setnames as.data.table
 #' @export
-read_metabolon_v1 <- function(filepath) {
+read_metabolon_v2 <- function(filepath) {
 
   if(!grepl("(?i)\\.(xls|xlsx)$", filepath)){
     stop(paste0("Expected a commercial Metabolon excel sheet with extension .xls or .xlsx\n"), call.=FALSE)
   }
 
   sheets <- readxl::excel_sheets(filepath)
-  sheets <- sheets[sheets %in% c("OrigScale", "ScaledImp")]
+  sheets <- sheets[sheets %in% c("OrigScale", "ScaledImpData")]
   std_names <- list("OrigScale" = "raw",
-                    "ScaledImp" = "scaled")
+                    "ScaledImpData" = "scaled")
   names(sheets) <- std_names[sheets]
 
   data_list <- list()
@@ -44,15 +44,14 @@ read_metabolon_v1 <- function(filepath) {
       cnames   <- unlist(raw[data_header_row, 1L:batch_header_col])
       cnames[grep("(?i)hmdb", cnames)] <- "hmdb"
       data.table::setnames(features, clean_names(cnames))
-
       # must have columns
       features[, feature_id := paste0("compid_", get(names(features)[grepl("(?i)COMP.*?ID", names(features))][1]))]
       features[, derived_feature := FALSE]
-      features[, pathway := .SD, .SDcols = grep("(?i)pathway", names(features), value = TRUE)]
+      features[, pathway := .SD, .SDcols = grep("(?i)super.*?pathway", names(features), value = TRUE)]
       data.table::setnames(features, grep("(?i)platform", names(features), value = TRUE), "platform")
       data.table::setcolorder(features, c("feature_id", "platform", "pathway", "derived_feature"))
       # check
-      stopifnot("DEVELOPER NOTE: read_metabolon_v1 has not created a valid @features table" = check_features_table(features))
+      stopifnot("DEVELOPER NOTE: read_metabolon_v2 has not created a valid @features table" = check_features_table(features))
     }
 
     if (is.null(samples)) {
@@ -60,10 +59,10 @@ read_metabolon_v1 <- function(filepath) {
       samples <- data.table::as.data.table(samples)
       cnames  <- raw[1L:(data_header_row-1L), ][[batch_header_col]]
       data.table::setnames(samples, clean_names(cnames))
-      samples[, sample_id := .SD, .SDcols = names(samples)[grepl("(?i)sample.*?name", names(samples))][1]]
+      samples[, sample_id := get(names(samples)[grepl("(?i)sample.*?name", names(samples))][1])]
       data.table::setcolorder(samples, c("sample_id"))
       # check
-      stopifnot("DEVELOPER NOTE: read_metabolon_v1 has not created a valid @samples table" = check_samples_table(samples))
+      stopifnot("DEVELOPER NOTE: read_metabolon_v2 has not created a valid @samples table" = check_samples_table(samples))
     }
 
     data           <- t(raw[(data_header_row+1L):nrow(raw), (batch_header_col+1L):ncol(raw)][, lapply(.SD, function(x) as.numeric(gsub(",","",x)))])

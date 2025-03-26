@@ -42,7 +42,7 @@ method(feature_summary, Metabolites) <- function(metabolites, type="raw", output
   # features to exclude
   exclude_features <- character()
   if (metabolites@derived_var_exclusion) {
-    exclude_features <- metabolites@features[derived_feature==TRUE, feature_names] # derived
+    exclude_features <- metabolites@features[derived_feature==TRUE, feature_id] # derived
   }
 
   ##

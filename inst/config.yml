@@ -1,0 +1,38 @@
+# ** WARNING **
+# if you are adding another configuration, please run the script
+# at data-raw/config_generator.R rather than editing this file.
+
+default:
+
+  metabolon_v1:
+    sample_columns:
+      sample_id: "SAMPLE NAME"
+      run_day: "RUN_DAY"
+      box_id: "BOX_ID"
+      lot: "lot"
+    feature_columns:
+      feature_id: "metabolite_id"
+      comp_id: "COMP_ID"
+      platform: "platform"
+      pathway: "pathway"
+      kegg: "kegg"
+      hmdb: "Group HMDB"
+
+  metabolon_v2:
+    sample_columns:
+      sample_id: "SAMPLE NAME"
+      parent_id: "PARENT SAMPLE ID"
+      client_id: "CLIENT IDENTIFIER"
+      box_id: null
+      pair: "PAIR"
+      lot: null
+      volume_extracted: "VOLUME EXTRACTED"
+    feature_columns:
+      feature_id: "metabolite_id"
+      comp_id: "COMP ID"
+      platform: "PLATFORM"
+      pathway: "SUPER PATHWAY"
+      sub_pathway: "SUB PATHWAY"
+      kegg: "KEGG"
+      hmdb: "Group HMDB"
+      mass: "MASS"

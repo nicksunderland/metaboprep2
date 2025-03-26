@@ -38,3 +38,11 @@ remotes::install_github("nicksunderland/metaboprep2")
 Please see the dedicated
 [vignettes](https://nicksunderland.github.io/metaboprep2/) for common
 use scenarios.
+
+## TODO
+
+- (CLI)\[<https://github.com/r-lib/cli>\] - nice command line output for
+  processing.  
+- HTML report output
+- bug where you cant rerun QC on the same layer due to sparse matrix
+  error

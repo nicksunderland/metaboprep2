@@ -101,13 +101,22 @@ Metabolites <- new_class(
   ),
   validator = function(self) {
     if ((nrow(self@features)>0 & length(self@data)>0) && (nrow(self@features) != ncol(self@data))) {
-      sprintf("Number of @features (%i) must equal the number metabolites in @data (%i)", nrow(self@features), ncol(self@data))
+      sprintf("Number of @features (%i) must equal the number of features in @data (%i)", nrow(self@features), ncol(self@data))
     }
     if ((nrow(self@samples)>0 & length(self@data)>0) && (nrow(self@samples) != nrow(self@data))) {
-      sprintf("Number of @samples (%i) must equal the number metabolite samples in @data (%i)", nrow(self@samples), nrow(self@data))
+      sprintf("Number of @samples (%i) must equal the number of samples in @data (%i)", nrow(self@samples), nrow(self@data))
     }
     if ((nrow(self@features)>0 & length(self@data)>0) && !check_features_table(self@features)) {
       "DEVELOPER NOTE: @features does not contain the required columns, adjust your read function"
+    }
+    if ((nrow(self@samples)>0 & length(self@data)>0) && !check_samples_table(self@features)) {
+      "DEVELOPER NOTE: @samples does not contain the required columns, adjust your read function"
+    }
+    if ((nrow(self@samples)>0 & length(self@data)>0) && !identical(self@samples[, sample_id], rownames(self@data))) {
+      "Column `sample_id` in @samples must be identical to the rownames of @data"
+    }
+    if ((nrow(self@features)>0 & length(self@data)>0) && !identical(self@features[, feature_id], colnames(self@data))) {
+      "Column `feature_id` in @features must be identical to the colnames of @data"
     }
 
   }
@@ -125,8 +134,8 @@ method(import_data, Metabolites) <- function(metabolites) {
   format <- match.arg(metabolites@format, choices=available_data_formats())
 
   data_list <- switch(format,
-                      metabolon_v1 = read_metabolon_v1(metabolites@filepath))
-  #metabolon_v2 = read_metabolon_v2(metabolites@filepath))
+                      metabolon_v1 = read_metabolon_v1(metabolites@filepath),
+                      metabolon_v2 = read_metabolon_v2(metabolites@filepath))
 
   metabolites@samples    <- data_list[["samples"]]
   metabolites@features   <- data_list[["features"]]
@@ -187,15 +196,24 @@ method(update_exclusions, list(Metabolites, class_character)) <- function(metabo
                                         layer_name = type)
   }
 
+
+  # subassignment doesnt work well with sparse arrays
+  update <- function(mat, s, f) {
+    dense_array  <- as.array(mat)
+    subset_array <- dense_array[s, f, type]
+    subset_array <- sub("^,", "", paste0(subset_array, ",", code))
+    dense_array[s, f, type] <- subset_array
+    mat <- SparseArray::SparseArray(dense_array, type="character")
+    return(mat)
+  }
+
+  # exclude some samples for some features and vice versa
   if (arr_ids) {
     stopifnot("Indicated sample_ids and feature_ids are array IDs, but they are of different lengths" = !is.null(feature_ids) && !is.null(sample_ids) && length(sample_ids)==length(feature_ids))
 
-    # exclude some samples for some features and vice versa
-    for (fi in feature_ids) {
-      for (si in sample_ids) {
-        metabolites@exclusions[si, fi, type] <- sub("^,","", paste(metabolites@exclusions[si, fi, type], code, sep=","))
-      }
-    }
+    s <- which( rownames(metabolites@exclusions) %in% sample_ids )
+    f <- which( colnames(metabolites@exclusions) %in% feature_ids )
+    metabolites@exclusions <- update(metabolites@exclusions, s, f)
 
   } else {
 
@@ -203,25 +221,24 @@ method(update_exclusions, list(Metabolites, class_character)) <- function(metabo
     if (!is.null(sample_ids) && length(sample_ids) > 0) {
       s <- which( rownames(metabolites@exclusions) %in% sample_ids )
       f <- seq_len(ncol(metabolites@exclusions))
-      for (fi in f) {
-        for (si in s) {
-          metabolites@exclusions[si, fi, type] <- sub("^,","", paste(metabolites@exclusions[si, fi, type], code, sep=","))
-        }
-      }
+      metabolites@exclusions <- update(metabolites@exclusions, s, f)
     }
 
     # exclude features for all samples
     if (!is.null(feature_ids) && length(feature_ids) > 0) {
       f <- which( colnames(metabolites@exclusions) %in% feature_ids )
       s <- seq_len(nrow(metabolites@exclusions))
-      for (fi in f) {
-        for (si in s) {
-          metabolites@exclusions[si, fi, type] <- sub("^,","", paste(metabolites@exclusions[si, fi, type], code, sep=","))
-        }
-      }
+      metabolites@exclusions <- update(metabolites@exclusions, s, f)
     }
 
   }
+
+  #if (length(s) > 0 & length(f) > 0) {
+
+  #} else {
+  #  stop("something wrong in update_exclusions(), trying to set zero length indices")
+  #}
+
   return(metabolites)
 }
 

@@ -1,6 +1,6 @@
 check_features_table <- function(tbl) {
 
-  required_columns <- c("feature_names", "derived_feature", "metabolite_id", "comp_id", "platform", "pathway", "kegg", "hmdb")
+  required_columns <- c("feature_id", "platform", "pathway", "derived_feature") #, "feature_names", "comp_id", "kegg", "hmdb")
 
   missing_columns <- setdiff(required_columns, names(tbl))
 
@@ -9,16 +9,14 @@ check_features_table <- function(tbl) {
   return(check)
 }
 
-# check_features_table <- function(tbl) {
-#
-#   required_columns <- c("feature_names", "derived_feature", "metabolite_id", "comp_id", "platform", "pathway", "kegg", "hmdb")
-#
-#   missing_columns <- setdiff(required_columns, names(tbl))
-#
-#   if (length(missing_columns) > 0) {
-#     stop(paste("Missing features table columns:", paste(missing_columns, collapse = ", ")), call. = FALSE)
-#   } else {
-#     return(TRUE)
-#   }
-#
-# }
+check_samples_table <- function(tbl) {
+
+  required_columns <- c("sample_id")
+
+  missing_columns <- setdiff(required_columns, names(tbl))
+
+  check <- if (length(missing_columns) > 0) FALSE else TRUE
+
+  return(check)
+
+}

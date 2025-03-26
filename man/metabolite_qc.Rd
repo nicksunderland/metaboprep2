@@ -15,4 +15,12 @@ metabolite_qc(metabolites, source = "raw", destination = "post_qc")
 }
 \description{
 This function is a wrapper function that performs the key quality controls steps on a metabolomics data set.
+Key principles:
+\enumerate{
+\item keep the source underlying data as it is
+\item copy the source data to a new data layer called post_qc (the destination)
+\item build an exclusion destination matrix mask, accumulating codes for exclusion reasons
+\item make any adjustments needed in the destination copy of the data, flag these in the exclusion matrix
+\item return the Metabolites object with the newly populated data layers
+}
 }

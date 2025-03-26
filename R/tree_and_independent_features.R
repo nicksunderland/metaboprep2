@@ -52,7 +52,7 @@ tree_and_independent_features = function(data, minimum_samplesize = 50, tree_cut
   ## identify features with no variance
   rowvar0 <- which( apply(data, 2, function(x) var(x,na.rm=T)==0) )
   if(length(rowvar0) > 0){
-    cat(paste0("\t\t\t- ", length(rowvar0) ," features excluded from analysis for 0 variance.\n"))
+    #cat(paste0("\t\t\t- ", length(rowvar0) ," features excluded from analysis for 0 variance.\n"))
     data = data[, -rowvar0]
   }
 
@@ -65,7 +65,7 @@ tree_and_independent_features = function(data, minimum_samplesize = 50, tree_cut
   f_remove = which( N < minimum_samplesize )
 
   if(length(f_remove) > 0){
-    cat(paste0("\t\t\t- ", length(f_remove) ," features excluded from analysis for (>20% missingness) n smaller than ", minimum_samplesize ,".\n"))
+    #cat(paste0("\t\t\t- ", length(f_remove) ," features excluded from analysis for (>20% missingness) n smaller than ", minimum_samplesize ,".\n"))
     data = data[, -f_remove]
   }
 
