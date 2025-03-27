@@ -8,7 +8,7 @@ generate_report(
   metabolites,
   output_dir,
   output_filename = NULL,
-  format = "html",
+  format = "pdf",
   template = "qc_report"
 )
 }

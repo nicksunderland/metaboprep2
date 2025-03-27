@@ -13,6 +13,14 @@ generate_report <- new_generic("generate_report", c("metabolites"), function(met
 #' @name generate_report
 method(generate_report, Metabolites) <- function(metabolites, output_dir, output_filename=NULL, format="pdf", template="qc_report") {
 
+  # testing
+  if (FALSE) {
+    output_dir="/Users/xx20081/git/metaboprep2/inst/rmarkdown/templates/qc_report/skeleton"
+    output_filename=NULL
+    format="pdf"
+    template="qc_report"
+  }
+
   # checks
   format   <- match.arg(format, choices = c("pdf","html"))
   template <- match.arg(template, choices = available_report_templates())

@@ -46,3 +46,6 @@ use scenarios.
 - HTML report output
 - bug where you cant rerun QC on the same layer due to sparse matrix
   error
+- question - why does the report have 3 ‘featuremis\_%NUM’ sections that
+  do the same thing?
+- question - same for chunks like ‘sample_missingness_3’

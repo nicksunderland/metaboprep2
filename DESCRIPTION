@@ -12,11 +12,15 @@ RoxygenNote: 7.3.2
 Imports: 
     cli,
     data.table,
+    dendextend,
+    ggplot2,
+    ggpubr,
     glue,
     nFactors,
     pcaMethods,
     psych,
     readxl,
+    rmarkdown,
     S7,
     SparseArray,
     stats,
@@ -24,7 +28,6 @@ Imports:
 URL: https://nicksunderland.github.io/metaboprep2/
 Suggests: 
     knitr,
-    rmarkdown,
     MASS
 Remotes:
     Bioconductor/SparseArray,
@@ -33,12 +36,16 @@ VignetteBuilder: knitr
 Collate: 
     'class_metabolites.R'
     'batch_normalization.R'
+    'continous_power_plot.R'
+    'cramer_v.R'
     'feature_describe.R'
     'feature_summary.R'
     'generate_report.R'
+    'imbalanced_power_plot.R'
     'metabolite_qc.R'
     'metaboprep2-package.R'
     'missingness.R'
+    'multivariate_anova.R'
     'outlier_detection.R'
     'pc_and_outliers.R'
     'read_metabolon_v1.R'
@@ -48,4 +55,5 @@ Collate:
     'total_peak_area.R'
     'tree_and_independent_features.R'
     'utils.R'
+    'variable_by_factor.R'
     'zzz.R'

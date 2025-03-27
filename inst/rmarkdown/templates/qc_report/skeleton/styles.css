@@ -1,0 +1,8 @@
+@font-face {
+  font-family: "Latin Modern";
+  src: url('https://fonts.cdnfonts.com/css/latin-modern-roman');
+}
+
+body {
+  font-family: "LMRoman10", serif;
+}

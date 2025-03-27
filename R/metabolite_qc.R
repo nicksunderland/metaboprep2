@@ -214,6 +214,10 @@ method(metabolite_qc, Metabolites) <- function(metabolites, source="raw", destin
   cli::cli_alert_info(glue::glue("PCA outlier analysis complete."))
 
 
+  # run sample summary with the current exclusions internally)
+  cli::cli_alert_info(glue::glue("Re-running sample summary using current exclusions..."))
+  metabolites <- sample_summary(metabolites, type = destination)
+  cli::cli_alert_info(glue::glue("QC sample summary complete."))
 
   # re-identify feature independence and PC outliers (feature_summary will use the current exclusions internally)
   cli::cli_alert_info(glue::glue("Re-identify feature independence and PC outliers..."))

@@ -3,8 +3,9 @@ library(devtools)
 load_all()
 
 metabolites <- Metabolites(project_name = "MYPROJECT",
-                           format = "metabolon_v1",
-                           filepath = system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2")) #"/Volumes/MRC-IEU-research/projects/wt1/wp1/036/working/data/direct_raw/metabolon/202203/UNBR-0201-17ML+ Client Data Tables(220203).xlsx") # "/Users/xx20081/git/metaboprep2/inst/extdata/metabolon_v2_example.xlsx")
+                           format = "metabolon_v2",
+                           filepath = '/Users/xx20081/Desktop/metabolomics/UNBR-0201-17ML+ Client Data Tables(220203).xlsx') # "/Users/xx20081/git/metaboprep2/inst/extdata/metabolon_v2_example.xlsx")
+# system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2")
 metabolites <- import_data(metabolites)
 metabolites
 
@@ -14,7 +15,21 @@ metabolites
 
 metabolites <- metabolite_qc(metabolites, source="raw", destination="post_qc")
 metabolites
-plot(metabolites@feature_tree$post_qc)
+
+
+generate_report(metabolites,
+                output_dir="/Users/xx20081/git/metaboprep2/inst/rmarkdown/templates/qc_report/skeleton",
+                output_filename=NULL,
+                format="pdf",
+                template="qc_report")
+
+
+
+
+
+
+
+
 
 
 foo<- metabolites@exclusions[,,"post_qc"]
