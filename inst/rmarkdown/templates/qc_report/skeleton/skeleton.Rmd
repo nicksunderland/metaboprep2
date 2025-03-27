@@ -235,5 +235,41 @@ tbl1 |>
 ```
 
 
-## Next
-dsaq
+## Metabolite or feature reduction and principal components
+
+
+
+# 3. Summary of filtered data
+
+## Sample size (N) 
+
+## Relative to the raw data
+
+## Structure among samples
+
+## Feature Distributions
+
+### Estimates of normality: W-statistics for raw and log transformed data
+
+## Outliers
+
+### Notes on outlying samples at each metabolite|feature
+
+
+# 4. Variation in filtered data by available variables
+
+### feature missingness
+
+### sample missingness
+
+## Multivariate evaluation: batch variables
+
+# 5. Total peak or abundance area (TA) of samples:
+
+## Relationship with missingness
+
+## Univariate evaluation: batch effects
+
+### Multivariate evaluation: batch variables
+
+# 6. Power analysis

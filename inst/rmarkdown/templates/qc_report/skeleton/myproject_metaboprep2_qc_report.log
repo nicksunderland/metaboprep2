@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.26)  27 MAR 2025 02:32
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.26)  27 MAR 2025 02:37
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -581,7 +581,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 111--113
 
  []
 
-<metaboprep_workflow.png, id=38, 796.8972pt x 540.94095pt>
+<metaboprep_workflow.png, id=62, 796.8972pt x 540.94095pt>
 File: metaboprep_workflow.png Graphic file (type png)
 <use metaboprep_workflow.png>
 Package pdftex.def Info: metaboprep_workflow.png  used on input line 143.
@@ -589,12 +589,12 @@ Package pdftex.def Info: metaboprep_workflow.png  used on input line 143.
 
 
 [2{/Users/xx20081/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc} <./metaboprep_workflow.png>]
-</Users/xx20081/git/metaboprep2/inst/rmarkdown/templates/qc_report/skeleton/myproject_metaboprep2_qc_report_files/figure-latex/missing_matrix-1.pdf, id=50, 469.755pt x 325.215pt>
+</Users/xx20081/git/metaboprep2/inst/rmarkdown/templates/qc_report/skeleton/myproject_metaboprep2_qc_report_files/figure-latex/missing_matrix-1.pdf, id=74, 469.755pt x 325.215pt>
 File: /Users/xx20081/git/metaboprep2/inst/rmarkdown/templates/qc_report/skeleton/myproject_metaboprep2_qc_report_files/figure-latex/missing_matrix-1.pdf Graphic file (type pdf)
 <use /Users/xx20081/git/metaboprep2/inst/rmarkdown/templates/qc_report/skeleton/myproject_metaboprep2_qc_report_files/figure-latex/missing_matrix-1.pdf>
 Package pdftex.def Info: /Users/xx20081/git/metaboprep2/inst/rmarkdown/templates/qc_report/skeleton/myproject_metaboprep2_qc_report_files/figure-latex/missing_matrix-1.pdf  used on input line 171.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-</Users/xx20081/git/metaboprep2/inst/rmarkdown/templates/qc_report/skeleton/myproject_metaboprep2_qc_report_files/figure-latex/missing_summary-1.pdf, id=51, 469.755pt x 325.215pt>
+</Users/xx20081/git/metaboprep2/inst/rmarkdown/templates/qc_report/skeleton/myproject_metaboprep2_qc_report_files/figure-latex/missing_summary-1.pdf, id=75, 469.755pt x 325.215pt>
 File: /Users/xx20081/git/metaboprep2/inst/rmarkdown/templates/qc_report/skeleton/myproject_metaboprep2_qc_report_files/figure-latex/missing_summary-1.pdf Graphic file (type pdf)
 <use /Users/xx20081/git/metaboprep2/inst/rmarkdown/templates/qc_report/skeleton/myproject_metaboprep2_qc_report_files/figure-latex/missing_summary-1.pdf>
 Package pdftex.def Info: /Users/xx20081/git/metaboprep2/inst/rmarkdown/templates/qc_report/skeleton/myproject_metaboprep2_qc_report_files/figure-latex/missing_summary-1.pdf  used on input line 218.
@@ -613,7 +613,9 @@ Underfull \hbox (badness 3333) in paragraph at lines 261--262
 
 [4 </Users/xx20081/git/metaboprep2/inst/rmarkdown/templates/qc_report/skeleton/myproject_metaboprep2_qc_report_files/figure-latex/missing_summary-1.pdf>]
 
-[5] (./myproject_metaboprep2_qc_report.aux)
+[5]
+
+[6] (./myproject_metaboprep2_qc_report.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
@@ -623,18 +625,18 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 13441 strings out of 475171
- 212014 string characters out of 5765241
- 640981 words of memory out of 5000000
- 36161 multiletter control sequences out of 15000+600000
+ 13488 strings out of 475171
+ 212939 string characters out of 5765241
+ 647088 words of memory out of 5000000
+ 36190 multiletter control sequences out of 15000+600000
  619937 words of font info for 86 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 89i,11n,93p,742b,515s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 89i,11n,93p,827b,515s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </Users/xx20081/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></Users/xx20081/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></Users/xx20081/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></Users/xx20081/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></Users/xx20081/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb></Users/xx20081/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr6.pfb></Users/xx20081/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr9.pfb></Users/xx20081/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri9.pfb></Users/xx20081/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
-Output written on myproject_metaboprep2_qc_report.pdf (5 pages, 1505748 bytes).
+Output written on myproject_metaboprep2_qc_report.pdf (6 pages, 1514070 bytes).
 PDF statistics:
- 165 PDF objects out of 1000 (max. 8388607)
- 131 compressed objects within 2 object streams
- 25 named destinations out of 1000 (max. 500000)
- 104 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 240 PDF objects out of 1000 (max. 8388607)
+ 204 compressed objects within 3 object streams
+ 43 named destinations out of 1000 (max. 500000)
+ 200 words of extra memory for PDF output out of 10000 (max. 10000000)
 
