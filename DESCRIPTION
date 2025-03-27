@@ -31,12 +31,11 @@ Remotes:
     hredestig/pcaMethods
 VignetteBuilder: knitr
 Collate: 
-    'add_import_config.R'
     'class_metabolites.R'
     'batch_normalization.R'
-    'check_tables.R'
     'feature_describe.R'
     'feature_summary.R'
+    'generate_report.R'
     'metabolite_qc.R'
     'metaboprep2-package.R'
     'missingness.R'
