@@ -9,10 +9,6 @@ metabolites <- Metabolites(project_name = "MYPROJECT",
 metabolites <- import_data(metabolites)
 metabolites
 
-# metabolites <- feature_summary(metabolites, type="raw")
-# metabolites
-# plot(metabolites@feature_tree$raw)
-
 metabolites <- metabolite_qc(metabolites, source="raw", destination="post_qc")
 metabolites
 
@@ -27,7 +23,9 @@ generate_report(metabolites,
 
 
 
-
+# metabolites <- feature_summary(metabolites, type="raw")
+# metabolites
+# plot(metabolites@feature_tree$raw)
 
 
 

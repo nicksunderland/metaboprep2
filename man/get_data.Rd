@@ -2,11 +2,11 @@
 % Please edit documentation in R/class_metabolites.R
 \name{get_data}
 \alias{get_data}
-\title{get_data}
+\title{Retrieve Data from a Metabolites Object}
 \usage{
 get_data(
   metabolites,
-  type,
+  layer,
   apply_exclusions = TRUE,
   feature_ids = NULL,
   sample_ids = NULL,
@@ -14,18 +14,32 @@ get_data(
 )
 }
 \arguments{
-\item{metabolites}{an object of class Metabolites}
+\item{metabolites}{A \code{Metabolites} object containing the data to be extracted.}
 
-\item{type}{character, type of data to extract}
+\item{layer}{A character string specifying the data layer to extract (e.g., \code{"raw"}, \code{"post_qc"}, etc.).}
 
-\item{apply_exclusions}{logical, whether to exclude samples/features based on the current \verb{@exclusions} matrix}
+\item{apply_exclusions}{Logical. If \code{TRUE}, excludes samples and/or features based on the current \verb{@exclusions} matrix. Default is \code{TRUE}.}
 
-\item{feature_ids}{optional, a vector of row names to extract (default is NULL, meaning all rows)}
+\item{feature_ids}{Optional. A vector of row names (features) to extract. Defaults to \code{NULL}, meaning all features are included.}
 
-\item{sample_ids}{optional, a vector of column names to extract (default is NULL, meaning all columns)}
+\item{sample_ids}{Optional. A vector of column names (samples) to extract. Defaults to \code{NULL}, meaning all samples are included.}
 
-\item{as_df}{logical, whether to return the result as a data.frame (default is FALSE, meaning it returns a matrix)}
+\item{as_df}{Logical. If \code{TRUE}, the result is returned as a \code{data.frame}; otherwise, the result is returned as a matrix. Default is \code{FALSE}.}
+}
+\value{
+A matrix (or \code{data.frame}, if \code{as_df = TRUE}) containing the requested data for the specified \code{layer} and subsetting conditions.
 }
 \description{
-get_data
+Extracts specified data from a \code{Metabolites} object for a given data layer.
+This function allows for optional exclusions of data based on the current \verb{@exclusions} matrix
+and supports subsetting by feature and sample IDs.
+}
+\examples{
+metabolites <- Metabolites(project_name = "MYPROJECT",
+                           format = "metabolon_v1",
+                           filepath = system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2"))
+metabolites <- import_data(metabolites)
+metabolites <- metabolite_qc(metabolites, source="raw", destination="post_qc")
+get_data(metabolites, layer = "post_qc", apply_exclusions = TRUE)
+
 }

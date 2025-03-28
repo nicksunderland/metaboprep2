@@ -77,7 +77,7 @@ knitr::include_graphics("metaboprep_workflow.png")
 # extract
 sample_size_table <- lapply(dimnames(metabolites@data)[[3]], function(layer_name) {
   
-  data <- get_data(metabolites, type=layer_name, apply_exclusions = TRUE)
+  data <- get_data(metabolites, layer=layer_name, apply_exclusions = TRUE)
   
   list(`Dataset`  = toupper(gsub("_"," ",layer_name)), 
        `Samples`  = nrow(data), 
@@ -335,8 +335,8 @@ ggplot(pcs, aes(x = pc1, y = pc2, fill = outliers)) +
 
 # Summary of filtered data
 ```{r qcd_data}
-raw_data <- get_data(metabolites, type="raw", apply_exclusions=TRUE)
-qc_data  <- get_data(metabolites, type="post_qc", apply_exclusions=TRUE)
+raw_data <- get_data(metabolites, layer="raw", apply_exclusions=TRUE)
+qc_data  <- get_data(metabolites, layer="post_qc", apply_exclusions=TRUE)
 ```
 
 
@@ -620,7 +620,7 @@ Evaluation of the number of samples and features that are outliers across the QC
 
 ```{r outlier_summary, echo = FALSE, fig.width = 8, fig.height = 2.5, warning=FALSE, message=FALSE, error=FALSE}
 # get data 
-qc_data <- get_data(metabolites, type="post_qc", apply_exclusions = TRUE)
+qc_data <- get_data(metabolites, layer="post_qc", apply_exclusions = TRUE)
 
 # compute
 omat <- outlier_detection(qc_data, by="column")
@@ -1000,8 +1000,8 @@ Exploration for case/control and continuous outcome data using the filtered data
 Analytical power analysis for both continuous and imbalanced presence/absence correlation analysis.
 
 ```{r power_exploration}
-p1 = continuous_power_plot( mydata = get_data(metabolites, type="post_qc", apply_exclusions = TRUE) ) 
-p2 = imbalanced_power_plot( mydata = get_data(metabolites, type="post_qc", apply_exclusions = TRUE) )
+p1 = continuous_power_plot( mydata = get_data(metabolites, layer="post_qc", apply_exclusions = TRUE) ) 
+p2 = imbalanced_power_plot( mydata = get_data(metabolites, layer="post_qc", apply_exclusions = TRUE) )
 
 ggpubr::ggarrange(p1, p2, labels = c("A", "B"), ncol = 2, nrow = 1)
 ```

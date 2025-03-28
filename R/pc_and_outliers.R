@@ -5,7 +5,7 @@
 #' Finally the number of sample outliers are determined at 3, 4, and 5 standard deviations from the mean on the top PCs as determined by the acceleration factor analysis.
 #'
 #' @param metabolites an object of class Metabolites
-#' @param type character, type/source of data to use
+#' @param layer character, type/source of data to use
 #'
 #' @importFrom stats prcomp
 #' @importFrom pcaMethods ppca
@@ -14,24 +14,24 @@
 #' @return a an object of class Metabolites with slots `@acceleration_factor`, `@n_parallel`, `@var_exp`, `@pcs`, and `@prob_pcs` filled.
 #' @export
 #'
-pc_and_outliers <- new_generic("pc_and_outliers", c("metabolites"), function(metabolites, type="raw") { S7_dispatch() })
+pc_and_outliers <- new_generic("pc_and_outliers", c("metabolites"), function(metabolites, layer="raw") { S7_dispatch() })
 #' @name pc_and_outliers
-method(pc_and_outliers, Metabolites) <- function(metabolites, type="raw") {
+method(pc_and_outliers, Metabolites) <- function(metabolites, layer="raw") {
 
-  if (!(type %in% dimnames(metabolites@data)[[3]])) {
-    error_msg <- paste("Error: '", type, "' is not a valid type. Valid options are: ", paste(dimnames(metabolites@data)[[3]], collapse = ", "), ".", sep = "")
+  if (!(layer %in% dimnames(metabolites@data)[[3]])) {
+    error_msg <- paste("Error: '", layer, "' is not a valid layer. Valid options are: ", paste(dimnames(metabolites@data)[[3]], collapse = ", "), ".", sep = "")
     stop(error_msg)
   }
 
-  if (!(type %in% dimnames(metabolites@feature_summary)[[3]])) {
-    error_msg <- paste("Error: @feature_summary slot does not contain '", type, "'. Have you run feature_summary(obj, type='", type, "') on this data?", sep = "")
+  if (!(layer %in% dimnames(metabolites@feature_summary)[[3]])) {
+    error_msg <- paste("Error: @feature_summary slot does not contain '", layer, "'. Have you run feature_summary(obj, layer='", layer, "') on this data?", sep = "")
     stop(error_msg)
   }
 
   ## set data
-  indf         <- names(which(metabolites@feature_summary["independent_features_binary", , type] == 1))
-  pcadata      <- get_data(metabolites, type = type, apply_exclusions = TRUE)[, indf]
-  prob_pcadata <- get_data(metabolites, type = type, apply_exclusions = TRUE)[, indf]
+  indf         <- names(which(metabolites@feature_summary["independent_features_binary", , layer] == 1))
+  pcadata      <- get_data(metabolites, layer = layer, apply_exclusions = TRUE)[, indf]
+  prob_pcadata <- get_data(metabolites, layer = layer, apply_exclusions = TRUE)[, indf]
 
   ##############################
   ## impute missingness as medians
@@ -87,13 +87,13 @@ method(pc_and_outliers, Metabolites) <- function(metabolites, type="raw") {
   colnames(PCout) <- tolower(colnames(PCout))
 
   ## add to object
-  metabolites@acceleration_factor[[type]] <- accelerationfactor
-  metabolites@n_parallel[[type]] <- nsig_parrallel
+  metabolites@acceleration_factor[[layer]] <- accelerationfactor
+  metabolites@n_parallel[[layer]] <- nsig_parrallel
 
   # var exp
-  metabolites@var_exp <- add_layer(metabolites@var_exp, varexp, type, force=TRUE)
-  metabolites@pcs <- add_layer(metabolites@pcs, PCout, type, force=TRUE)
-  metabolites@prob_pcs <- add_layer(metabolites@prob_pcs, prob_mypca@scores, type, force=TRUE)
+  metabolites@var_exp <- add_layer(current=metabolites@var_exp, layer=varexp, layer_name=layer, force=TRUE)
+  metabolites@pcs <- add_layer(current=metabolites@pcs, layer=PCout, layer_name=layer, force=TRUE)
+  metabolites@prob_pcs <- add_layer(current=metabolites@prob_pcs, layer=prob_mypca@scores, layer_name=layer, force=TRUE)
 
   return(metabolites)
 }

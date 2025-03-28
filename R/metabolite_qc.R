@@ -34,7 +34,7 @@ method(metabolite_qc, Metabolites) <- function(metabolites, source="raw", destin
 
   # data to work from and add another layer - we now work with the 'destination data', plus any exclusions, from now on
   cli::cli_alert_info(glue::glue("Copying {source} data to new {destination} data layer..."))
-  dat <- get_data(metabolites, type = source, apply_exclusions = FALSE)
+  dat <- get_data(metabolites, layer = source, apply_exclusions = FALSE)
   metabolites@data <- add_layer(current    = metabolites@data,
                                 layer      = dat,
                                 layer_name = destination)
@@ -61,7 +61,7 @@ method(metabolite_qc, Metabolites) <- function(metabolites, source="raw", destin
   derived_feature_excl <- character()
   if (metabolites@derived_var_exclusion) {
     cli::cli_alert_info(glue::glue("Applying exclusion of derived features..."))
-    derived_feature_excl <- metabolites@features[derived_feature==TRUE, feature_id]
+    derived_feature_excl <- get_features(metabolites, "raw")[derived_feature==TRUE, feature_id]
     metabolites <- update_exclusions(metabolites,
                                      type        = destination,
                                      code        = get_exclusion_codes(verbose=FALSE)[["derived_feature"]],
@@ -77,7 +77,7 @@ method(metabolite_qc, Metabolites) <- function(metabolites, source="raw", destin
   xenobiotic_feature_excl <- character()
   if (metabolites@xenobiotics_var_exclusion) {
     cli::cli_alert_info(glue::glue("Applying exclusion of xenobiotic features..."))
-    xenobiotic_feature_excl <- metabolites@features[grepl("(?i)xenobiotic", pathway), feature_id]
+    xenobiotic_feature_excl <- get_features(metabolites, "raw")[grepl("(?i)xenobiotic", pathway), feature_id]
     metabolites <- update_exclusions(metabolites,
                                      type        = destination,
                                      code        = get_exclusion_codes(verbose=FALSE)[["xenobiotic_feature"]],
@@ -91,7 +91,7 @@ method(metabolite_qc, Metabolites) <- function(metabolites, source="raw", destin
 
   # very bad sample missingness
   cli::cli_alert_info(glue::glue("Assessing for extreme sample missingness >=80%..."))
-  dat <- get_data(metabolites, type = destination, apply_exclusions = TRUE)
+  dat <- get_data(metabolites, layer = destination, apply_exclusions = TRUE)
   samplemis = missingness(dat, by="row", exclude_features = derived_feature_excl)
   if (!all(is.na(samplemis$missingness_w_exclusions))) {
     sample_ids <- samplemis[missingness_w_exclusions >= 0.8, sample_id]
@@ -108,7 +108,7 @@ method(metabolite_qc, Metabolites) <- function(metabolites, source="raw", destin
 
   # very bad feature missingness
   cli::cli_alert_info(glue::glue("Assessing for extreme feature missingness >=80%..."))
-  dat <- get_data(metabolites, type = destination, apply_exclusions = TRUE)
+  dat <- get_data(metabolites, layer = destination, apply_exclusions = TRUE)
   featuremis  <- missingness(dat, by="column")
   feature_ids <- featuremis[missingness >= 0.8, feature_id]
   metabolites <- update_exclusions(metabolites,
@@ -121,7 +121,7 @@ method(metabolite_qc, Metabolites) <- function(metabolites, source="raw", destin
 
   # re-estimate sample missingness
   cli::cli_alert_info(glue::glue("Assessing for sample missingness at specified level of >={round(metabolites@sample_missingness*100)}%..."))
-  dat <- get_data(metabolites, type = destination, apply_exclusions = TRUE)
+  dat <- get_data(metabolites, layer = destination, apply_exclusions = TRUE)
   samplemis <- missingness(dat, by="row", exclude_features = derived_feature_excl)
   if (!all(is.na(samplemis$missingness_w_exclusions))) {
     sample_ids <- samplemis[missingness_w_exclusions >= metabolites@sample_missingness, sample_id]
@@ -138,7 +138,7 @@ method(metabolite_qc, Metabolites) <- function(metabolites, source="raw", destin
 
   # re-estimate feature missingness
   cli::cli_alert_info(glue::glue("Assessing for feature missingness at specified level of >={round(metabolites@feature_missingness*100)}%..."))
-  dat         <- get_data(metabolites, type = destination, apply_exclusions = TRUE)
+  dat         <- get_data(metabolites, layer = destination, apply_exclusions = TRUE)
   featuremis  <- missingness(dat, by="column")
   feature_ids <- featuremis[missingness >= metabolites@feature_missingness, feature_id]
   metabolites <- update_exclusions(metabolites,
@@ -151,7 +151,7 @@ method(metabolite_qc, Metabolites) <- function(metabolites, source="raw", destin
 
   # total peak area
   cli::cli_alert_info(glue::glue("Calculating total peak abundance outliers at +/- {metabolites@total_peak_area_sd} Sdev..."))
-  dat <- get_data(metabolites, type = destination, apply_exclusions = TRUE)
+  dat <- get_data(metabolites, layer = destination, apply_exclusions = TRUE)
   tpa <- total_peak_area(dat, features_exclude = derived_feature_excl)
   tpa[, `:=`(sdev = sd(tpa_total),
              mean = mean(tpa_total))]
@@ -168,7 +168,7 @@ method(metabolite_qc, Metabolites) <- function(metabolites, source="raw", destin
 
   # PCA data
   cli::cli_alert_info(glue::glue("Running principal component outlier analysis at +/- {metabolites@outlier_udist} Sdev..."))
-  dat <- get_data(metabolites, type = destination, apply_exclusions = TRUE)
+  dat <- get_data(metabolites, layer = destination, apply_exclusions = TRUE)
   if (metabolites@outlier_treatment != "leave_be") {
 
     omat <- outlier_detection(dat, nsd = metabolites@outlier_udist, meansd = FALSE, by="column")
@@ -216,22 +216,22 @@ method(metabolite_qc, Metabolites) <- function(metabolites, source="raw", destin
 
   # run sample summary with the current exclusions internally)
   cli::cli_alert_info(glue::glue("Re-running sample summary using current exclusions..."))
-  metabolites <- sample_summary(metabolites, type = destination)
+  metabolites <- sample_summary(metabolites, layer = destination)
   cli::cli_alert_info(glue::glue("QC sample summary complete."))
 
   # re-identify feature independence and PC outliers (feature_summary will use the current exclusions internally)
   cli::cli_alert_info(glue::glue("Re-identify feature independence and PC outliers..."))
-  metabolites <- feature_summary(metabolites, type = destination)
+  metabolites <- feature_summary(metabolites, layer = destination)
 
   # identify PC outliers using the newly populated @feature_summary data
-  metabolites <- pc_and_outliers(metabolites, type = destination)
+  metabolites <- pc_and_outliers(metabolites, layer = destination)
 
   # extract PCs 1-2 or 1-number of Acceleration factor PCs
   af <- metabolites@acceleration_factor[[destination]]
   if(af < 2) {
-    pcs = metabolites@pcs[, 1:2, destination]
+    pcs <- metabolites@pcs[, 1:2, destination]
   } else {
-    pcs = metabolites@pcs[, 1:af, destination]
+    pcs <- metabolites@pcs[, 1:af, destination]
   }
 
   # perform exclusion on top PCs to ID outliers

@@ -2,7 +2,7 @@
 % Please edit documentation in R/class_metabolites.R
 \name{Metabolites}
 \alias{Metabolites}
-\title{Metabolites object}
+\title{Metabolites Object}
 \usage{
 Metabolites(
   project_name = "",
@@ -36,117 +36,131 @@ Metabolites(
 )
 }
 \arguments{
-\item{project_name}{character, name for this project}
+\item{project_name}{character, the name of the project associated with the data.}
 
-\item{created}{POSIXct, when this object was created}
+\item{created}{POSIXct, the timestamp when the \code{Metabolites} object was created.}
 
-\item{filepath}{character, path to the original raw data file}
+\item{filepath}{character, the file path to the original raw data file.}
 
-\item{format}{character, a valid metabolomic data format}
+\item{format}{character, the format of the metabolomic data (e.g., "metabolon_v1").}
 
-\item{source}{named character, source for this data layer e.g. 'raw' may be the source for 'post_qc'}
+\item{source}{named character, the source for this data layer (e.g., 'raw' for 'post_qc').}
 
-\item{feature_missingness}{numeric 0-1 default 0.2, proportion of missinginess on features used as a QC threshold}
+\item{feature_missingness}{numeric, the proportion (0-1) of missingness in features, used as a QC threshold. Default is 0.2.}
 
-\item{sample_missingness}{numeric 0-1 default 0.2, proportion of missinginess on samples used as a QC threshold}
+\item{sample_missingness}{numeric, the proportion (0-1) of missingness in samples, used as a QC threshold. Default is 0.2.}
 
-\item{total_peak_area_sd}{numeric default 5, number of standard deviation (SD) units from the mean to perform a sample QC based on total abundance. If you would like to exclude total sum abundance as a QC parameter set the value to NA}
+\item{total_peak_area_sd}{numeric, the number of standard deviations from the mean to use for sample QC based on total abundance. Default is 5. If set to \code{NA}, total sum abundance will not be used for QC.}
 
-\item{outlier_udist}{numeric default 5, outlier values for features. The number of interquartile range (IQR) unit distances from the median to call a value an outlier. "Outliers" here are extreme values that are the product of error.}
+\item{outlier_udist}{numeric, the number of interquartile range (IQR) unit distances from the median used to identify outliers for features. Default is 5.}
 
-\item{outlier_treatment}{character default 'leave_be', what to do with outliers for the purposes of the PCA, and for the PCA only. Options: "leave_be" if you would like no action on outliers; "winsorize" if you would like outliers to be winsorized to the 100th quantile of all remaining (non-outlying) values, at a feature; "turn_NA" if you would like outliers converted to NA. This means they will be imputed to the median for the purposes of the PCA.}
+\item{outlier_treatment}{character, specifies how to treat outliers for PCA analysis. Options:
+"leave_be" (no action on outliers), "winsorize" (winsorize to the 100th quantile),
+"turn_NA" (convert outliers to NA, which will be imputed to the median).}
 
-\item{winsorize_quantile}{numeric defailt 1, winsorize to what quantile of remaining (not outlier) values}
+\item{winsorize_quantile}{numeric, the quantile of remaining values to use for winsorizing outliers. Default is 1.}
 
-\item{tree_cut_height}{numeric default 0.5, feature|metabolite independence. To identify "independent" features in your data set, how similar should clustered|grouped features be? tree_cut_height = 1-absolute(spearman's rho), such that a tree_cut_height of 0.2 would indicate a intra-cluster similarity of >0.8, and a tree_cut_height of 0.8 would indicate a intra-cluster similarity of >0.2. Larger tree_cut_height values yield more clustering and thus fewer "representative" or "independent" features.}
+\item{tree_cut_height}{numeric, the threshold for feature independence in hierarchical clustering. Default is 0.5.}
 
-\item{pc_outlier_sd}{numeric default 5, the number of standard deviation (SD) units from the mean to perform a sample QC based on principal components. If you would like to exclude PC exclusions as a QC parameter set the value to NA. Setting to NA may be advisable if you expect significant structure among individuals for example your data is derived from different tissues, different geographies/ecologies/environments.}
+\item{pc_outlier_sd}{numeric, the number of standard deviations from the mean used for PCA-based sample QC. Default is 5. Set to \code{NA} to exclude PCA-based QC.}
 
-\item{derived_var_exclusion}{logical default TRUE, Nightingale derived variable exclusion. Derived variables in Nightingale are all variables derived from two or more variables already present in the data set. In this instance it represents all ratios that Nightingale supply in their data releases.}
+\item{derived_var_exclusion}{logical, whether to exclude derived variables (from multiple existing variables) in Nightingale data. Default is \code{TRUE}.}
 
-\item{xenobiotics_var_exclusion}{logical default TRUE, whether to exclude Xenobiotics from the missingness estimate}
+\item{xenobiotics_var_exclusion}{logical, whether to exclude xenobiotics from missingness estimates. Default is \code{TRUE}.}
 
-\item{samples}{data.table, not to be set directly}
+\item{samples}{data.table, a data table containing sample-related information (not to be set directly).}
 
-\item{features}{data.table, not to be set directly}
+\item{features}{data.table, a data table containing feature-related information (not to be set directly).}
 
-\item{data}{numeric matrix, not to be set directly}
+\item{data}{numeric matrix, the data matrix containing metabolite values (not to be set directly).}
 
-\item{exclusions}{multidimensional sparse character matrix, exclusion codes (mask for data), not to be set directly}
+\item{exclusions}{multidimensional sparse character matrix, holds exclusion codes for data masking (not to be set directly).}
 
-\item{feature_summary}{numeric matrix, not to be set directly}
+\item{feature_summary}{numeric matrix, summary statistics for features (not to be set directly).}
 
-\item{feature_tree}{named list of tree objects matrix, not to be set directly}
+\item{feature_tree}{named list of tree objects, hierarchical clustering results for features (not to be set directly).}
 
-\item{sample_summary}{numeric matrix, not to be set directly}
+\item{sample_summary}{numeric matrix, summary statistics for samples (not to be set directly).}
 
-\item{pcs}{numeric matrix, not to be set directly}
+\item{pcs}{numeric matrix, principal component scores for the data (not to be set directly).}
 
-\item{prob_pcs}{numeric matrix, not to be set directly}
+\item{prob_pcs}{numeric matrix, probabilities associated with principal components (not to be set directly).}
 
-\item{var_exp}{named numeric, not to be set directly}
+\item{var_exp}{named numeric, variance explained by each principal component (not to be set directly).}
 
-\item{acceleration_factor}{named numeric, not to be set directly}
+\item{acceleration_factor}{named numeric, the acceleration factor for parallel analysis (not to be set directly).}
 
-\item{n_parallel}{named numeric, not to be set directly}
+\item{n_parallel}{named numeric, the number of parallel components in the analysis (not to be set directly).}
 }
 \value{
-an S7 class metaboprep2::Metabolites object
+An object of class \code{Metabolites} (S7 class).
 }
 \description{
-A Metabolites object is a container for matrices of metabolites data and associated metadata.
+A \code{Metabolites} object is a container for matrices of metabolite data, along with associated metadata.
+It allows for efficient storage and manipulation of data, supporting quality control, transformations,
+and various analyses. This object facilitates easy access to data layers, sample and feature summaries,
+outlier treatment, and more.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{project_name}}{character, name for this project}
+\item{\code{project_name}}{character, name for this project.}
 
-\item{\code{filepath}}{character, path to the original raw data file}
+\item{\code{filepath}}{character, path to the original raw data file.}
 
-\item{\code{source}}{character, a valid metabolomic data source}
+\item{\code{source}}{character, a valid metabolomic data source.}
 
-\item{\code{samples}}{data.frame / data.table}
+\item{\code{samples}}{data.table, the samples data table.}
 
-\item{\code{features}}{data.frame / data.table}
+\item{\code{features}}{data.table, the features data table.}
 
-\item{\code{data}}{multi-dimentional matrix,}
+\item{\code{data}}{numeric matrix, the metabolite data.}
 
-\item{\code{exclusions}}{matrix???}
+\item{\code{exclusions}}{multidimensional sparse matrix, exclusion codes (mask for data).}
 
-\item{\code{feature_summary}}{matrix}
+\item{\code{feature_summary}}{numeric matrix, feature summary statistics.}
 
-\item{\code{sample_summary}}{matrix}
+\item{\code{sample_summary}}{numeric matrix, sample summary statistics.}
 
-\item{\code{feature_missingness}}{numeric 0-1 default 0.2, proportion of missinginess on features used as a QC threshold}
+\item{\code{feature_missingness}}{numeric, proportion of missingness in features (QC threshold).}
 
-\item{\code{sample_missingness}}{numeric 0-1 default 0.2, proportion of missinginess on samples used as a QC threshold}
+\item{\code{sample_missingness}}{numeric, proportion of missingness in samples (QC threshold).}
 
-\item{\code{total_peak_area_sd}}{numeric default 5, number of standard deviation (SD) units from the mean to perform a sample QC based on total abundance. If you would like to exclude total sum abundance as a QC parameter set the value to NA}
+\item{\code{total_peak_area_sd}}{numeric, standard deviation for sample QC based on total abundance.}
 
-\item{\code{outlier_udist}}{numeric default 5, outlier values for features. The number of interquartile range (IQR) unit distances from the median to call a value an outlier. "Outliers" here are extreme values that are the product of error.}
+\item{\code{outlier_udist}}{numeric, outlier threshold in terms of IQR for features.}
 
-\item{\code{outlier_treatment}}{character default 'leave_be', what to do with outliers for the purposes of the PCA, and for the PCA only. Options: "leave_be" if you would like no action on outliers; "winsorize" if you would like outliers to be winsorized to the 100th quantile of all remaining (non-outlying) values, at a feature; "turn_NA" if you would like outliers converted to NA. This means they will be imputed to the median for the purposes of the PCA.}
+\item{\code{outlier_treatment}}{character, outlier treatment for PCA analysis.}
 
-\item{\code{winsorize_quantile}}{numeric defailt 1, winsorize to what quantile of remaining (not outlier) values}
+\item{\code{winsorize_quantile}}{numeric, quantile used for winsorizing outliers.}
 
-\item{\code{tree_cut_height}}{numeric default 0.5, feature|metabolite independence. To identify "independent" features in your data set, how similar should clustered|grouped features be? tree_cut_height = 1-absolute(spearman's rho), such that a tree_cut_height of 0.2 would indicate a intra-cluster similarity of >0.8, and a tree_cut_height of 0.8 would indicate a intra-cluster similarity of >0.2. Larger tree_cut_height values yield more clustering and thus fewer "representative" or "independent" features.}
+\item{\code{tree_cut_height}}{numeric, threshold for feature independence in clustering.}
 
-\item{\code{pc_outlier_sd}}{numeric default 5, the number of standard deviation (SD) units from the mean to perform a sample QC based on principal components. If you would like to exclude PC exclusions as a QC parameter set the value to NA. Setting to NA may be advisable if you expect significant structure among individuals for example your data is derived from different tissues, different geographies/ecologies/environments.}
+\item{\code{pc_outlier_sd}}{numeric, standard deviation for PCA-based sample QC.}
 
-\item{\code{derived_var_exclusion}}{logical default TRUE, Nightingale derived variable exclusion. Derived variables in Nightingale are all variables derived from two or more variables already present in the data set. In this instance it represents all ratios that Nightingale supply in their data releases.}
+\item{\code{derived_var_exclusion}}{logical, whether to exclude derived variables from Nightingale data.}
 
-\item{\code{xenobiotics_var_exclusion}}{logical default TRUE, whether to exclude Xenobiotics from the missingness estimate}
+\item{\code{xenobiotics_var_exclusion}}{logical, whether to exclude xenobiotics from missingness estimate.}
 
-\item{\code{feature_tree}}{object}
+\item{\code{feature_tree}}{object, hierarchical clustering results for features.}
 
-\item{\code{pcs}}{matrix}
+\item{\code{pcs}}{matrix, principal component scores.}
 
-\item{\code{prob_pcs}}{matrix}
+\item{\code{prob_pcs}}{matrix, probabilities for principal components.}
 
-\item{\code{var_exp}}{matrix}
+\item{\code{var_exp}}{matrix, variance explained by each principal component.}
 
-\item{\code{acceleration_factor}}{numeric}
+\item{\code{acceleration_factor}}{numeric, acceleration factor for parallel analysis.}
 
-\item{\code{n_parallel}}{numeric}
+\item{\code{n_parallel}}{numeric, number of parallel components.}
 }}
 
+\examples{
+# Example of importing data into a Metabolites object and running QC
+metabolites <- Metabolites(project_name = "MYPROJECT", format = "metabolon_v1",
+                           filepath = system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2"))
+metabolites <- import_data(metabolites)
+metabolites <- metabolite_qc(metabolites, source="raw", destination="post_qc")
+metabolites
+
+}

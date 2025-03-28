@@ -73,12 +73,12 @@ metabolites@data[, , "post_qc"][1:5,1:5]
 
 #### Accessing Data Using Getter Functions
 ```{r}
-get_data(metabolites, type="post_qc", apply_exclusions = FALSE)[1:5,1:5]
+get_data(metabolites, layer="post_qc", apply_exclusions = FALSE)[1:5,1:5]
 ```
 
 #### Accessing Only Data Passing QC
 ```{r}
-get_data(metabolites, type="post_qc", apply_exclusions = TRUE)[1:5,1:5]
+get_data(metabolites, layer="post_qc", apply_exclusions = TRUE)[1:5,1:5]
 ```
 
 ### Exclusions
@@ -98,6 +98,6 @@ Currently the feature tree object is stored in the metabolites object.
 
 More DataViz to come....
 ```{r, fig.width=14, fig.height=8, out.width="100%"}
-plot(metabolites@feature_tree[["post_qc"]])
+plot(get_feature_tree(metabolites, layer="post_qc"))
 ```
 

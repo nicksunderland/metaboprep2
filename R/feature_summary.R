@@ -2,19 +2,19 @@
 #' @description
 #' This function estimates feature statistics for samples in a matrix of metabolite features.
 #' @param metabolites an object of class Metabolites
-#' @param type character, the data type/source
+#' @param layer character, the data type/source
 #' @param output character, the output format options: "object", "data.table", "matrix", "list"
 #' @include class_metabolites.R
 #' @export
-feature_summary <- new_generic("feature_summary", c("metabolites"), function(metabolites, type="raw", output="object") { S7_dispatch() })
+feature_summary <- new_generic("feature_summary", c("metabolites"), function(metabolites, layer="raw", output="object") { S7_dispatch() })
 #' @name feature_summary
-method(feature_summary, Metabolites) <- function(metabolites, type="raw", output="object") {
+method(feature_summary, Metabolites) <- function(metabolites, layer="raw", output="object") {
 
   # options
   output <- match.arg(output, choices = c("object", "data.table", "matrix", "list"))
 
   # the data to work with
-  dat <- get_data(metabolites, type, apply_exclusions=TRUE)
+  dat <- get_data(metabolites, layer=layer, apply_exclusions=TRUE)
 
   ## feature missingness
   featuremis = missingness(dat, by="column", exclude_features = NA)
@@ -56,7 +56,7 @@ method(feature_summary, Metabolites) <- function(metabolites, type="raw", output
   out <- Reduce(function(x, y) data.table::merge.data.table(x, y, by = "feature_id", all = TRUE), dt_list)
 
   # ensure correct order (use the unfiltered data to get the col names, inject NAs if absent from filtered data)
-  ordered_base_ids <- data.table::data.table(feature_id = colnames(metabolites@data[, , type]))
+  ordered_base_ids <- data.table::data.table(feature_id = colnames(metabolites@data[, , layer]))
   out <- out[ordered_base_ids, on="feature_id", nomatch = NA]
 
   # as matrix
@@ -67,10 +67,10 @@ method(feature_summary, Metabolites) <- function(metabolites, type="raw", output
   # add to sample_summary matrix
   metabolites@feature_summary <- add_layer(current    = metabolites@feature_summary,
                                            layer      = mat,
-                                           layer_name = type)
+                                           layer_name = layer)
 
   # add tree to object
-  metabolites@feature_tree[[type]] <- indf$speartree
+  metabolites@feature_tree[[layer]] <- indf$speartree
 
   # return desired output
   return(

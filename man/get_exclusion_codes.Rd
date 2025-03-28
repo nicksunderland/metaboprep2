@@ -7,14 +7,17 @@
 get_exclusion_codes(verbose = TRUE)
 }
 \arguments{
-\item{verbose}{logical, printing}
+\item{verbose}{A logical value indicating whether to print additional information.
+Defaults to \code{FALSE} (no printing). If \code{TRUE}, additional details about the exclusion codes may be printed.}
 }
 \value{
-named list, list("code_description" = code)
+A named list where the names are the exclusion descriptions and the values are the corresponding codes.
 }
 \description{
-Get Exclusion Codes
+This function retrieves the available exclusion codes and their corresponding descriptions.
+It returns a named list where each exclusion code is paired with a description of its meaning.
 }
 \examples{
 get_exclusion_codes()
+
 }

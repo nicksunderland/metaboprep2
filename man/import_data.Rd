@@ -7,8 +7,20 @@
 import_data(metabolites)
 }
 \arguments{
-\item{metabolites}{an object of class Metabolites}
+\item{metabolites}{An object of class \code{Metabolites}. This object contains the necessary metadata
+and structure for the data being imported.}
+}
+\value{
+The function returns the updated \code{Metabolites} object with the imported data integrated.
 }
 \description{
-Import Data
+This function is used to import data into a \code{Metabolites} object. It processes and loads the data
+in a format that is compatible with subsequent analysis steps in the \code{metaboprep2} package.
+}
+\examples{
+# Example of importing data into a Metabolites object
+metabolites <- Metabolites(project_name = "MYPROJECT", format = "metabolon_v1",
+                           filepath = system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2"))
+metabolites <- import_data(metabolites)
+
 }

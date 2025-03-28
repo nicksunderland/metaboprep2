@@ -2,7 +2,7 @@
 % Please edit documentation in R/class_metabolites.R
 \name{update_exclusions}
 \alias{update_exclusions}
-\title{update_exclusions}
+\title{Update Exclusions in a Metabolites Object}
 \usage{
 update_exclusions(
   metabolites,
@@ -14,18 +14,30 @@ update_exclusions(
 )
 }
 \arguments{
-\item{metabolites}{an object of class Metabolites}
+\item{metabolites}{An object of class \code{Metabolites} to update exclusions.}
 
-\item{type}{character, type of data}
+\item{type}{A character string specifying the type of data to exclude (e.g., "raw", "post_qc").}
 
-\item{code}{integer, exclusions code}
+\item{code}{An integer representing the exclusions code that defines the type of exclusion to apply.}
 
-\item{sample_ids}{optional, a vector of column names to extract (default is NULL, meaning all columns)}
+\item{sample_ids}{(optional) A vector of column names (samples) to exclude. Defaults to \code{NULL}, meaning all columns will be considered.}
 
-\item{feature_ids}{optional, a vector of row names to extract (default is NULL, meaning all rows)}
+\item{feature_ids}{(optional) A vector of row names (features) to exclude. Defaults to \code{NULL}, meaning all rows will be considered.}
 
-\item{arr_ids}{logical, whether ids are array indices}
+\item{arr_ids}{A logical value indicating whether the provided \code{feature_ids} and \code{sample_ids} are array indices (default is \code{FALSE}).}
+}
+\value{
+The function returns an updated \code{Metabolites} object with modified exclusions.
 }
 \description{
-update_exclusions
+Updates the exclusions in a \code{Metabolites} object based on a specified type of data and exclusions code.
+This function allows for the modification of sample and feature exclusions based on the provided parameters.
+}
+\examples{
+metabolites <- Metabolites(project_name = "MYPROJECT",
+                           format = "metabolon_v1",
+                           filepath = system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2"))
+metabolites <- import_data(metabolites)
+update_exclusions(metabolites, type = "post_qc", code = 1)
+
 }
