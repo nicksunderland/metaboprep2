@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r render, echo=FALSE}
+```{r render}
 library(metaboprep2)
 
 # the data
@@ -38,8 +38,9 @@ generate_report(metabolites,
                 format="html",
                 template="qc_report")
 
-print(getwd())
+```
 
+```{r, echo=FALSE}
 file.copy(file.path(getwd(), "myproject_metaboprep2_qc_report.html"), 
           file.path(getwd(), "../docs/articles/myproject_metaboprep2_qc_report.html"), overwrite = TRUE)
 ```
