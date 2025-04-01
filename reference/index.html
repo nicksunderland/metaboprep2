@@ -18,7 +18,8 @@
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/metabolites.html">Using the Metabolites S7 Class</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/generate_report.html">Generate QC Report</a></li>
+    <li><a class="dropdown-item" href="../articles/metabolites.html">Using the Metabolites S7 Class</a></li>
     <li><a class="dropdown-item" href="../articles/quality_control.html">Metabolite Quality Control</a></li>
   </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
@@ -50,7 +51,13 @@
           <code><a href="Metabolites.html">Metabolites()</a></code>
 
         </dt>
-        <dd>Metabolites object</dd>
+        <dd>Metabolites Object</dd>
+      </dl><dl><dt>
+
+          <code><a href="add_layer.html">add_layer()</a></code>
+
+        </dt>
+        <dd>Add a Layer of Data (internal use)</dd>
       </dl><dl><dt>
 
           <code><a href="available_data_formats.html">available_data_formats()</a></code>
@@ -59,10 +66,46 @@
         <dd>List Available Data Formats</dd>
       </dl><dl><dt>
 
+          <code><a href="available_report_templates.html">available_report_templates()</a></code>
+
+        </dt>
+        <dd>List Available Report Templates</dd>
+      </dl><dl><dt>
+
           <code><a href="batch_normalisation.html">batch_normalisation()</a></code>
 
         </dt>
         <dd>Batch Normalisation</dd>
+      </dl><dl><dt>
+
+          <code><a href="continuous_power_plot.html">continuous_power_plot()</a></code>
+
+        </dt>
+        <dd>continuous trait power analysis plot</dd>
+      </dl><dl><dt>
+
+          <code><a href="cramerV.html">cramerV()</a></code>
+
+        </dt>
+        <dd>Cramer's V (phi)</dd>
+      </dl><dl><dt>
+
+          <code><a href="eval.power.binary.imbalanced.html">eval.power.binary.imbalanced()</a></code>
+
+        </dt>
+        <dd>Estimate power for a binary variable in an imbalanced design</dd>
+      </dl><dl><dt>
+
+          <code><a href="eval.power.cont.html">eval.power.cont()</a></code>
+
+        </dt>
+        <dd>estimate power for continuous variable</dd>
+      </dl><dl><dt>
+
+          <code><a href="export_data.html">export_data()</a></code>
+
+        </dt>
+        <dd>Export Data from a Metabolites Object</dd>
       </dl><dl><dt>
 
           <code><a href="feature_describe.html">feature_describe()</a></code>
@@ -77,22 +120,100 @@
         <dd>Feature Summary Statistics</dd>
       </dl><dl><dt>
 
+          <code><a href="find.PA.effect.sizes.2.sim.html">find.PA.effect.sizes.2.sim()</a></code>
+
+        </dt>
+        <dd>identify effect sizes</dd>
+      </dl><dl><dt>
+
+          <code><a href="find.cont.effect.sizes.2.sim.html">find.cont.effect.sizes.2.sim()</a></code>
+
+        </dt>
+        <dd>identify continuos trait effect sizes</dd>
+      </dl><dl><dt>
+
           <code><a href="generate_report.html">generate_report()</a></code>
 
         </dt>
         <dd>Generate Output Report</dd>
       </dl><dl><dt>
 
+          <code><a href="get_.html">get_()</a></code>
+
+        </dt>
+        <dd>Internal Data Extraction Helper</dd>
+      </dl><dl><dt>
+
+          <code><a href="get_acceleration_factor.html">get_acceleration_factor()</a></code>
+
+        </dt>
+        <dd>Retrieve the Acceleration Factor</dd>
+      </dl><dl><dt>
+
           <code><a href="get_data.html">get_data()</a></code>
 
         </dt>
-        <dd>get_data</dd>
+        <dd>Retrieve Data from a Metabolites Object</dd>
       </dl><dl><dt>
 
-          <code><a href="get_exclusion_codes.html">get_exclusion_codes()</a></code>
+          <code><a href="get_feature_summary.html">get_feature_summary()</a></code>
 
         </dt>
-        <dd>Get Exclusion Codes</dd>
+        <dd>Retrieve Feature Summary Data</dd>
+      </dl><dl><dt>
+
+          <code><a href="get_feature_tree.html">get_feature_tree()</a></code>
+
+        </dt>
+        <dd>Retrieve Feature Tree</dd>
+      </dl><dl><dt>
+
+          <code><a href="get_features.html">get_features()</a></code>
+
+        </dt>
+        <dd>Retrieve Feature Data</dd>
+      </dl><dl><dt>
+
+          <code><a href="get_n_parallel.html">get_n_parallel()</a></code>
+
+        </dt>
+        <dd>Retrieve Parallel Analysis No. PCs</dd>
+      </dl><dl><dt>
+
+          <code><a href="get_pcs.html">get_pcs()</a></code>
+
+        </dt>
+        <dd>Retrieve Principal Components</dd>
+      </dl><dl><dt>
+
+          <code><a href="get_prob_pcs.html">get_prob_pcs()</a></code>
+
+        </dt>
+        <dd>Retrieve Probabilistic Principal Components</dd>
+      </dl><dl><dt>
+
+          <code><a href="get_sample_summary.html">get_sample_summary()</a></code>
+
+        </dt>
+        <dd>Retrieve Sample Summary Data</dd>
+      </dl><dl><dt>
+
+          <code><a href="get_samples.html">get_samples()</a></code>
+
+        </dt>
+        <dd>Retrieve Sample Data</dd>
+      </dl><dl><dt>
+
+          <code><a href="get_var_exp.html">get_var_exp()</a></code>
+
+        </dt>
+        <dd>Retrieve Variance Explained by PCs</dd>
+      </dl><dl><dt>
+
+          <code><a href="imbalanced_power_plot.html">imbalanced_power_plot()</a></code>
+
+        </dt>
+        <dd>binary trait imbalanced design power analysis plot</dd>
       </dl><dl><dt>
 
           <code><a href="import_data.html">import_data()</a></code>
@@ -113,10 +234,22 @@
         <dd>Estimate Missingness</dd>
       </dl><dl><dt>
 
+          <code><a href="multivariate_anova.html">multivariate_anova()</a></code>
+
+        </dt>
+        <dd>multivariate analysis</dd>
+      </dl><dl><dt>
+
           <code><a href="outlier_detection.html">outlier_detection()</a></code>
 
         </dt>
         <dd>Identify indexes of outliers in data</dd>
+      </dl><dl><dt>
+
+          <code><a href="outliers.html">outliers()</a></code>
+
+        </dt>
+        <dd>Identify Outliers</dd>
       </dl><dl><dt>
 
           <code><a href="pc_and_outliers.html">pc_and_outliers()</a></code>
@@ -161,16 +294,10 @@
         <dd>Identify Independent Features in a Numeric Matrix</dd>
       </dl><dl><dt>
 
-          <code><a href="update_exclusions.html">update_exclusions()</a></code>
+          <code><a href="variable_by_factor.html">variable_by_factor()</a></code>
 
         </dt>
-        <dd>update_exclusions</dd>
-      </dl><dl><dt>
-
-          <code><a href="write_data.html">write_data()</a></code>
-
-        </dt>
-        <dd>write_data</dd>
+        <dd>ggplot2 violin plot</dd>
       </dl></div>
   </main></div>
 

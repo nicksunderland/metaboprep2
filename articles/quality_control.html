@@ -33,7 +33,8 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/metabolites.html">Using the Metabolites S7 Class</a></li>
+<li><a class="dropdown-item" href="../articles/generate_report.html">Generate QC Report</a></li>
+    <li><a class="dropdown-item" href="../articles/metabolites.html">Using the Metabolites S7 Class</a></li>
     <li><a class="dropdown-item" href="../articles/quality_control.html">Metabolite Quality Control</a></li>
   </ul>
 </li>
@@ -115,13 +116,17 @@ which contains metabolomics data along with metadata.</p>
 based on missingness, outlier detection, PCA-based QC. This generates
 another layer to the data matrices named <code>post_qc</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">metabolites</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/metabolite_qc.html">metabolite_qc</a></span><span class="op">(</span><span class="va">metabolites</span>, source <span class="op">=</span> <span class="st">"raw"</span>, destination <span class="op">=</span> <span class="st">"post_qc"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">metabolites</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/metabolite_qc.html">metabolite_qc</a></span><span class="op">(</span><span class="va">metabolites</span>, source <span class="op">=</span> <span class="st">"raw"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Starting Metabolite QC Process</span> <span style="color: #00BBBB;">──────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Validating input parameters...</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Input validation complete.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Copying raw data to new post_qc data layer...</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> post_qc data ready for QC.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Normalising raw data...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Normalised raw data.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample &amp; Feature Summary Statistics for raw data...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Sample &amp; Feature Summary Statistics for raw data...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Copying batch_normalised data to new 'qcing' data layer...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> qcing data ready for QC.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Analysing exclusions...</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Applying exclusion of derived features...</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Derived features exclusions assessment complete. (0 features excluded)</span></span>
@@ -130,7 +135,7 @@ another layer to the data matrices named <code>post_qc</code>.</p>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assessing for extreme sample missingness &gt;=80%...</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Extreme sample missingness exclusions assessment complete. (0 samples excluded)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assessing for extreme feature missingness &gt;=80%...</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Extreme feature missingness exclusions assessment complete. (0 features excluded})</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Extreme feature missingness exclusions assessment complete. (0 features excluded)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assessing for sample missingness at specified level of &gt;=20%...</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Sample missingness exclusions assessment complete. (2 samples excluded)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assessing for feature missingness at specified level of &gt;=20%...</span></span>
@@ -139,8 +144,13 @@ another layer to the data matrices named <code>post_qc</code>.</p>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Total peak abundance outlier exclusions assessment complete. (0 samples excluded)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Running principal component outlier analysis at +/- 5 Sdev...</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> PCA outlier analysis complete.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Re-running sample summary using current exclusions...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> QC sample summary complete.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Re-identify feature independence and PC outliers...</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> PCA outlier analysis 2 complete.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Creating final QC dataset...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Rerunning Sample &amp; Feature Summary Statistics for QC data...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Sample &amp; Feature Summary Statistics for QC data complete.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Metabolite QC Process Completed</span> <span style="color: #00BBBB;">─────────────────────────────────────────────</span></span></span></code></pre></div>
 <div class="section level3">
@@ -162,35 +172,35 @@ for structured data extraction.</li>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">metabolites</span><span class="op">@</span><span class="va">data</span><span class="op">[</span>, , <span class="st">"post_qc"</span><span class="op">]</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
 <span><span class="co">#&gt;      compid_123 compid_124 compid_125 compid_126 compid_127</span></span>
-<span><span class="co">#&gt; ind1  11.031464   10.79932  11.469142  10.448855   9.236774</span></span>
-<span><span class="co">#&gt; ind2  12.495436   13.73833  12.322201   7.752219  11.166760</span></span>
-<span><span class="co">#&gt; ind3         NA   14.38583         NA  10.649357   7.933557</span></span>
-<span><span class="co">#&gt; ind4   6.976256   10.85471  12.287431   7.776786  10.040024</span></span>
-<span><span class="co">#&gt; ind5   8.559816   12.42402   8.768468  12.604741   8.134009</span></span></code></pre></div>
+<span><span class="co">#&gt; ind1         NA         NA         NA         NA         NA</span></span>
+<span><span class="co">#&gt; ind2  1.2057866   1.428384  1.2262280  0.7742638  1.1269745</span></span>
+<span><span class="co">#&gt; ind3         NA   1.495705         NA  1.0636195  0.8006724</span></span>
+<span><span class="co">#&gt; ind4  0.6731959   1.128572  1.2227678  0.7767174  1.0132617</span></span>
+<span><span class="co">#&gt; ind5  0.8260065   1.291734  0.8725828  1.2589163  0.8209024</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="accessing-data-using-getter-functions">Accessing Data Using Getter Functions<a class="anchor" aria-label="anchor" href="#accessing-data-using-getter-functions"></a>
 </h4>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_data.html">get_data</a></span><span class="op">(</span><span class="va">metabolites</span>, type<span class="op">=</span><span class="st">"post_qc"</span>, apply_exclusions <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_data.html">get_data</a></span><span class="op">(</span><span class="va">metabolites</span>, layer<span class="op">=</span><span class="st">"post_qc"</span>, drop<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
 <span><span class="co">#&gt;      compid_123 compid_124 compid_125 compid_126 compid_127</span></span>
-<span><span class="co">#&gt; ind1  11.031464   10.79932  11.469142  10.448855   9.236774</span></span>
-<span><span class="co">#&gt; ind2  12.495436   13.73833  12.322201   7.752219  11.166760</span></span>
-<span><span class="co">#&gt; ind3         NA   14.38583         NA  10.649357   7.933557</span></span>
-<span><span class="co">#&gt; ind4   6.976256   10.85471  12.287431   7.776786  10.040024</span></span>
-<span><span class="co">#&gt; ind5   8.559816   12.42402   8.768468  12.604741   8.134009</span></span></code></pre></div>
+<span><span class="co">#&gt; ind2  1.2057866   1.428384  1.2262280  0.7742638  1.1269745</span></span>
+<span><span class="co">#&gt; ind3         NA   1.495705         NA  1.0636195  0.8006724</span></span>
+<span><span class="co">#&gt; ind4  0.6731959   1.128572  1.2227678  0.7767174  1.0132617</span></span>
+<span><span class="co">#&gt; ind5  0.8260065   1.291734  0.8725828  1.2589163  0.8209024</span></span>
+<span><span class="co">#&gt; ind6  1.0033843   1.027972  1.1651089  1.0049920  0.6529416</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="accessing-only-data-passing-qc">Accessing Only Data Passing QC<a class="anchor" aria-label="anchor" href="#accessing-only-data-passing-qc"></a>
 </h4>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_data.html">get_data</a></span><span class="op">(</span><span class="va">metabolites</span>, type<span class="op">=</span><span class="st">"post_qc"</span>, apply_exclusions <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
-<span><span class="co">#&gt;      compid_126 compid_127 compid_128 compid_129 compid_130</span></span>
-<span><span class="co">#&gt; ind1  10.448855   9.236774  11.951774   9.337126   8.040777</span></span>
-<span><span class="co">#&gt; ind2   7.752219  11.166760  13.070842   9.007520   9.077768</span></span>
-<span><span class="co">#&gt; ind3  10.649357   7.933557  13.905246   9.474359  13.737318</span></span>
-<span><span class="co">#&gt; ind4   7.776786  10.040024   9.882807   8.274025  12.031240</span></span>
-<span><span class="co">#&gt; ind5  12.604741   8.134009   9.026278  10.742845  10.054208</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_data.html">get_data</a></span><span class="op">(</span><span class="va">metabolites</span>, layer<span class="op">=</span><span class="st">"post_qc"</span>, drop<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
+<span><span class="co">#&gt;      compid_123 compid_124 compid_125 compid_126 compid_127</span></span>
+<span><span class="co">#&gt; ind2  1.2057866   1.428384  1.2262280  0.7742638  1.1269745</span></span>
+<span><span class="co">#&gt; ind3         NA   1.495705         NA  1.0636195  0.8006724</span></span>
+<span><span class="co">#&gt; ind4  0.6731959   1.128572  1.2227678  0.7767174  1.0132617</span></span>
+<span><span class="co">#&gt; ind5  0.8260065   1.291734  0.8725828  1.2589163  0.8209024</span></span>
+<span><span class="co">#&gt; ind6  1.0033843   1.027972  1.1651089  1.0049920  0.6529416</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
@@ -200,34 +210,38 @@ for structured data extraction.</li>
 features, however, the QC process builds a matrix of exclusion
 reasons.</p>
 <div class="section level4">
-<h4 id="accessing-the-exclusions-matrix">Accessing the Exclusions Matrix<a class="anchor" aria-label="anchor" href="#accessing-the-exclusions-matrix"></a>
+<h4 id="accessing-the-exclusions-list">Accessing the Exclusions List<a class="anchor" aria-label="anchor" href="#accessing-the-exclusions-list"></a>
 </h4>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">metabolites</span><span class="op">@</span><span class="va">exclusions</span><span class="op">[</span>, , <span class="st">"post_qc"</span><span class="op">]</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
-<span><span class="co">#&gt; &lt;5 x 5 SparseMatrix&gt; of type "character" [nzcount=15 (60%)]:</span></span>
-<span><span class="co">#&gt;      compid_123 compid_124 compid_125 compid_126 compid_127</span></span>
-<span><span class="co">#&gt; ind1 "2"        "2"        "2"        ""         ""        </span></span>
-<span><span class="co">#&gt; ind2 "2"        "2"        "2"        ""         ""        </span></span>
-<span><span class="co">#&gt; ind3 "2"        "2"        "2"        ""         ""        </span></span>
-<span><span class="co">#&gt; ind4 "2"        "2"        "2"        ""         ""        </span></span>
-<span><span class="co">#&gt; ind5 "2"        "2"        "2"        ""         ""</span></span></code></pre></div>
-</div>
-<div class="section level4">
-<h4 id="accessing-the-exclusions-codes">Accessing the Exclusions Codes<a class="anchor" aria-label="anchor" href="#accessing-the-exclusions-codes"></a>
-</h4>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_exclusion_codes.html">get_exclusion_codes</a></span><span class="op">(</span>verbose<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; List of 10</span></span>
-<span><span class="co">#&gt;  $ derived_feature                  : num 1</span></span>
-<span><span class="co">#&gt;  $ xenobiotic_feature               : num 2</span></span>
-<span><span class="co">#&gt;  $ extreme_sample_missingness       : num 3</span></span>
-<span><span class="co">#&gt;  $ extreme_feature_missingness      : num 4</span></span>
-<span><span class="co">#&gt;  $ user_defined_sample_missingness  : num 5</span></span>
-<span><span class="co">#&gt;  $ user_defined_feature_missingness : num 6</span></span>
-<span><span class="co">#&gt;  $ user_defined_sample_totalpeakarea: num 7</span></span>
-<span><span class="co">#&gt;  $ user_defined_sample_pca_outlier  : num 8</span></span>
-<span><span class="co">#&gt;  $ outlier_udist_turned_na          : num 9</span></span>
-<span><span class="co">#&gt;  $ outlier_udist_winsorized         : num 10</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">metabolites</span><span class="op">@</span><span class="va">exclusions</span><span class="op">)</span></span>
+<span><span class="co">#&gt; List of 3</span></span>
+<span><span class="co">#&gt;  $ raw    :List of 2</span></span>
+<span><span class="co">#&gt;   ..$ samples :List of 4</span></span>
+<span><span class="co">#&gt;   .. ..$ extreme_sample_missingness       : chr(0) </span></span>
+<span><span class="co">#&gt;   .. ..$ user_defined_sample_missingness  : chr(0) </span></span>
+<span><span class="co">#&gt;   .. ..$ user_defined_sample_totalpeakarea: chr(0) </span></span>
+<span><span class="co">#&gt;   .. ..$ user_defined_sample_pca_outlier  : chr(0) </span></span>
+<span><span class="co">#&gt;   ..$ features:List of 2</span></span>
+<span><span class="co">#&gt;   .. ..$ extreme_feature_missingness     : chr(0) </span></span>
+<span><span class="co">#&gt;   .. ..$ user_defined_feature_missingness: chr(0) </span></span>
+<span><span class="co">#&gt;  $ qcing  :List of 2</span></span>
+<span><span class="co">#&gt;   ..$ samples :List of 4</span></span>
+<span><span class="co">#&gt;   .. ..$ extreme_sample_missingness       : chr(0) </span></span>
+<span><span class="co">#&gt;   .. ..$ user_defined_sample_missingness  : chr [1:2] "ind9" "ind59"</span></span>
+<span><span class="co">#&gt;   .. ..$ user_defined_sample_totalpeakarea: chr(0) </span></span>
+<span><span class="co">#&gt;   .. ..$ user_defined_sample_pca_outlier  : chr "ind1"</span></span>
+<span><span class="co">#&gt;   ..$ features:List of 2</span></span>
+<span><span class="co">#&gt;   .. ..$ extreme_feature_missingness     : chr(0) </span></span>
+<span><span class="co">#&gt;   .. ..$ user_defined_feature_missingness: chr(0) </span></span>
+<span><span class="co">#&gt;  $ post_qc:List of 2</span></span>
+<span><span class="co">#&gt;   ..$ samples :List of 4</span></span>
+<span><span class="co">#&gt;   .. ..$ extreme_sample_missingness       : chr(0) </span></span>
+<span><span class="co">#&gt;   .. ..$ user_defined_sample_missingness  : chr [1:2] "ind9" "ind59"</span></span>
+<span><span class="co">#&gt;   .. ..$ user_defined_sample_totalpeakarea: chr(0) </span></span>
+<span><span class="co">#&gt;   .. ..$ user_defined_sample_pca_outlier  : chr "ind1"</span></span>
+<span><span class="co">#&gt;   ..$ features:List of 2</span></span>
+<span><span class="co">#&gt;   .. ..$ extreme_feature_missingness     : chr(0) </span></span>
+<span><span class="co">#&gt;   .. ..$ user_defined_feature_missingness: chr(0)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
@@ -236,9 +250,9 @@ reasons.</p>
 <p>Currently the feature tree object is stored in the metabolites
 object.</p>
 <p>More DataViz to come….</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">metabolites</span><span class="op">@</span><span class="va">feature_tree</span><span class="op">[[</span><span class="st">"post_qc"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
-<p><img src="quality_control_files/figure-html/unnamed-chunk-8-1.png" width="100%"></p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="../reference/get_feature_tree.html">get_feature_tree</a></span><span class="op">(</span><span class="va">metabolites</span>, layer<span class="op">=</span><span class="st">"post_qc"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="quality_control_files/figure-html/unnamed-chunk-7-1.png" width="100%"></p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
