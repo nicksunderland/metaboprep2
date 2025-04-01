@@ -37,6 +37,11 @@ generate_report(metabolites,
                 output_filename=NULL,
                 format="html",
                 template="qc_report")
+
+print(getwd())
+
+file.copy(file.path(getwd(), "myproject_metaboprep2_qc_report.html"), 
+          file.path(getwd(), "../docs/articles/myproject_metaboprep2_qc_report.html"), overwrite = TRUE)
 ```
 
 ```{r, echo=FALSE, results="asis"}
