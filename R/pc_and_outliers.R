@@ -1,3 +1,6 @@
+# Silence R CMD check
+globalVariables(c("sample_ids", "feature_ids"), package = "metaboprep2")
+
 #' principal component analysis
 #'
 #' This function performs two principal component analysis. In the first, missing data is imputed to the median. In the second a probablistic PCA is run to account for the missingness.
@@ -6,6 +9,8 @@
 #'
 #' @param metabolites an object of class Metabolites
 #' @param layer character, type/source of data to use
+#' @param sample_ids character, vector of sample ids
+#' @param feature_ids character, vector of feature ids
 #'
 #' @importFrom stats prcomp
 #' @importFrom pcaMethods ppca
@@ -14,9 +19,9 @@
 #' @return a an object of class Metabolites with slots `@acceleration_factor`, `@n_parallel`, `@var_exp`, `@pcs`, and `@prob_pcs` filled.
 #' @export
 #'
-pc_and_outliers <- new_generic("pc_and_outliers", c("metabolites"), function(metabolites, layer="raw") { S7_dispatch() })
+pc_and_outliers <- new_generic("pc_and_outliers", c("metabolites"), function(metabolites, layer="raw", sample_ids=NULL, feature_ids=NULL) { S7_dispatch() })
 #' @name pc_and_outliers
-method(pc_and_outliers, Metabolites) <- function(metabolites, layer="raw") {
+method(pc_and_outliers, Metabolites) <- function(metabolites, layer="raw", sample_ids=NULL, feature_ids=NULL) {
 
   if (!(layer %in% dimnames(metabolites@data)[[3]])) {
     error_msg <- paste("Error: '", layer, "' is not a valid layer. Valid options are: ", paste(dimnames(metabolites@data)[[3]], collapse = ", "), ".", sep = "")
@@ -30,8 +35,8 @@ method(pc_and_outliers, Metabolites) <- function(metabolites, layer="raw") {
 
   ## set data
   indf         <- names(which(metabolites@feature_summary["independent_features_binary", , layer] == 1))
-  pcadata      <- get_data(metabolites, layer = layer, apply_exclusions = TRUE)[, indf]
-  prob_pcadata <- get_data(metabolites, layer = layer, apply_exclusions = TRUE)[, indf]
+  pcadata      <- get_data(metabolites, layer = layer, feature_ids=feature_ids, sample_ids=sample_ids)[, indf]
+  prob_pcadata <- get_data(metabolites, layer = layer, feature_ids=feature_ids, sample_ids=sample_ids)[, indf]
 
   ##############################
   ## impute missingness as medians

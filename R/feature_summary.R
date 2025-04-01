@@ -1,20 +1,25 @@
+# Silence R CMD check
+globalVariables(c("sample_ids", "feature_ids"), package = "metaboprep2")
+
 #' @title Feature Summary Statistics
 #' @description
 #' This function estimates feature statistics for samples in a matrix of metabolite features.
 #' @param metabolites an object of class Metabolites
 #' @param layer character, the data type/source
+#' @param sample_ids character, vector of sample ids
+#' @param feature_ids character, vector of feature ids
 #' @param output character, the output format options: "object", "data.table", "matrix", "list"
 #' @include class_metabolites.R
 #' @export
-feature_summary <- new_generic("feature_summary", c("metabolites"), function(metabolites, layer="raw", output="object") { S7_dispatch() })
+feature_summary <- new_generic("feature_summary", c("metabolites"), function(metabolites, layer="raw", feature_ids=NULL, sample_ids=NULL, output="object") { S7_dispatch() })
 #' @name feature_summary
-method(feature_summary, Metabolites) <- function(metabolites, layer="raw", output="object") {
+method(feature_summary, Metabolites) <- function(metabolites, layer="raw", feature_ids=NULL, sample_ids=NULL, output="object") {
 
   # options
   output <- match.arg(output, choices = c("object", "data.table", "matrix", "list"))
 
   # the data to work with
-  dat <- get_data(metabolites, layer=layer, apply_exclusions=TRUE)
+  dat <- get_data(metabolites, layer=layer, feature_ids=feature_ids, sample_ids=sample_ids)
 
   ## feature missingness
   featuremis = missingness(dat, by="column", exclude_features = NA)
@@ -29,13 +34,6 @@ method(feature_summary, Metabolites) <- function(metabolites, layer="raw", outpu
   outliers <- data.table::data.table(feature_id    = names(sumomat),
                                      outlier_count = sumomat)
 
-  ### identify independent features
-  # if(50 > nrow(wdata)*0.8 ){
-  #   MSS = nrow(wdata) * 0.8  ## this allows 20% missingness on data sets with less than 50 individuals
-  # } else {
-  #   MSS = 50
-  # }
-  ## ** ALL FEATURES THAT GO INTO THE DENDROGRAM AND CAN BE REPRESENTITIVE
   ##    FEATURES MUST HAVE > 80% Presence or <= 20% missing
   min_sample_size = floor( nrow(dat) * 0.8 )
 

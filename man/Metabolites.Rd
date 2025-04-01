@@ -23,8 +23,11 @@ Metabolites(
   samples = data.table::data.table(),
   features = data.table::data.table(),
   data = integer(0),
-  exclusions = new("SVT_SparseMatrix", type = "character", SVT = NULL, .svt_version = 0L,
-    dim = 0:1, dimnames = list(NULL, NULL)),
+  exclusions = list(raw = list(samples = list(extreme_sample_missingness = character(0),
+    user_defined_sample_missingness = character(0), user_defined_sample_totalpeakarea =
+    character(0), user_defined_sample_pca_outlier = character(0)), features =
+    list(extreme_feature_missingness = character(0), user_defined_feature_missingness =
+    character(0)))),
   feature_summary = integer(0),
   feature_tree = list(),
   sample_summary = integer(0),
@@ -74,7 +77,7 @@ Metabolites(
 
 \item{data}{numeric matrix, the data matrix containing metabolite values (not to be set directly).}
 
-\item{exclusions}{multidimensional sparse character matrix, holds exclusion codes for data masking (not to be set directly).}
+\item{exclusions}{list, holds exclusion codes for data masking (not to be set directly).}
 
 \item{feature_summary}{numeric matrix, summary statistics for features (not to be set directly).}
 
@@ -101,66 +104,22 @@ It allows for efficient storage and manipulation of data, supporting quality con
 and various analyses. This object facilitates easy access to data layers, sample and feature summaries,
 outlier treatment, and more.
 }
-\section{Slots}{
+\section{Fields}{
 
 \describe{
-\item{\code{project_name}}{character, name for this project.}
-
-\item{\code{filepath}}{character, path to the original raw data file.}
-
-\item{\code{source}}{character, a valid metabolomic data source.}
-
-\item{\code{samples}}{data.table, the samples data table.}
-
-\item{\code{features}}{data.table, the features data table.}
-
-\item{\code{data}}{numeric matrix, the metabolite data.}
-
-\item{\code{exclusions}}{multidimensional sparse matrix, exclusion codes (mask for data).}
-
-\item{\code{feature_summary}}{numeric matrix, feature summary statistics.}
-
-\item{\code{sample_summary}}{numeric matrix, sample summary statistics.}
-
-\item{\code{feature_missingness}}{numeric, proportion of missingness in features (QC threshold).}
-
-\item{\code{sample_missingness}}{numeric, proportion of missingness in samples (QC threshold).}
-
-\item{\code{total_peak_area_sd}}{numeric, standard deviation for sample QC based on total abundance.}
-
-\item{\code{outlier_udist}}{numeric, outlier threshold in terms of IQR for features.}
-
-\item{\code{outlier_treatment}}{character, outlier treatment for PCA analysis.}
-
-\item{\code{winsorize_quantile}}{numeric, quantile used for winsorizing outliers.}
-
-\item{\code{tree_cut_height}}{numeric, threshold for feature independence in clustering.}
-
-\item{\code{pc_outlier_sd}}{numeric, standard deviation for PCA-based sample QC.}
-
-\item{\code{derived_var_exclusion}}{logical, whether to exclude derived variables from Nightingale data.}
-
-\item{\code{xenobiotics_var_exclusion}}{logical, whether to exclude xenobiotics from missingness estimate.}
-
-\item{\code{feature_tree}}{object, hierarchical clustering results for features.}
-
-\item{\code{pcs}}{matrix, principal component scores.}
-
-\item{\code{prob_pcs}}{matrix, probabilities for principal components.}
-
-\item{\code{var_exp}}{matrix, variance explained by each principal component.}
-
-\item{\code{acceleration_factor}}{numeric, acceleration factor for parallel analysis.}
-
-\item{\code{n_parallel}}{numeric, number of parallel components.}
-}}
+\item{\code{project_name}:}{Object of class \code{"character"}, name for this project}
+\item{\code{created}:}{Object of class \code{"POSIXct"}, the timestamp when the \code{Metabolites} object was created}
+}
+}
 
 \examples{
 # Example of importing data into a Metabolites object and running QC
-metabolites <- Metabolites(project_name = "MYPROJECT", format = "metabolon_v1",
-                           filepath = system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2"))
+file <- system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2")
+metabolites <- Metabolites(project_name = "MYPROJECT",
+                           format       = "metabolon_v1",
+                           filepath     = file)
 metabolites <- import_data(metabolites)
-metabolites <- metabolite_qc(metabolites, source="raw", destination="post_qc")
+metabolites <- metabolite_qc(metabolites, source="raw")
 metabolites
 
 }

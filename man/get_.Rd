@@ -8,23 +8,24 @@ get_(
   metabolites,
   slot,
   layer,
-  apply_exclusions = TRUE,
   feature_ids = NULL,
   sample_ids = NULL,
+  drop = FALSE,
   as_df = FALSE
 )
 }
 \arguments{
 \item{metabolites}{An object of class \code{Metabolites}.}
 
-\item{layer}{Character. The layer of data to extract.}
+\item{slot}{the name of the metabolites object slot to extract}
 
-\item{apply_exclusions}{Logical. Whether to exclude samples/features based on the current
-\verb{@exclusions} matrix. Defaults to \code{FALSE}.}
+\item{layer}{Character. The layer of data to extract.}
 
 \item{feature_ids}{Optional. A vector of row names to extract. Defaults to \code{NULL}, meaning all rows are extracted.}
 
 \item{sample_ids}{Optional. A vector of column names to extract. Defaults to \code{NULL}, meaning all columns are extracted.}
+
+\item{drop}{Logical. Whether to drop all NA rows or columns (excluded samples or features)}
 
 \item{as_df}{Logical. Whether to return the result as a \code{data.frame}. Defaults to \code{FALSE} (returns a matrix).}
 }

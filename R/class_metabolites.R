@@ -9,6 +9,7 @@ globalVariables(c(""), package = "metaboprep2")
 #' outlier treatment, and more.
 #'
 #' @param project_name character, the name of the project associated with the data.
+#' @param created POSIXct, the timestamp when the `Metabolites` object was created.
 #' @param filepath character, the file path to the original raw data file.
 #' @param format character, the format of the metabolomic data (e.g., "metabolon_v1").
 #' @param feature_missingness numeric, the proportion (0-1) of missingness in features, used as a QC threshold. Default is 0.2.
@@ -23,12 +24,11 @@ globalVariables(c(""), package = "metaboprep2")
 #' @param pc_outlier_sd numeric, the number of standard deviations from the mean used for PCA-based sample QC. Default is 5. Set to `NA` to exclude PCA-based QC.
 #' @param derived_var_exclusion logical, whether to exclude derived variables (from multiple existing variables) in Nightingale data. Default is `TRUE`.
 #' @param xenobiotics_var_exclusion logical, whether to exclude xenobiotics from missingness estimates. Default is `TRUE`.
-#' @param created POSIXct, the timestamp when the `Metabolites` object was created.
 #' @param source named character, the source for this data layer (e.g., 'raw' for 'post_qc').
 #' @param samples data.table, a data table containing sample-related information (not to be set directly).
 #' @param features data.table, a data table containing feature-related information (not to be set directly).
 #' @param data numeric matrix, the data matrix containing metabolite values (not to be set directly).
-#' @param exclusions multidimensional sparse character matrix, holds exclusion codes for data masking (not to be set directly).
+#' @param exclusions list, holds exclusion codes for data masking (not to be set directly).
 #' @param feature_summary numeric matrix, summary statistics for features (not to be set directly).
 #' @param feature_tree named list of tree objects, hierarchical clustering results for features (not to be set directly).
 #' @param sample_summary numeric matrix, summary statistics for samples (not to be set directly).
@@ -39,12 +39,14 @@ globalVariables(c(""), package = "metaboprep2")
 #' @param n_parallel named numeric, the number of parallel components in the analysis (not to be set directly).
 #'
 #' @slot project_name character, name for this project.
+#' @slot created POSIXct, the timestamp when the `Metabolites` object was created.
 #' @slot filepath character, path to the original raw data file.
-#' @slot source character, a valid metabolomic data source.
+#' @slot format character, a valid metabolomic data source.
 #' @slot samples data.table, the samples data table.
 #' @slot features data.table, the features data table.
 #' @slot data numeric matrix, the metabolite data.
-#' @slot exclusions multidimensional sparse matrix, exclusion codes (mask for data).
+#' @slot source named character, the source for this data layer (e.g., 'raw' for 'post_qc').
+#' @slot exclusions list, exclusion codes (mask for data).
 #' @slot feature_summary numeric matrix, feature summary statistics.
 #' @slot sample_summary numeric matrix, sample summary statistics.
 #' @slot feature_missingness numeric, proportion of missingness in features (QC threshold).
@@ -71,10 +73,12 @@ globalVariables(c(""), package = "metaboprep2")
 #'
 #' @examples
 #' # Example of importing data into a Metabolites object and running QC
-#' metabolites <- Metabolites(project_name = "MYPROJECT", format = "metabolon_v1",
-#'                            filepath = system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2"))
+#' file <- system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2")
+#' metabolites <- Metabolites(project_name = "MYPROJECT",
+#'                            format       = "metabolon_v1",
+#'                            filepath     = file)
 #' metabolites <- import_data(metabolites)
-#' metabolites <- metabolite_qc(metabolites, source="raw", destination="post_qc")
+#' metabolites <- metabolite_qc(metabolites, source="raw")
 #' metabolites
 #'
 #' @export
@@ -102,7 +106,24 @@ Metabolites <- new_class(
     samples               = new_property(class_data.frame, default=quote(data.table::data.table())),
     features              = new_property(class_data.frame, default=quote(data.table::data.table())),
     data                  = class_numeric,
-    exclusions            = new_property(class_any, default=SparseArray::SparseArray(matrix(character())), validator = function(value) if (SparseArray::is_sparse(value)) NULL else "should be a SparseArray"),
+    exclusions            = new_property(class_list,
+                                         default=list(raw = list(samples  = list(extreme_sample_missingness        = character(),
+                                                                                 user_defined_sample_missingness   = character(),
+                                                                                 user_defined_sample_totalpeakarea = character(),
+                                                                                 user_defined_sample_pca_outlier   = character()),
+                                                                 features = list(extreme_feature_missingness       = character(),
+                                                                                 user_defined_feature_missingness  = character()))),
+                                         validator = function(value) {
+                                           if (length(value)==0) return(NULL)
+                                           check_names <- all(sapply(value, function(layer) identical(names(layer), c("samples","features"))))
+                                           check_samp  <- all(sapply(value, function(layer) identical(names(layer[["samples"]]), c("extreme_sample_missingness","user_defined_sample_missingness", "user_defined_sample_totalpeakarea", "user_defined_sample_pca_outlier"))))
+                                           check_feat  <- all(sapply(value, function(layer) identical(names(layer[["features"]]), c("extreme_feature_missingness","user_defined_feature_missingness"))))
+                                           if (check_names && check_samp && check_feat) {
+                                              return(NULL)
+                                           } else {
+                                              return("should be a list of lists with names 'samples' and 'features'. In addition, 'samples' should be a list of character vectors named 'extreme_sample_missingness','user_defined_sample_missingness', 'user_defined_sample_totalpeakarea', 'user_defined_sample_pca_outlier'; and 'features' a list of character vectors named 'extreme_feature_missingness', 'user_defined_feature_missingness'")
+                                           }
+                                         }),
     feature_summary       = class_numeric,
     feature_tree          = class_list,
     sample_summary        = class_numeric,
@@ -150,8 +171,10 @@ Metabolites <- new_class(
 #'
 #' @examples
 #' # Example of importing data into a Metabolites object
-#' metabolites <- Metabolites(project_name = "MYPROJECT", format = "metabolon_v1",
-#'                            filepath = system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2"))
+#' file <- system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2")
+#' metabolites <- Metabolites(project_name = "MYPROJECT",
+#'                            format       = "metabolon_v1",
+#'                            filepath     = file)
 #' metabolites <- import_data(metabolites)
 #'
 #' @export
@@ -189,16 +212,26 @@ method(import_data, Metabolites) <- function(metabolites) {
 #'
 #' @examples
 #' # Example: Adding a new data layer to an existing 3D array
-#' current_stack <- array(1:12, dim = c(3, 4, 1))  # A 3x4 matrix with one layer
-#' new_layer <- matrix(13:16, nrow = 3, ncol = 4)  # A new 3x4 matrix to add
-#' updated_stack <- add_layer(current = current_stack, layer = new_layer, layer_name = "Layer2", force = FALSE)
-#' dim(updated_stack)  # This will now be a 3x4x2 array (3 rows, 4 columns, 2 layers)
+#' current_stack <- array(1:12,
+#'                        dim = c(3, 4, 1),
+#'                        dimnames = list(c(1:3), c(1:4), c(1)))
+#' new_layer <- matrix(13:16, nrow = 3, ncol = 4)
+#' rownames(new_layer) <- 1:3
+#' colnames(new_layer) <- 1:4
+#' updated_stack <- add_layer(current    = current_stack,
+#'                            layer      = new_layer,
+#'                            layer_name = "Layer2",
+#'                            force      = FALSE)
+#' dim(updated_stack)
 #'
 #' # Example with mismatched row/column names (force = TRUE)
 #' rownames(current_stack) <- c("A", "B", "C")
 #' rownames(new_layer) <- c("B", "C", "D")
-#' updated_stack_with_force <- add_layer(current = current_stack, layer = new_layer, layer_name = "Layer2", force = TRUE)
-#' dim(updated_stack_with_force)  # The function will add NA for the missing "A" row in the new layer
+#' updated_stack_with_force <- add_layer(current    = current_stack,
+#'                                       layer      = new_layer,
+#'                                       layer_name = "Layer2",
+#'                                       force      = TRUE)
+#' dim(updated_stack_with_force)
 #'
 #' @export
 add_layer <- function(current, layer, layer_name, force=FALSE) {
@@ -211,10 +244,6 @@ add_layer <- function(current, layer, layer_name, force=FALSE) {
     layer <- array(layer,
                    dim = c(nrow(layer), ncol(layer), 1),
                    dimnames = list(rownames(layer), colnames(layer), layer_name))
-  } else if (inherits(layer, "SparseMatrix")) {
-    layer <- SparseArray::SparseArray(array(layer,
-                                            dim = c(nrow(layer), ncol(layer), 1),
-                                            dimnames = list(rownames(layer), colnames(layer), layer_name)))
   }
 
   # If current is empty, initialize it directly with the first layer (no NAs)
@@ -230,15 +259,13 @@ add_layer <- function(current, layer, layer_name, force=FALSE) {
     if (force) {
       all_rows <- union(rownames(current), rownames(layer))
       all_cols <- union(colnames(current), colnames(layer))
-      current_expanded <- array(NA_character_,
+      current_expanded <- array(NA_real_,
                                 dim = c(length(all_rows), length(all_cols), dim(current)[3]),
-                                dimnames = list(all_rows, all_cols, dimnames(current)[[3]])
-      )
+                                dimnames = list(all_rows, all_cols, dimnames(current)[[3]]))
       current_expanded[rownames(current), colnames(current), ] <- current
-      layer_expanded <- array(NA_character_,
+      layer_expanded <- array(NA_real_,
                               dim = c(length(all_rows), length(all_cols), 1),
-                              dimnames = list(all_rows, all_cols, layer_name)
-      )
+                              dimnames = list(all_rows, all_cols, layer_name))
       layer_expanded[rownames(layer), colnames(layer), ] <- layer
       current <- current_expanded
       layer <- layer_expanded
@@ -267,14 +294,8 @@ add_layer <- function(current, layer, layer_name, force=FALSE) {
                                        colnames(layer),
                                        c(dimnames(current)[[3]], layer_name)))
 
-    } else if (inherits(current, "SparseArray")) {
-
-      current <- SparseArray::abind(current, layer)
-
     } else {
-
       stop("why is current not an array or sparse array")
-
     }
 
   }
@@ -282,123 +303,6 @@ add_layer <- function(current, layer, layer_name, force=FALSE) {
   return(current)
 }
 
-
-#' @title Get Exclusion Codes
-#'
-#' @description
-#' This function retrieves the available exclusion codes and their corresponding descriptions.
-#' It returns a named list where each exclusion code is paired with a description of its meaning.
-#'
-#' @param verbose A logical value indicating whether to print additional information.
-#' Defaults to `FALSE` (no printing). If `TRUE`, additional details about the exclusion codes may be printed.
-#'
-#' @return A named list where the names are the exclusion descriptions and the values are the corresponding codes.
-#'
-#' @importFrom utils str
-#'
-#' @examples
-#' get_exclusion_codes()
-#'
-#' @export
-get_exclusion_codes <- function(verbose=TRUE) {
-
-  l <- list("derived_feature" = 1,
-            "xenobiotic_feature" = 2,
-            "extreme_sample_missingness" = 3,
-            "extreme_feature_missingness" = 4,
-             "user_defined_sample_missingness" = 5,
-             "user_defined_feature_missingness" = 6,
-             "user_defined_sample_totalpeakarea" = 7,
-             "user_defined_sample_pca_outlier" = 8,
-             "outlier_udist_turned_na" = 9,
-             "outlier_udist_winsorized" = 10)
-
-  if (verbose) {
-    utils::str(l)
-  }
-
-  invisible(l)
-}
-
-
-#' @title Update Exclusions in a Metabolites Object
-#'
-#' @description
-#' Updates the exclusions in a `Metabolites` object based on a specified type of data and exclusions code.
-#' This function allows for the modification of sample and feature exclusions based on the provided parameters.
-#'
-#' @param metabolites An object of class `Metabolites` to update exclusions.
-#' @param type A character string specifying the type of data to exclude (e.g., "raw", "post_qc").
-#' @param code An integer representing the exclusions code that defines the type of exclusion to apply.
-#' @param feature_ids (optional) A vector of row names (features) to exclude. Defaults to `NULL`, meaning all rows will be considered.
-#' @param sample_ids (optional) A vector of column names (samples) to exclude. Defaults to `NULL`, meaning all columns will be considered.
-#' @param arr_ids A logical value indicating whether the provided `feature_ids` and `sample_ids` are array indices (default is `FALSE`).
-#'
-#' @importFrom SparseArray SparseArray
-#'
-#' @return The function returns an updated `Metabolites` object with modified exclusions.
-#'
-#' @examples
-#' metabolites <- Metabolites(project_name = "MYPROJECT",
-#'                            format = "metabolon_v1",
-#'                            filepath = system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2"))
-#' metabolites <- import_data(metabolites)
-#' update_exclusions(metabolites, type = "post_qc", code = 1)
-#'
-#' @export
-update_exclusions <- new_generic("update_exclusions", c("metabolites", "type"), function(metabolites, type, code, sample_ids = NULL, feature_ids = NULL, arr_ids = FALSE) { S7_dispatch() })
-#' @name update_exclusions
-method(update_exclusions, list(Metabolites, class_character)) <- function(metabolites, type, code, sample_ids = NULL, feature_ids = NULL, arr_ids = FALSE) {
-
-  # create exclusions matrix if doesn't exist
-  if (length(metabolites@exclusions) == 0 || !type %in% dimnames(metabolites@exclusions)[[3]]) {
-    excl_mat <- SparseArray::SparseArray(array("", dim = c(dim(metabolites@data)[1:2], 1),
-                                                   dimnames = c(dimnames(metabolites@data)[1:2], type)),
-                                         type="character")
-    metabolites@exclusions <- add_layer(current    = metabolites@exclusions,
-                                        layer      = excl_mat,
-                                        layer_name = type)
-  }
-
-
-  # subassignment doesnt work well with sparse arrays
-  update <- function(mat, s, f) {
-    dense_array  <- as.array(mat)
-    subset_array <- dense_array[s, f, type]
-    subset_array <- sub("^,", "", paste0(subset_array, ",", code))
-    dense_array[s, f, type] <- subset_array
-    mat <- SparseArray::SparseArray(dense_array, type="character")
-    return(mat)
-  }
-
-  # exclude some samples for some features and vice versa
-  if (arr_ids) {
-    stopifnot("Indicated sample_ids and feature_ids are array IDs, but they are of different lengths" = !is.null(feature_ids) && !is.null(sample_ids) && length(sample_ids)==length(feature_ids))
-
-    s <- which( rownames(metabolites@exclusions) %in% sample_ids )
-    f <- which( colnames(metabolites@exclusions) %in% feature_ids )
-    metabolites@exclusions <- update(metabolites@exclusions, s, f)
-
-  } else {
-
-    # exclude samples for all features
-    if (!is.null(sample_ids) && length(sample_ids) > 0) {
-      s <- which( rownames(metabolites@exclusions) %in% sample_ids )
-      f <- seq_len(ncol(metabolites@exclusions))
-      metabolites@exclusions <- update(metabolites@exclusions, s, f)
-    }
-
-    # exclude features for all samples
-    if (!is.null(feature_ids) && length(feature_ids) > 0) {
-      f <- which( colnames(metabolites@exclusions) %in% feature_ids )
-      s <- seq_len(nrow(metabolites@exclusions))
-      metabolites@exclusions <- update(metabolites@exclusions, s, f)
-    }
-
-  }
-
-  return(metabolites)
-}
 
 
 #' @title Internal Data Extraction Helper
@@ -411,23 +315,22 @@ method(update_exclusions, list(Metabolites, class_character)) <- function(metabo
 #' \link{get_prob_pcs}, \link{get_acceleration_factor}, and \link{get_n_parallel}.
 #'
 #' @param metabolites An object of class `Metabolites`.
+#' @param slot the name of the metabolites object slot to extract
 #' @param layer Character. The layer of data to extract.
-#' @param apply_exclusions Logical. Whether to exclude samples/features based on the current
-#'   `@exclusions` matrix. Defaults to `FALSE`.
 #' @param feature_ids Optional. A vector of row names to extract. Defaults to `NULL`, meaning all rows are extracted.
 #' @param sample_ids Optional. A vector of column names to extract. Defaults to `NULL`, meaning all columns are extracted.
 #' @param as_df Logical. Whether to return the result as a `data.frame`. Defaults to `FALSE` (returns a matrix).
+#' @param drop Logical. Whether to drop all NA rows or columns (excluded samples or features)
 #'
 #' @return A matrix or a `data.frame` containing the extracted data.
 #'
 #' @importFrom glue glue
 #'
-get_ <- new_generic("get_", c("metabolites", "slot", "layer"), function(metabolites, slot, layer, apply_exclusions = TRUE, feature_ids = NULL, sample_ids = NULL, as_df = FALSE) { S7_dispatch() })
+get_ <- new_generic("get_", c("metabolites", "slot", "layer"), function(metabolites, slot, layer, feature_ids = NULL, sample_ids = NULL, drop=FALSE, as_df = FALSE) { S7_dispatch() })
 #' @name get_
-method(get_, list(Metabolites, class_character, class_character)) <- function(metabolites, slot, layer, apply_exclusions = TRUE, feature_ids = NULL, sample_ids = NULL, as_df = FALSE) {
+method(get_, list(Metabolites, class_character, class_character)) <- function(metabolites, slot, layer, feature_ids = NULL, sample_ids = NULL, drop=FALSE, as_df = FALSE) {
 
   # check
-  stopifnot("`apply_exclusions` should be a logical" = is.logical(apply_exclusions))
   stopifnot("`as_df` should be a logical" = is.logical(as_df))
   slot <- match.arg(slot, choices = c("data", "samples", "features", "feature_summary", "sample_summary",
                                       "feature_tree", "pcs", "prob_pcs", "var_exp", "acceleration_factor",
@@ -464,42 +367,24 @@ method(get_, list(Metabolites, class_character, class_character)) <- function(me
     data <- data[[layer]]
   }
 
-  # empty exclusions
-  ex_f <- integer()
-  ex_s <- integer()
-
-  # get exclusions if requested and present
-  if (apply_exclusions && layer %in% dimnames(metabolites@exclusions)[[3]] && grepl("array|data\\.table|data\\.frame", slot_type)) {
-    excl <- metabolites@exclusions[, , layer]
-    ex_f <- which(apply(excl, 2, function(x) all(x!=""))) # all not empty, i.e. an exclusion
-    ex_s <- which(apply(excl, 1, function(x) all(x!=""))) # all not empty, i.e. an exclusion
-  }
-
   # subset matrix by features and samples (cant subset var_exp)
   if (slot_type == "array" && slot != "var_exp") {
 
     # feature exclusions (if pcs matrix cols are PCs not features, so ignore)
-    if (length(ex_f) > 0 && !slot %in% c("pcs", "prob_pcs")) {
-      data <- data[, -ex_f, drop = FALSE]
-    }
+    cols_are_not_features <- c("pcs", "prob_pcs", "samples", "sample_summary")
 
     # requested feature filtering
-    if (!is.null(feature_ids) && !slot %in% c("pcs", "prob_pcs")) {
+    if (!is.null(feature_ids) && !slot %in% cols_are_not_features) {
       if (!all(feature_ids %in% colnames(data))) {
-        stop("Error: Some of the specified feature names are not found in colnames(data). If apply_exclusions==TRUE, check they are not excluded for some reason.")
+        stop("Error: Some of the specified feature names are not found in colnames(data).")
       }
       data <- data[, feature_ids, drop = FALSE]
-    }
-
-    # sample exclusions
-    if (length(ex_s) > 0) {
-      data <- data[-ex_s, , drop = FALSE]
     }
 
     # requested sample filtering
     if (!is.null(sample_ids)) {
       if (!all(sample_ids %in% rownames(data))) {
-        stop("Error: Some of the specified sample names are not found in rownames(data). If apply_exclusions==TRUE, check they are not excluded for some reason.")
+        stop("Error: Some of the specified sample names are not found in rownames(data).")
       }
       data <- data[sample_ids, , drop = FALSE]
     }
@@ -507,30 +392,32 @@ method(get_, list(Metabolites, class_character, class_character)) <- function(me
   # subset tables by features or samples
   } else if (grepl("data\\.table|data\\.frame", slot_type)) {
 
-    if (length(ex_f) > 0 && "feature_id" %in% names(data)) {
-      data <- data[feature_id %in% colnames(excl)[-ex_f], ]
-    }
-
     # requested feature filtering
     if (!is.null(feature_ids) && "feature_id" %in% names(data)) {
       if (!all(feature_ids %in% data[, feature_id])) {
-        stop("Error: Some of the specified feature names are not found in data[, feature_id]. If apply_exclusions==TRUE, check they are not excluded for some reason.")
+        stop("Error: Some of the specified feature names are not found in data[, feature_id].")
       }
       data <- data[feature_id %in% feature_ids, ]
-    }
-
-    if (length(ex_s) > 0 && "sample_id" %in% names(data)) {
-      data <- data[sample_id %in% rownames(excl)[-ex_s], ]
     }
 
     # requested sample filtering
     if (!is.null(sample_ids) && "sample_id" %in% names(data)) {
       if (!all(sample_ids %in% data[, sample_id])) {
-        stop("Error: Some of the specified sample names are not found in data[, sample_id]. If apply_exclusions==TRUE, check they are not excluded for some reason.")
+        stop("Error: Some of the specified sample names are not found in data[, sample_id].")
       }
       data <- data[sample_id %in% sample_ids, ]
     }
 
+  }
+
+  # drop all NAs
+  if (drop) {
+    if (is.vector(data)) {
+      data <- data[!is.na(data)]
+    } else if (is.matrix(data)) {
+      data <- data[rowSums(is.na(data)) < ncol(data), , drop = FALSE]
+      data <- data[, colSums(is.na(data)) < nrow(data), drop = FALSE]
+    }
   }
 
   # return as data.frame
@@ -552,17 +439,19 @@ method(get_, list(Metabolites, class_character, class_character)) <- function(me
 #' @param layer A character string specifying the data layer from which to extract the acceleration factor.
 #' @return An `integer` representing the result of the parallel analysis for the specified `layer`.
 #' @examples
+#' file <- system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2")
 #' metabolites <- Metabolites(project_name = "MYPROJECT",
 #'                            format       = "metabolon_v1",
-#'                            filepath     = system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2"))
+#'                            filepath     = file)
 #' metabolites <- import_data(metabolites)
-#' metabolites <- metabolite_qc(metabolites, source="raw", destination="post_qc")
+#' metabolites <- metabolite_qc(metabolites, source="raw")
 #' get_n_parallel(metabolites, layer = "post_qc")
+#' @export
 get_n_parallel <- new_generic("get_n_parallel", c("metabolites", "layer"), function(metabolites, layer) { S7_dispatch() })
 #' @name get_n_parallel
 method(get_n_parallel, list(Metabolites, class_character)) <- function(metabolites, layer) {
 
-  return(get_(metabolites, slot="n_parallel", layer=layer, apply_exclusions=FALSE, feature_ids=NULL, sample_ids=NULL, as_df=FALSE))
+  return(get_(metabolites, slot="n_parallel", layer=layer, feature_ids=NULL, sample_ids=NULL, drop=FALSE, as_df=FALSE))
 
 }
 
@@ -573,18 +462,19 @@ method(get_n_parallel, list(Metabolites, class_character)) <- function(metabolit
 #' @param layer A character string specifying the data layer from which to extract the acceleration factor.
 #' @return An `integer` representing the acceleration factor for the specified `layer`.
 #' @examples
+#' file <- system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2")
 #' metabolites <- Metabolites(project_name = "MYPROJECT",
 #'                            format       = "metabolon_v1",
-#'                            filepath     = system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2"))
+#'                            filepath     = file)
 #' metabolites <- import_data(metabolites)
-#' metabolites <- metabolite_qc(metabolites, source="raw", destination="post_qc")
+#' metabolites <- metabolite_qc(metabolites, source="raw")
 #' get_acceleration_factor(metabolites, layer = "post_qc")
 #' @export
 get_acceleration_factor <- new_generic("get_acceleration_factor", c("metabolites", "layer"), function(metabolites, layer) { S7_dispatch() })
 #' @name get_acceleration_factor
 method(get_acceleration_factor, list(Metabolites, class_character)) <- function(metabolites, layer) {
 
-  return(get_(metabolites, slot="acceleration_factor", layer=layer, apply_exclusions=FALSE, feature_ids=NULL, sample_ids=NULL, as_df=FALSE))
+  return(get_(metabolites, slot="acceleration_factor", layer=layer, feature_ids=NULL, sample_ids=NULL, drop=FALSE, as_df=FALSE))
 
 }
 
@@ -597,26 +487,27 @@ method(get_acceleration_factor, list(Metabolites, class_character)) <- function(
 #'
 #' @param metabolites A `Metabolites` object containing the probabilistic PC data.
 #' @param layer A character string specifying the data layer from which to extract the probabilistic PCs.
-#' @param apply_exclusions Logical. Whether to exclude samples/features based on the current `@exclusions` matrix.
 #' @param sample_ids Optional. A vector of column names to extract. Defaults to `NULL`, meaning all columns are included.
+#' @param drop Logical. Whether to drop completely NA rows (i.e. excluded)
 #' @param as_df Logical. Whether to return the result as a `data.frame`. Defaults to `FALSE`, returning a matrix.
 #'
 #' @return A matrix or `data.frame` (if `as_df = TRUE`) containing the probabilistic principal components.
 #'
 #' @examples
+#' file <- system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2")
 #' metabolites <- Metabolites(project_name = "MYPROJECT",
 #'                            format       = "metabolon_v1",
-#'                            filepath     = system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2"))
+#'                            filepath     = file)
 #' metabolites <- import_data(metabolites)
-#' metabolites <- metabolite_qc(metabolites, source="raw", destination="post_qc")
+#' metabolites <- metabolite_qc(metabolites, source="raw")
 #' get_prob_pcs(metabolites, layer = "post_qc")
 #'
 #' @export
-get_prob_pcs <- new_generic("get_prob_pcs", c("metabolites", "layer"), function(metabolites, layer, apply_exclusions = TRUE, sample_ids = NULL, as_df = FALSE) { S7_dispatch() })
+get_prob_pcs <- new_generic("get_prob_pcs", c("metabolites", "layer"), function(metabolites, layer, sample_ids = NULL, drop=FALSE, as_df = FALSE) { S7_dispatch() })
 #' @name get_prob_pcs
-method(get_prob_pcs, list(Metabolites, class_character)) <- function(metabolites, layer, apply_exclusions = TRUE, sample_ids = NULL, as_df = FALSE) {
+method(get_prob_pcs, list(Metabolites, class_character)) <- function(metabolites, layer, sample_ids = NULL, drop=FALSE, as_df = FALSE) {
 
-  return(get_(metabolites, slot="prob_pcs", layer=layer, apply_exclusions=apply_exclusions, feature_ids=NULL, sample_ids=sample_ids, as_df=as_df))
+  return(get_(metabolites, slot="prob_pcs", layer=layer, feature_ids=NULL, sample_ids=sample_ids, drop=drop, as_df=as_df))
 
 }
 
@@ -629,26 +520,58 @@ method(get_prob_pcs, list(Metabolites, class_character)) <- function(metabolites
 #'
 #' @param metabolites A `Metabolites` object containing the principal component data.
 #' @param layer A character string specifying the data layer from which to extract the PCs.
-#' @param apply_exclusions Logical. Whether to exclude samples/features based on the current `@exclusions` matrix.
 #' @param sample_ids Optional. A vector of column names to extract. Defaults to `NULL`, meaning all columns are included.
+#' @param drop Logical. Whether to drop completely NA rows (i.e. excluded)
 #' @param as_df Logical. Whether to return the result as a `data.frame`. Defaults to `FALSE`, returning a matrix.
 #'
 #' @return A matrix or `data.frame` (if `as_df = TRUE`) containing the principal components.
 #'
 #' @examples
+#' file <- system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2")
 #' metabolites <- Metabolites(project_name = "MYPROJECT",
 #'                            format       = "metabolon_v1",
-#'                            filepath     = system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2"))
+#'                            filepath     = file)
 #' metabolites <- import_data(metabolites)
-#' metabolites <- metabolite_qc(metabolites, source="raw", destination="post_qc")
+#' metabolites <- metabolite_qc(metabolites, source="raw")
 #' get_pcs(metabolites, layer = "post_qc")
 #'
 #' @export
-get_pcs <- new_generic("get_pcs", c("metabolites", "layer"), function(metabolites, layer, apply_exclusions = TRUE, sample_ids = NULL, as_df = FALSE) { S7_dispatch() })
+get_pcs <- new_generic("get_pcs", c("metabolites", "layer"), function(metabolites, layer, sample_ids = NULL, drop=FALSE, as_df = FALSE) { S7_dispatch() })
 #' @name get_pcs
-method(get_pcs, list(Metabolites, class_character)) <- function(metabolites, layer, apply_exclusions = TRUE, sample_ids = NULL, as_df = FALSE) {
+method(get_pcs, list(Metabolites, class_character)) <- function(metabolites, layer, sample_ids = NULL, drop=FALSE, as_df = FALSE) {
 
-  return(get_(metabolites, slot="pcs", layer=layer, apply_exclusions=apply_exclusions, feature_ids=NULL, sample_ids=sample_ids, as_df=as_df))
+  return(get_(metabolites, slot="pcs", layer=layer, feature_ids=NULL, sample_ids=sample_ids, drop=drop, as_df=as_df))
+
+}
+
+
+#' @title Retrieve Variance Explained by PCs
+#'
+#' @description
+#' Extracts the variance explained by each principal components (PCs) from a `Metabolites` object
+#' for a specified data `layer`, with optional exclusions and subsetting.
+#'
+#' @param metabolites A `Metabolites` object containing the principal component data.
+#' @param layer A character string specifying the data layer from which to extract the PCs.
+#' @param as_df Logical. Whether to return the result as a `data.frame`. Defaults to `FALSE`, returning a matrix.
+#'
+#' @return A matrix or `data.frame` (if `as_df = TRUE`) containing the principal components.
+#'
+#' @examples
+#' file <- system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2")
+#' metabolites <- Metabolites(project_name = "MYPROJECT",
+#'                            format       = "metabolon_v1",
+#'                            filepath     = file)
+#' metabolites <- import_data(metabolites)
+#' metabolites <- metabolite_qc(metabolites, source="raw")
+#' get_var_exp(metabolites, layer = "post_qc")
+#'
+#' @export
+get_var_exp <- new_generic("get_var_exp", c("metabolites", "layer"), function(metabolites, layer, as_df = FALSE) { S7_dispatch() })
+#' @name get_var_exp
+method(get_var_exp, list(Metabolites, class_character)) <- function(metabolites, layer, as_df = FALSE) {
+
+  return(get_(metabolites, slot="var_exp", layer=layer, feature_ids=NULL, sample_ids=NULL, drop=FALSE, as_df=as_df))
 
 }
 
@@ -665,11 +588,12 @@ method(get_pcs, list(Metabolites, class_character)) <- function(metabolites, lay
 #' @return A hierarchical clustering object (`hclust`) or a `data.frame` (if `as_df = TRUE`) containing feature tree data.
 #'
 #' @examples
+#' file <- system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2")
 #' metabolites <- Metabolites(project_name = "MYPROJECT",
 #'                            format       = "metabolon_v1",
-#'                            filepath     = system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2"))
+#'                            filepath     = file)
 #' metabolites <- import_data(metabolites)
-#' metabolites <- metabolite_qc(metabolites, source="raw", destination="post_qc")
+#' metabolites <- metabolite_qc(metabolites, source="raw")
 #' get_feature_tree(metabolites, layer = "post_qc")
 #'
 #' @export
@@ -677,7 +601,7 @@ get_feature_tree <- new_generic("get_feature_tree", c("metabolites", "layer"), f
 #' @name get_feature_tree
 method(get_feature_tree, list(Metabolites, class_character)) <- function(metabolites, layer) {
 
-  return(get_(metabolites, slot="feature_tree", layer=layer, apply_exclusions=FALSE, feature_ids=NULL, sample_ids=NULL, as_df=FALSE))
+  return(get_(metabolites, slot="feature_tree", layer=layer, feature_ids=NULL, sample_ids=NULL, drop=FALSE, as_df=FALSE))
 
 }
 
@@ -690,27 +614,27 @@ method(get_feature_tree, list(Metabolites, class_character)) <- function(metabol
 #'
 #' @param metabolites A `Metabolites` object containing feature data.
 #' @param layer A character string specifying the data layer from which to extract features.
-#' @param apply_exclusions Logical. Whether to exclude samples/features based on the current `@exclusions` matrix.
 #' @param feature_ids Optional. A vector of row names to extract. Defaults to `NULL`, meaning all rows are included.
 #' @param as_df Logical. Whether to return the result as a `data.frame`. Defaults to `FALSE`, returning a matrix.
 #'
 #' @return A data.table or `data.frame` (if `as_df = TRUE`) containing feature data for the specified `layer`.
 #'
 #' @examples
+#' file <- system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2")
 #' metabolites <- Metabolites(project_name = "MYPROJECT",
 #'                            format       = "metabolon_v1",
-#'                            filepath     = system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2"))
+#'                            filepath     = file)
 #' metabolites <- import_data(metabolites)
-#' metabolites <- metabolite_qc(metabolites, source="raw", destination="post_qc")
+#' metabolites <- metabolite_qc(metabolites, source="raw")
 #' get_features(metabolites, layer = "post_qc")
 #'
 #' @export
 
-get_features <- new_generic("get_features", c("metabolites", "layer"), function(metabolites, layer, apply_exclusions = TRUE, feature_ids = NULL, as_df = FALSE) { S7_dispatch() })
+get_features <- new_generic("get_features", c("metabolites", "layer"), function(metabolites, layer, feature_ids = NULL, as_df = FALSE) { S7_dispatch() })
 #' @name get_features
-method(get_features, list(Metabolites, class_character)) <- function(metabolites, layer, apply_exclusions = TRUE, feature_ids = NULL, as_df = FALSE) {
+method(get_features, list(Metabolites, class_character)) <- function(metabolites, layer, feature_ids = NULL, as_df = FALSE) {
 
-  return(get_(metabolites, slot="features", layer=layer, apply_exclusions=apply_exclusions, feature_ids=feature_ids, sample_ids=NULL, as_df=as_df))
+  return(get_(metabolites, slot="features", layer=layer, feature_ids=feature_ids, sample_ids=NULL, drop=FALSE, as_df=as_df))
 
 }
 
@@ -723,26 +647,26 @@ method(get_features, list(Metabolites, class_character)) <- function(metabolites
 #'
 #' @param metabolites A `Metabolites` object containing sample data.
 #' @param layer A character string specifying the data layer from which to extract samples.
-#' @param apply_exclusions Logical. Whether to exclude samples/features based on the current `@exclusions` matrix.
 #' @param sample_ids Optional. A vector of column names to extract. Defaults to `NULL`, meaning all columns are included.
 #' @param as_df Logical. Whether to return the result as a `data.frame`. Defaults to `FALSE`, returning a matrix.
 #'
 #' @return A matrix or `data.frame` (if `as_df = TRUE`) containing sample data for the specified `layer`.
 #'
 #' @examples
+#' file <- system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2")
 #' metabolites <- Metabolites(project_name = "MYPROJECT",
 #'                            format       = "metabolon_v1",
-#'                            filepath     = system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2"))
+#'                            filepath     = file)
 #' metabolites <- import_data(metabolites)
-#' metabolites <- metabolite_qc(metabolites, source="raw", destination="post_qc")
+#' metabolites <- metabolite_qc(metabolites, source="raw")
 #' get_samples(metabolites, layer = "post_qc")
 #'
 #' @export
-get_samples <- new_generic("get_samples", c("metabolites", "layer"), function(metabolites, layer, apply_exclusions = TRUE, sample_ids = NULL, as_df = FALSE) { S7_dispatch() })
+get_samples <- new_generic("get_samples", c("metabolites", "layer"), function(metabolites, layer, sample_ids = NULL, as_df = FALSE) { S7_dispatch() })
 #' @name get_samples
-method(get_samples, list(Metabolites, class_character)) <- function(metabolites, layer, apply_exclusions = TRUE, sample_ids = NULL, as_df = FALSE) {
+method(get_samples, list(Metabolites, class_character)) <- function(metabolites, layer, sample_ids = NULL, as_df = FALSE) {
 
-  return(get_(metabolites, slot="samples", layer=layer, apply_exclusions=apply_exclusions, feature_ids=NULL, sample_ids=sample_ids, as_df=as_df))
+  return(get_(metabolites, slot="samples", layer=layer, feature_ids=NULL, sample_ids=sample_ids, drop=FALSE, as_df=as_df))
 
 }
 
@@ -755,26 +679,27 @@ method(get_samples, list(Metabolites, class_character)) <- function(metabolites,
 #'
 #' @param metabolites A `Metabolites` object containing feature summary data.
 #' @param layer A character string specifying the data layer from which to extract feature summary data.
-#' @param apply_exclusions Logical. Whether to exclude samples/features based on the current `@exclusions` matrix.
 #' @param feature_ids Optional. A vector of row names (features) to extract. Defaults to `NULL`, meaning all features are included.
+#' @param drop Logical. Whether to drop all NA (excluded features)
 #' @param as_df Logical. Whether to return the result as a `data.frame`. Defaults to `FALSE`, meaning the result is returned as a matrix.
 #'
 #' @return A matrix or `data.frame` (if `as_df = TRUE`) containing the feature summary data for the specified `layer`.
 #'
 #' @examples
+#' file <- system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2")
 #' metabolites <- Metabolites(project_name = "MYPROJECT",
 #'                            format       = "metabolon_v1",
-#'                            filepath     = system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2"))
+#'                            filepath     = file)
 #' metabolites <- import_data(metabolites)
-#' metabolites <- metabolite_qc(metabolites, source="raw", destination="post_qc")
+#' metabolites <- metabolite_qc(metabolites, source="raw")
 #' get_feature_summary(metabolites, layer = "post_qc")
 #'
 #' @export
-get_feature_summary <- new_generic("get_feature_summary", c("metabolites", "layer"), function(metabolites, layer, apply_exclusions = TRUE, feature_ids = NULL, as_df = FALSE) { S7_dispatch() })
+get_feature_summary <- new_generic("get_feature_summary", c("metabolites", "layer"), function(metabolites, layer, feature_ids = NULL, drop=FALSE, as_df = FALSE) { S7_dispatch() })
 #' @name get_feature_summary
-method(get_feature_summary, list(Metabolites, class_character)) <- function(metabolites, layer, apply_exclusions = TRUE, feature_ids = NULL, as_df = FALSE) {
+method(get_feature_summary, list(Metabolites, class_character)) <- function(metabolites, layer, feature_ids = NULL, drop=FALSE, as_df = FALSE) {
 
-  return(get_(metabolites, slot="feature_summary", layer=layer, apply_exclusions=apply_exclusions, feature_ids=feature_ids, sample_ids=NULL, as_df=as_df))
+  return(get_(metabolites, slot="feature_summary", layer=layer, feature_ids=feature_ids, sample_ids=NULL, drop=drop, as_df=as_df))
 
 }
 
@@ -787,27 +712,27 @@ method(get_feature_summary, list(Metabolites, class_character)) <- function(meta
 #'
 #' @param metabolites A `Metabolites` object containing sample summary data.
 #' @param layer A character string specifying the data layer from which to extract sample summary data.
-#' @param apply_exclusions Logical. Whether to exclude samples/features based on the current `@exclusions` matrix.
-#' @param feature_ids Optional. A vector of row names (features) to extract. Defaults to `NULL`, meaning all features are included.
 #' @param sample_ids Optional. A vector of column names (samples) to extract. Defaults to `NULL`, meaning all samples are included.
+#' @param drop Logical. Whether to drop all NA (excluded samples)
 #' @param as_df Logical. Whether to return the result as a `data.frame`. Defaults to `FALSE`, meaning the result is returned as a matrix.
 #'
 #' @return A matrix or `data.frame` (if `as_df = TRUE`) containing the sample summary data for the specified `layer`.
 #'
 #' @examples
+#' file <- system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2")
 #' metabolites <- Metabolites(project_name = "MYPROJECT",
 #'                            format       = "metabolon_v1",
-#'                            filepath     = system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2"))
+#'                            filepath     = file)
 #' metabolites <- import_data(metabolites)
-#' metabolites <- metabolite_qc(metabolites, source="raw", destination="post_qc")
+#' metabolites <- metabolite_qc(metabolites, source="raw")
 #' get_sample_summary(metabolites, layer = "post_qc")
 #'
 #' @export
-get_sample_summary <- new_generic("get_sample_summary", c("metabolites", "layer"), function(metabolites, layer, apply_exclusions = TRUE, sample_ids = NULL, as_df = FALSE) { S7_dispatch() })
+get_sample_summary <- new_generic("get_sample_summary", c("metabolites", "layer"), function(metabolites, layer, sample_ids = NULL, drop=FALSE, as_df = FALSE) { S7_dispatch() })
 #' @name get_sample_summary
-method(get_sample_summary, list(Metabolites, class_character)) <- function(metabolites, layer, apply_exclusions = TRUE, sample_ids = NULL, as_df = FALSE) {
+method(get_sample_summary, list(Metabolites, class_character)) <- function(metabolites, layer, sample_ids = NULL, drop=FALSE, as_df = FALSE) {
 
-  return(get_(metabolites, slot="sample_summary", layer=layer, apply_exclusions=apply_exclusions, feature_ids=NULL, sample_ids=sample_ids, as_df=as_df))
+  return(get_(metabolites, slot="sample_summary", layer=layer, feature_ids=NULL, sample_ids=sample_ids, drop=drop, as_df=as_df))
 
 }
 
@@ -821,27 +746,28 @@ method(get_sample_summary, list(Metabolites, class_character)) <- function(metab
 #'
 #' @param metabolites A `Metabolites` object containing the data to be extracted.
 #' @param layer A character string specifying the data layer to extract (e.g., `"raw"`, `"post_qc"`, etc.).
-#' @param apply_exclusions Logical. If `TRUE`, excludes samples and/or features based on the current `@exclusions` matrix. Default is `TRUE`.
 #' @param feature_ids Optional. A vector of row names (features) to extract. Defaults to `NULL`, meaning all features are included.
 #' @param sample_ids Optional. A vector of column names (samples) to extract. Defaults to `NULL`, meaning all samples are included.
+#' @param drop Logical. Whether to drop all NA rows or columns (excluded samples or features)
 #' @param as_df Logical. If `TRUE`, the result is returned as a `data.frame`; otherwise, the result is returned as a matrix. Default is `FALSE`.
 #'
 #' @return A matrix (or `data.frame`, if `as_df = TRUE`) containing the requested data for the specified `layer` and subsetting conditions.
 #'
 #' @examples
+#' file <- system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2")
 #' metabolites <- Metabolites(project_name = "MYPROJECT",
-#'                            format = "metabolon_v1",
-#'                            filepath = system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2"))
+#'                            format       = "metabolon_v1",
+#'                            filepath     = file)
 #' metabolites <- import_data(metabolites)
-#' metabolites <- metabolite_qc(metabolites, source="raw", destination="post_qc")
-#' get_data(metabolites, layer = "post_qc", apply_exclusions = TRUE)
+#' metabolites <- metabolite_qc(metabolites, source="raw")
+#' get_data(metabolites, layer = "post_qc")
 #'
 #' @export
-get_data <- new_generic("get_data", c("metabolites", "layer"), function(metabolites, layer, apply_exclusions = TRUE, feature_ids = NULL, sample_ids = NULL, as_df = FALSE) { S7_dispatch() })
+get_data <- new_generic("get_data", c("metabolites", "layer"), function(metabolites, layer, feature_ids = NULL, sample_ids = NULL, drop=FALSE, as_df = FALSE) { S7_dispatch() })
 #' @name get_data
-method(get_data, list(Metabolites, class_character)) <- function(metabolites, layer, apply_exclusions = TRUE, feature_ids = NULL, sample_ids = NULL, as_df = FALSE) {
+method(get_data, list(Metabolites, class_character)) <- function(metabolites, layer, feature_ids = NULL, sample_ids = NULL, drop=FALSE, as_df = FALSE) {
 
-  return(get_(metabolites, slot="data", layer=layer, apply_exclusions=apply_exclusions, feature_ids=feature_ids, sample_ids=sample_ids, as_df=as_df))
+  return(get_(metabolites, slot="data", layer=layer, feature_ids=feature_ids, sample_ids=sample_ids, drop=drop, as_df=as_df))
 
 }
 
@@ -861,9 +787,10 @@ method(get_data, list(Metabolites, class_character)) <- function(metabolites, la
 #' @return This function does not return a value. It writes the data to the specified directory as a file (e.g., CSV).
 #'
 #' @examples
+#' file <- system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2")
 #' metabolites <- Metabolites(project_name = "MYPROJECT",
-#'                            format = "metabolon_v1",
-#'                            filepath = system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2"))
+#'                            format       = "metabolon_v1",
+#'                            filepath     = file)
 #' metabolites <- import_data(metabolites)
 #' \dontrun{
 #' # Specify the directory to export the data
@@ -895,120 +822,4 @@ method(export_data, list(Metabolites, class_character)) <- function(metabolites,
   }
 
   invisible(metabolites)
-}
-
-
-#' @title Printing
-#' @name str
-#' @export
-method(str, Metabolites) <- function(x, ...) {
-
-  # Retrieve the metadata from the object
-  project_name <- x@project_name
-  filepath <- x@filepath
-  feature_missingness <- x@feature_missingness
-  sample_missingness <- x@sample_missingness
-  total_peak_area_sd <- x@total_peak_area_sd
-  outlier_udist <- x@outlier_udist
-  outlier_treatment <- x@outlier_treatment
-  winsorize_quantile <- x@winsorize_quantile
-  tree_cut_height <- x@tree_cut_height
-  pc_outlier_sd <- x@pc_outlier_sd
-  derived_var_exclusion <- x@derived_var_exclusion
-  xenobiotics_var_exclusion <- x@xenobiotics_var_exclusion
-  created <- x@created
-  samples <- x@samples
-  features <- x@features
-  data <- x@data
-  exclusions <- x@exclusions
-  feature_summary <- x@feature_summary
-  sample_summary <- x@sample_summary
-  pcs <- x@pcs
-  prob_pcs <- x@prob_pcs
-  var_exp <- x@var_exp
-  acceleration_factor <- x@acceleration_factor
-  n_parallel <- x@n_parallel
-
-  # Start printing the object details
-  cli::cli_text(cli::style_bold("\nMetabolites Object"))
-  cli::cli_text("--------------------")
-
-  # Project info
-  cli::cli_text(cli::style_bold("\nProject Info:"))
-  cli::cli_bullets(stats::setNames(c(
-    paste("Project Name:", project_name),
-    paste("Filepath:", filepath)
-  ), rep("*", 2)))
-
-  # QC Parameters
-  cli::cli_text(cli::style_bold("\nQC Parameters:"))
-  cli::cli_bullets(stats::setNames(c(
-    paste("Feature Missingness Threshold:", feature_missingness),
-    paste("Sample Missingness Threshold:", sample_missingness),
-    paste("Total Peak Area SD Threshold:", total_peak_area_sd),
-    paste("Outlier Threshold (IQR Distance):", outlier_udist),
-    paste("Outlier Treatment:", outlier_treatment),
-    paste("Winsorize Quantile:", winsorize_quantile),
-    paste("Feature Independence (Tree Cut Height):", tree_cut_height),
-    paste("PC Outlier SD:", pc_outlier_sd),
-    paste("Derived Variable Exclusion:", derived_var_exclusion),
-    paste("Xenobiotics Exclusion:", xenobiotics_var_exclusion),
-    paste("Object Created At:", created)
-  ), rep("*", 11)))
-
-  # Data Layers
-  cli::cli_text(cli::style_bold("\nData Layers:"))
-  cli::cli_bullets(stats::setNames(c(
-    paste("Samples Dimension:", paste(dim(samples), collapse = ' x ')),
-    paste("Features Dimension:", paste(dim(features), collapse = ' x ')),
-    paste("Data Matrix Dimension:", paste(dim(data), collapse = ' x ')),
-    paste("Sample Summary Dimension:", paste(dim(sample_summary), collapse = ' x ')),
-    paste("Feature Summary Dimension:", paste(dim(feature_summary), collapse = ' x '))
-  ), rep("*", 5)))
-
-  # Check if there's a third dimension and display the names if available
-  if (length(dim(data)) > 2) {
-    cli::cli_bullets(stats::setNames(c(
-      paste("Data Matrix Names (3rd Dimension):", paste(dimnames(data)[[3]], collapse = ', '))
-    ), rep("*", 1)))
-  }
-  if (length(dim(exclusions)) > 2) {
-    cli::cli_bullets(stats::setNames(c(
-      paste("Exclusions Matrix Names (3rd Dimension):", paste(dimnames(exclusions)[[3]], collapse = ', '))
-    ), rep("*", 1)))
-  }
-  if (length(dim(feature_summary)) > 2) {
-    cli::cli_bullets(stats::setNames(c(
-      paste("Feature Summary Matrix Names (3rd Dimension):", paste(dimnames(feature_summary)[[3]], collapse = ', '))
-    ), rep("*", 1)))
-  }
-  if (length(dim(sample_summary)) > 2) {
-    cli::cli_bullets(stats::setNames(c(
-      paste("Sample Summary Matrix Names (3rd Dimension):", paste(dimnames(sample_summary)[[3]], collapse = ', '))
-    ), rep("*", 1)))
-  }
-  if (length(dim(pcs)) > 2) {
-    cli::cli_bullets(stats::setNames(c(
-      paste("PCs Names (3rd Dimension):", paste(dimnames(pcs)[[3]], collapse = ', '))
-    ), rep("*", 1)))
-  }
-  if (length(dim(prob_pcs)) > 2) {
-    cli::cli_bullets(stats::setNames(c(
-      paste("Probability PCs Names (3rd Dimension):", paste(dimnames(prob_pcs)[[3]], collapse = ', '))
-    ), rep("*", 1)))
-  }
-  if (length(dim(var_exp)) > 2) {
-    cli::cli_bullets(stats::setNames(c(
-      paste("Variance Explained: (3rd Dimension):", paste(dimnames(var_exp)[[3]], collapse = ', '))
-    ), rep("*", 1)))
-  }
-
-  # Acceleration Factor and Parallel Analysis
-  cli::cli_text(cli::style_bold("\nAcceleration & Parallel Analysis:"))
-  cli::cli_bullets(stats::setNames(c(
-    paste("Acceleration Factor:", acceleration_factor),
-    paste("Parallel Analysis PCs:", n_parallel)
-  ), rep("*", 2)))
-
-  invisible(NULL)
 }

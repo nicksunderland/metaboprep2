@@ -102,14 +102,14 @@ The `get_data()` function allows retrieving metabolite data with optional filter
 
 #### Retrieve All Data of a Given Type
 ```{r}
-original_data <- get_data(metabolites, type = "raw")
+original_data <- get_data(metabolites, layer = "raw")
 original_data[1:5, 1:5]
 ```
 
 #### Extract Specific Metabolites and Samples
 ```{r}
 subset_data <- get_data(metabolites, 
-                        type = "raw", 
+                        layer = "raw", 
                         feature_ids = c("compid_123", "compid_124"), 
                         sample_ids = c("ind1", "ind2"))
 subset_data

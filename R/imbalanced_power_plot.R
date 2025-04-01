@@ -6,8 +6,7 @@
 #'
 #' @keywords binary trait power analysis plot
 #'
-#' @importFrom ggplot2 aes geom_line scale_linetype_manual theme_bw geom_hline scale_color_brewer labs geom_vline
-#' @importFrom magrittr %>%
+#' @import ggplot2
 #'
 #' @return a ggplot2 object
 #'
@@ -20,13 +19,6 @@
 imbalanced_power_plot = function(mydata){
   ## define local variables
   power <- effect <- N_case <- N_control <- alpha <- NULL
-  ## package check
-  pkgs = c("magrittr", "ggplot2")
-  for(pkg in pkgs){
-    if (!requireNamespace( pkg, quietly = TRUE)) {
-      stop(paste0("Package \"", pkg,"\" needed for imbalanced_power_plot() function to work. Please install it."),call. = FALSE)
-    }
-  }
 
 
   ####################################
@@ -101,9 +93,10 @@ imbalanced_power_plot = function(mydata){
   ####################################
   #s = seq(0, half, by = 200)
   s = seq(0, N, by = 200)
-  pwrdata = tibble::as_tibble(pwrdata)
+  pwrdata = data.table::as.data.table(pwrdata)
   ###
-  plotout = pwrdata %>% ggplot( aes(x=N_case, y=power) ) +
+  plotout = pwrdata |>
+    ggplot( aes(x=N_case, y=power) ) +
     geom_line(aes(color = effect), alpha = 0.8, size = 1.5)  +
     scale_linetype_manual(values=c( "dotdash", "solid")) +
     theme_bw() +
@@ -214,13 +207,6 @@ find.PA.effect.sizes.2.sim = function(mydata){
 #'
 #'
 eval.power.binary.imbalanced = function(N_case, N_control, effect, alpha) {
-  ## package check
-  pkgs = c("pwr")
-  for(pkg in pkgs){
-    if (!requireNamespace( pkg, quietly = TRUE)) {
-      stop(paste0("Package \"", pkg,"\" needed for eval.power.binary.imbalanced() function to work. Please install it."),call. = FALSE)
-    }
-  }
 
   ## total sample size
   N = N_case + N_control

@@ -18,9 +18,10 @@ This function does not return a value. It writes the data to the specified direc
 Exports the data from a \code{Metabolites} object to a specified directory. The function allows the user to export the data in a format that is compatible with \code{data.table::fwrite} for efficient writing of large datasets.
 }
 \examples{
+file <- system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2")
 metabolites <- Metabolites(project_name = "MYPROJECT",
-                           format = "metabolon_v1",
-                           filepath = system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2"))
+                           format       = "metabolon_v1",
+                           filepath     = file)
 metabolites <- import_data(metabolites)
 \dontrun{
 # Specify the directory to export the data

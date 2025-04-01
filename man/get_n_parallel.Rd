@@ -19,10 +19,11 @@ Extracts the number of principal components estimated to be informative
 from the parallel analysis on the data in specified data \code{layer} from a \code{Metabolites} object.
 }
 \examples{
+file <- system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2")
 metabolites <- Metabolites(project_name = "MYPROJECT",
                            format       = "metabolon_v1",
-                           filepath     = system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2"))
+                           filepath     = file)
 metabolites <- import_data(metabolites)
-metabolites <- metabolite_qc(metabolites, source="raw", destination="post_qc")
+metabolites <- metabolite_qc(metabolites, source="raw")
 get_n_parallel(metabolites, layer = "post_qc")
 }

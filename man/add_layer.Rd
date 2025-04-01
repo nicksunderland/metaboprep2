@@ -26,15 +26,25 @@ It is used internally and not intended for routine user use.
 }
 \examples{
 # Example: Adding a new data layer to an existing 3D array
-current_stack <- array(1:12, dim = c(3, 4, 1))  # A 3x4 matrix with one layer
-new_layer <- matrix(13:16, nrow = 3, ncol = 4)  # A new 3x4 matrix to add
-updated_stack <- add_layer(current = current_stack, layer = new_layer, layer_name = "Layer2", force = FALSE)
-dim(updated_stack)  # This will now be a 3x4x2 array (3 rows, 4 columns, 2 layers)
+current_stack <- array(1:12,
+                       dim = c(3, 4, 1),
+                       dimnames = list(c(1:3), c(1:4), c(1)))
+new_layer <- matrix(13:16, nrow = 3, ncol = 4)
+rownames(new_layer) <- 1:3
+colnames(new_layer) <- 1:4
+updated_stack <- add_layer(current    = current_stack,
+                           layer      = new_layer,
+                           layer_name = "Layer2",
+                           force      = FALSE)
+dim(updated_stack)
 
 # Example with mismatched row/column names (force = TRUE)
 rownames(current_stack) <- c("A", "B", "C")
 rownames(new_layer) <- c("B", "C", "D")
-updated_stack_with_force <- add_layer(current = current_stack, layer = new_layer, layer_name = "Layer2", force = TRUE)
-dim(updated_stack_with_force)  # The function will add NA for the missing "A" row in the new layer
+updated_stack_with_force <- add_layer(current    = current_stack,
+                                      layer      = new_layer,
+                                      layer_name = "Layer2",
+                                      force      = TRUE)
+dim(updated_stack_with_force)
 
 }

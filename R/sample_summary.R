@@ -1,22 +1,27 @@
+# Silence R CMD check
+globalVariables(c("sample_ids", "feature_ids"), package = "metaboprep2")
+
 #' @title Sample Summary Statistics
 #' @param metabolites an object of class Metabolites
 #' @param layer character
+#' @param sample_ids character, vector of sample ids
+#' @param feature_ids character, vector of feature ids
 #' @param output character
 #' @include class_metabolites.R
 #' @export
-sample_summary <- new_generic("sample_summary", c("metabolites"), function(metabolites, layer="raw", output="object") { S7_dispatch() })
+sample_summary <- new_generic("sample_summary", c("metabolites"), function(metabolites, layer="raw", sample_ids=NULL, feature_ids=NULL, output="object") { S7_dispatch() })
 #' @name sample_summary
-method(sample_summary, Metabolites) <- function(metabolites, layer="raw", output="object") {
+method(sample_summary, Metabolites) <- function(metabolites, layer="raw", sample_ids=NULL, feature_ids=NULL, output="object") {
 
   # the data to work with
-  dat <- get_data(metabolites, layer=layer, apply_exclusions=TRUE)
+  dat <- get_data(metabolites, layer=layer, feature_ids=feature_ids, sample_ids=sample_ids)
 
   # features to exclude
   exclude_features <- character()
   if (metabolites@derived_var_exclusion) {
     exclude_features <- c(exclude_features, metabolites@features[derived_feature==TRUE, feature_id]) # derived
   }
-  if (metabolites@derived_var_exclusion) {
+  if (metabolites@xenobiotics_var_exclusion) {
     exclude_features <- c(exclude_features, metabolites@features[grepl("(?i)xenobiotic", pathway), feature_id]) # xenobiotics
   }
 

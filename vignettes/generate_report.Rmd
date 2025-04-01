@@ -1,0 +1,44 @@
+---
+title: "Generate QC Report"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Generate QC Report}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r render, echo=FALSE}
+library(metaboprep2)
+
+# the data
+data_file <- system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2")
+
+# create the object
+metabolites <- Metabolites(project_name = "MYPROJECT",
+                           format       = "metabolon_v1",
+                           filepath     = data_file)
+
+# import the data
+metabolites <- import_data(metabolites)
+
+# run QC
+metabolites <- metabolite_qc(metabolites, source="raw")
+
+# render report
+generate_report(metabolites,
+                output_dir=getwd(),
+                output_filename=NULL,
+                format="html",
+                template="qc_report")
+```
+
+```{r, echo=FALSE, results="asis"}
+cat('<iframe src="https://nicksunderland.github.io/metaboprep2/articles/myproject_metaboprep2_qc_report.html" width="100%" height="600px"></iframe>')
+```

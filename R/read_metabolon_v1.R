@@ -9,7 +9,6 @@ globalVariables(c("feature_id", "pathway", "sample_id", "derived_feature"), pack
 #' filepath <- system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2")
 #' read_metabolon_v1(filepath)
 #'
-#'
 #' @importFrom readxl excel_sheets read_xlsx
 #' @importFrom data.table setnames as.data.table
 #' @export

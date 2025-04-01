@@ -16,7 +16,6 @@
 #'                           "\code{perc}", or "\code{bca}".
 #'             Passed to \code{boot.ci}.
 #' @param R The number of replications to use for bootstrap.
-#' @param histogram If \code{TRUE}, produces a histogram of bootstrapped values.
 #' @param digits The number of significant digits in the output.
 #' @param bias.correct If \code{TRUE}, a bias correction is applied.
 #' @param reportIncomplete If \code{FALSE} (the default),
@@ -49,23 +48,9 @@
 #' @author Salvatore Mangiafico, \email{mangiafico@njaes.rutgers.edu}
 #' @references \url{http://rcompanion.org/handbook/H_10.html}
 #' @concept correlation phi cramer V
-#' @seealso \code{\link{cohenW}}
 #' @return A single statistic, Cramer's V.
 #'         Or a small data frame consisting of Cramer's V,
 #'         and the lower and upper confidence limits.
-#'
-#' @examples
-#' ### Example with table
-#' data(Anderson)
-#' fisher.test(Anderson)
-#' cramerV(Anderson)
-#'
-#' ### Example with two vectors
-#' Species = c(rep("Species1", 16), rep("Species2", 16))
-#' Color   = c(rep(c("blue", "blue", "blue", "green"),4),
-#'             rep(c("green", "green", "green", "blue"),4))
-#' fisher.test(Species, Color)
-#' cramerV(Species, Color)
 #'
 #' @importFrom stats chisq.test
 #' @importFrom boot  boot boot.ci
@@ -73,7 +58,7 @@
 
 cramerV = function(x, y=NULL,
                    ci=FALSE, conf=0.95, type="perc",
-                   R=1000, histogram=FALSE,
+                   R=1000,
                    digits=4, bias.correct=FALSE,
                    reportIncomplete=FALSE,
                    verbose=FALSE, ...) {
@@ -203,8 +188,6 @@ cramerV = function(x, y=NULL,
 
     CI1=signif(CI1, digits=digits)
     CI2=signif(CI2, digits=digits)
-
-    if(histogram==TRUE){hist(Boot$t[,1], col = "darkgray", xlab="V", main="")}
 
   }
   if(ci==FALSE){names(CV)="Cramer V"; return(CV)}

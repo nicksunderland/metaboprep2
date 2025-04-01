@@ -18,10 +18,11 @@ An \code{integer} representing the acceleration factor for the specified \code{l
 Extracts the acceleration factor for a specified data \code{layer} from a \code{Metabolites} object.
 }
 \examples{
+file <- system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2")
 metabolites <- Metabolites(project_name = "MYPROJECT",
                            format       = "metabolon_v1",
-                           filepath     = system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2"))
+                           filepath     = file)
 metabolites <- import_data(metabolites)
-metabolites <- metabolite_qc(metabolites, source="raw", destination="post_qc")
+metabolites <- metabolite_qc(metabolites, source="raw")
 get_acceleration_factor(metabolites, layer = "post_qc")
 }

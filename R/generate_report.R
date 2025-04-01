@@ -41,7 +41,7 @@ method(generate_report, Metabolites) <- function(metabolites, output_dir, output
   dir.create(dirname(outpath), showWarnings = FALSE, recursive = TRUE)
 
   # get the template
-  template_path <- system.file("rmarkdown", "templates", "qc_report", "skeleton", "skeleton.Rmd", package="metaboprep2")
+  template_path <- system.file("rmarkdown", "templates", template, "skeleton", "skeleton.Rmd", package="metaboprep2")
 
   # render the report
   rmarkdown::render(

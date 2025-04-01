@@ -11,10 +11,8 @@
 #'
 #' @keywords metabolomics ggplot
 #'
-#' @importFrom tibble as_tibble
-#' @importFrom magrittr %>%
-#' @importFrom dplyr group_by summarise arrange
-#' @importFrom ggplot2 aes geom_violin geom_boxplot theme labs
+#' @import ggplot2
+#' @importFrom stats anova
 #'
 #' @return a ggplot2 object
 #'
@@ -32,23 +30,13 @@ variable_by_factor = function( dep , indep ,
                                violin = TRUE){
   ## define local variables
   m <- CI_L <- CI_H <- NULL
-  ## package check
-  if (!requireNamespace("ggplot2", quietly = TRUE)) {
-    stop("Package \"ggplot2\" needed for variable.by.factor() function to work. Please install it.",
-         call. = FALSE)
-  }
-  ## package check
-  if (!requireNamespace("tibble", quietly = TRUE)) {
-    stop("Package \"tibble\" needed for variable.by.factor() function to work. Please install it.",
-         call. = FALSE)
-  }
 
   wdat = data.table::data.table(dep = dep, indep = as.factor(indep))
   ####
   if(orderfactor == 1){
-    ord <- wdat[, .( m    =  mean(dep, na.rm=TRUE),
-                     CI_L = quantile(dep, 0.025, na.rm=TRUE),
-                     CI_H = quantile(dep, 0.975, na.rm=TRUE)), by="indep"]
+    ord <- wdat[, list(m    =  mean(dep, na.rm=TRUE),
+                       CI_L = quantile(dep, 0.025, na.rm=TRUE),
+                       CI_H = quantile(dep, 0.975, na.rm=TRUE)), by="indep"]
     ord <- ord[order(m)]
     ##### order factor
     wdat[, indep := factor(indep, levels = ord$indep, ordered = TRUE)]
@@ -56,12 +44,13 @@ variable_by_factor = function( dep , indep ,
 
   ### FIT to linear MODEL
   fit = lm(dep ~ indep, data = wdat)
-  a = anova(fit)
+  a = stats::anova(fit)
   eta = signif( (a[1,2]/sum(a[,2])*100 ), digits = 2 )
   pval = signif( a[1, 5], digits = 3 )
   ###
   if(violin == 1){
-    plotA = wdat  %>% ggplot( aes(x = indep, y = dep)) +
+    plotA = wdat  |>
+      ggplot( aes(x = indep, y = dep)) +
       geom_violin( aes(fill = as.factor(indep) ), color = NA ) +
       theme( axis.text.x = element_text(angle = 45, size = 6, hjust = 1)) +
       labs(title = paste0( dep_name, " by ", indep_name),
@@ -73,7 +62,8 @@ variable_by_factor = function( dep , indep ,
                               pval, ")."),
            y = dep_name, x = indep_name, fill = indep_name)
   } else {
-    plotA = wdat  %>% ggplot( aes(x = indep, y = dep)) +
+    plotA = wdat  |>
+      ggplot( aes(x = indep, y = dep)) +
       geom_boxplot( aes(fill = as.factor(indep)), notch = FALSE) +
       theme( axis.text.x = element_text(angle = 45, size = 6, hjust = 1)) +
       labs(title = paste0( dep_name, " by ", indep_name),

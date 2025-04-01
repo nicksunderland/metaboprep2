@@ -4,23 +4,22 @@
 \alias{metabolite_qc}
 \title{Metabolite Quality Control}
 \usage{
-metabolite_qc(metabolites, source = "raw", destination = "post_qc")
+metabolite_qc(metabolites, source = "raw")
 }
 \arguments{
 \item{metabolites}{an object of class Metabolites}
 
 \item{source}{character}
-
-\item{destination}{character}
 }
 \description{
 This function is a wrapper function that performs the key quality controls steps on a metabolomics data set.
 Key principles:
 \enumerate{
 \item keep the source underlying data as it is
-\item copy the source data to a new data layer called post_qc (the destination)
-\item build an exclusion destination matrix mask, accumulating codes for exclusion reasons
-\item make any adjustments needed in the destination copy of the data, flag these in the exclusion matrix
+\item copy the source data to a new data layer called qcing for processing
+\item build an exclusion list, accumulating codes for exclusion reasons
+\item make any adjustments needed in the destination copy of the data, flag these in the exclusion list
+\item copy the final result to a data layer called post_qc
 \item return the Metabolites object with the newly populated data layers
 }
 }

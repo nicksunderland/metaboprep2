@@ -4,12 +4,22 @@
 \alias{sample_summary}
 \title{Sample Summary Statistics}
 \usage{
-sample_summary(metabolites, type = "raw", output = "object")
+sample_summary(
+  metabolites,
+  layer = "raw",
+  sample_ids = NULL,
+  feature_ids = NULL,
+  output = "object"
+)
 }
 \arguments{
 \item{metabolites}{an object of class Metabolites}
 
-\item{type}{character}
+\item{layer}{character}
+
+\item{sample_ids}{character, vector of sample ids}
+
+\item{feature_ids}{character, vector of feature ids}
 
 \item{output}{character}
 }

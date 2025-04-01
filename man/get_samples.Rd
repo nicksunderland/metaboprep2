@@ -4,20 +4,12 @@
 \alias{get_samples}
 \title{Retrieve Sample Data}
 \usage{
-get_samples(
-  metabolites,
-  layer,
-  apply_exclusions = TRUE,
-  sample_ids = NULL,
-  as_df = FALSE
-)
+get_samples(metabolites, layer, sample_ids = NULL, as_df = FALSE)
 }
 \arguments{
 \item{metabolites}{A \code{Metabolites} object containing sample data.}
 
 \item{layer}{A character string specifying the data layer from which to extract samples.}
-
-\item{apply_exclusions}{Logical. Whether to exclude samples/features based on the current \verb{@exclusions} matrix.}
 
 \item{sample_ids}{Optional. A vector of column names to extract. Defaults to \code{NULL}, meaning all columns are included.}
 
@@ -31,11 +23,12 @@ Extracts sample-level data from a \code{Metabolites} object for a specified data
 with optional exclusions and subsetting.
 }
 \examples{
+file <- system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2")
 metabolites <- Metabolites(project_name = "MYPROJECT",
                            format       = "metabolon_v1",
-                           filepath     = system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2"))
+                           filepath     = file)
 metabolites <- import_data(metabolites)
-metabolites <- metabolite_qc(metabolites, source="raw", destination="post_qc")
+metabolites <- metabolite_qc(metabolites, source="raw")
 get_samples(metabolites, layer = "post_qc")
 
 }

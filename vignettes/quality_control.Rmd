@@ -56,7 +56,7 @@ metabolites <- import_data(metabolites)
 The `metabolite_qc()` function applies multiple QC filters based on missingness, outlier detection, PCA-based QC. This generates another layer to the data matrices named `post_qc`.
 
 ```{r}
-metabolites <- metabolite_qc(metabolites, source = "raw", destination = "post_qc")
+metabolites <- metabolite_qc(metabolites, source = "raw")
 ```
 
 ### Accessing QC'd data
@@ -73,24 +73,20 @@ metabolites@data[, , "post_qc"][1:5,1:5]
 
 #### Accessing Data Using Getter Functions
 ```{r}
-get_data(metabolites, layer="post_qc", apply_exclusions = FALSE)[1:5,1:5]
+get_data(metabolites, layer="post_qc", drop=TRUE)[1:5,1:5]
 ```
 
 #### Accessing Only Data Passing QC
 ```{r}
-get_data(metabolites, layer="post_qc", apply_exclusions = TRUE)[1:5,1:5]
+get_data(metabolites, layer="post_qc", drop=TRUE)[1:5,1:5]
 ```
 
 ### Exclusions
 The underlying data still has all respresentations of the samples and features, however, the QC process builds a matrix of exclusion reasons.
 
-#### Accessing the Exclusions Matrix
+#### Accessing the Exclusions List
 ```{r}
-metabolites@exclusions[, , "post_qc"][1:5,1:5]
-```
-#### Accessing the Exclusions Codes
-```{r}
-get_exclusion_codes(verbose=TRUE)
+str(metabolites@exclusions)
 ```
 
 ### Figures

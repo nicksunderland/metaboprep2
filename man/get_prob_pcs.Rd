@@ -7,8 +7,8 @@
 get_prob_pcs(
   metabolites,
   layer,
-  apply_exclusions = TRUE,
   sample_ids = NULL,
+  drop = FALSE,
   as_df = FALSE
 )
 }
@@ -17,9 +17,9 @@ get_prob_pcs(
 
 \item{layer}{A character string specifying the data layer from which to extract the probabilistic PCs.}
 
-\item{apply_exclusions}{Logical. Whether to exclude samples/features based on the current \verb{@exclusions} matrix.}
-
 \item{sample_ids}{Optional. A vector of column names to extract. Defaults to \code{NULL}, meaning all columns are included.}
+
+\item{drop}{Logical. Whether to drop completely NA rows (i.e. excluded)}
 
 \item{as_df}{Logical. Whether to return the result as a \code{data.frame}. Defaults to \code{FALSE}, returning a matrix.}
 }
@@ -31,11 +31,12 @@ Extracts the probabilistic principal components (PCs) from a \code{Metabolites} 
 for a specified data \code{layer}, with optional exclusions applied.
 }
 \examples{
+file <- system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2")
 metabolites <- Metabolites(project_name = "MYPROJECT",
                            format       = "metabolon_v1",
-                           filepath     = system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2"))
+                           filepath     = file)
 metabolites <- import_data(metabolites)
-metabolites <- metabolite_qc(metabolites, source="raw", destination="post_qc")
+metabolites <- metabolite_qc(metabolites, source="raw")
 get_prob_pcs(metabolites, layer = "post_qc")
 
 }

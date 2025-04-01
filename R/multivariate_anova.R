@@ -9,10 +9,7 @@
 #'
 #' @importFrom stats lm
 #' @importFrom car Anova
-#' @importFrom tibble as_tibble
-#' @importFrom dplyr mutate select everything
 #' @importFrom ggpubr ggtexttable ttheme
-#' @importFrom magrittr %>%
 #'
 #' @return ggplot2 table figure of
 #'
@@ -33,18 +30,9 @@ multivariate_anova = function(dep, indep_df){
   ## define local variable
   batch.variable <- NULL
 
-  ## package check
-  pkgs = c("stats", "car", "tibble", "dplyr", "ggpubr", "magrittr")
-  for(pkg in pkgs){
-    if (!requireNamespace( pkg, quietly = TRUE)) {
-      stop(paste0("Package \"", pkg,"\" needed for multivariate.anova() function to work. Please install it."),call. = FALSE)
-    }
-  }
-
   wdat = data.frame( cbind(indep_df, dep) )
   ## fit the model
   fit = lm(dep ~ . , data = wdat)
-
 
   ## Type I ANOVA
   a = car::Anova(fit, type = "II")
@@ -54,14 +42,12 @@ multivariate_anova = function(dep, indep_df){
   names(pval) = paste0( rownames(a) ,"_pval")
 
   ## Make an reporting table
-  outtable = tibble::as_tibble( matrix( c(eta, pval), ncol = 2, byrow = FALSE,
-                                        dimnames = list( c(rownames(a)),
-                                                         c("etasq.var.exp","pvalue")  ) ) )
-  ##
-  outtable = outtable %>% mutate( batch.variable = rownames(a) ) %>% dplyr::select( batch.variable, everything())
-  ##
-  outtable[,1] = tolower( unlist( outtable[,1]) )
-  outtable[,1] = gsub("_",".", unlist(outtable[,1]) )
+  outmat   <- matrix(c(eta, pval), ncol = 2, byrow = FALSE, dimnames = list( c(rownames(a)), c("etasq.var.exp","pvalue")))
+  outtable <- data.table::as.data.table(outmat)
+  outtable[, batch.variable := rownames(a)]
+  data.table::setcolorder(outtable, "batch.variable")
+  outtable[,1] <- tolower( unlist( outtable[,1]) )
+  outtable[,1] <- gsub("_",".", unlist(outtable[,1]) )
 
   ## make the table a ggplot like figure
   outtable <- ggpubr::ggtexttable(outtable, rows = NULL,

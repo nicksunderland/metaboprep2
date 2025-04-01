@@ -6,9 +6,7 @@
 #'
 #' @keywords continuous trait power analysis plot
 #'
-#' @importFrom ggplot2 aes geom_line scale_linetype_manual theme_bw geom_hline scale_color_brewer labs geom_vline
-#' @importFrom tibble as_tibble
-#' @importFrom magrittr %>%
+#' @import ggplot2
 #'
 #' @return a ggplot2 object
 #'
@@ -21,13 +19,6 @@
 continuous_power_plot = function(mydata){
   ## define local variables
   N <- N_step_size <- power <- effect <- NULL
-  ## package check
-  pkgs = c("magrittr", "ggplot2", "tibble")
-  for(pkg in pkgs){
-    if (!requireNamespace( pkg, quietly = TRUE)) {
-      stop(paste0("Package \"", pkg,"\" needed for run.cont.power.make.plot() function to work. Please install it."),call. = FALSE)
-    }
-  }
 
   ####################################
   # set N equal to no. in sample
@@ -74,10 +65,11 @@ continuous_power_plot = function(mydata){
   ####################################
   # plot results
   ####################################
-  pwrdata = tibble::as_tibble(pwrdata)
+  pwrdata = data.table::as.data.table(pwrdata)
   s = seq(0, N, by = N_step_size)
   ###
-  plotout = pwrdata %>% ggplot( aes(x=N, y=power) ) +
+  plotout = pwrdata |>
+    ggplot( aes(x=N, y=power) ) +
     geom_line(aes(color = effect), alpha = 0.8, size = 1.5) +
     scale_linetype_manual(values=c( "dotdash", "solid")) +
     theme_bw() +

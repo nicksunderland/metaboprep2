@@ -7,9 +7,9 @@
 get_data(
   metabolites,
   layer,
-  apply_exclusions = TRUE,
   feature_ids = NULL,
   sample_ids = NULL,
+  drop = FALSE,
   as_df = FALSE
 )
 }
@@ -18,11 +18,11 @@ get_data(
 
 \item{layer}{A character string specifying the data layer to extract (e.g., \code{"raw"}, \code{"post_qc"}, etc.).}
 
-\item{apply_exclusions}{Logical. If \code{TRUE}, excludes samples and/or features based on the current \verb{@exclusions} matrix. Default is \code{TRUE}.}
-
 \item{feature_ids}{Optional. A vector of row names (features) to extract. Defaults to \code{NULL}, meaning all features are included.}
 
 \item{sample_ids}{Optional. A vector of column names (samples) to extract. Defaults to \code{NULL}, meaning all samples are included.}
+
+\item{drop}{Logical. Whether to drop all NA rows or columns (excluded samples or features)}
 
 \item{as_df}{Logical. If \code{TRUE}, the result is returned as a \code{data.frame}; otherwise, the result is returned as a matrix. Default is \code{FALSE}.}
 }
@@ -35,11 +35,12 @@ This function allows for optional exclusions of data based on the current \verb{
 and supports subsetting by feature and sample IDs.
 }
 \examples{
+file <- system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2")
 metabolites <- Metabolites(project_name = "MYPROJECT",
-                           format = "metabolon_v1",
-                           filepath = system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2"))
+                           format       = "metabolon_v1",
+                           filepath     = file)
 metabolites <- import_data(metabolites)
-metabolites <- metabolite_qc(metabolites, source="raw", destination="post_qc")
-get_data(metabolites, layer = "post_qc", apply_exclusions = TRUE)
+metabolites <- metabolite_qc(metabolites, source="raw")
+get_data(metabolites, layer = "post_qc")
 
 }

@@ -4,12 +4,21 @@
 \alias{pc_and_outliers}
 \title{principal component analysis}
 \usage{
-pc_and_outliers(metabolites, type = "raw")
+pc_and_outliers(
+  metabolites,
+  layer = "raw",
+  sample_ids = NULL,
+  feature_ids = NULL
+)
 }
 \arguments{
 \item{metabolites}{an object of class Metabolites}
 
-\item{type}{character, type/source of data to use}
+\item{layer}{character, type/source of data to use}
+
+\item{sample_ids}{character, vector of sample ids}
+
+\item{feature_ids}{character, vector of feature ids}
 }
 \value{
 a an object of class Metabolites with slots \verb{@acceleration_factor}, \verb{@n_parallel}, \verb{@var_exp}, \verb{@pcs}, and \verb{@prob_pcs} filled.

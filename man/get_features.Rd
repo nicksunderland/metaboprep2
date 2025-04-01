@@ -4,20 +4,12 @@
 \alias{get_features}
 \title{Retrieve Feature Data}
 \usage{
-get_features(
-  metabolites,
-  layer,
-  apply_exclusions = TRUE,
-  feature_ids = NULL,
-  as_df = FALSE
-)
+get_features(metabolites, layer, feature_ids = NULL, as_df = FALSE)
 }
 \arguments{
 \item{metabolites}{A \code{Metabolites} object containing feature data.}
 
 \item{layer}{A character string specifying the data layer from which to extract features.}
-
-\item{apply_exclusions}{Logical. Whether to exclude samples/features based on the current \verb{@exclusions} matrix.}
 
 \item{feature_ids}{Optional. A vector of row names to extract. Defaults to \code{NULL}, meaning all rows are included.}
 
@@ -31,11 +23,12 @@ Extracts feature-level data from a \code{Metabolites} object for a specified dat
 with optional exclusions and subsetting.
 }
 \examples{
+file <- system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2")
 metabolites <- Metabolites(project_name = "MYPROJECT",
                            format       = "metabolon_v1",
-                           filepath     = system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2"))
+                           filepath     = file)
 metabolites <- import_data(metabolites)
-metabolites <- metabolite_qc(metabolites, source="raw", destination="post_qc")
+metabolites <- metabolite_qc(metabolites, source="raw")
 get_features(metabolites, layer = "post_qc")
 
 }

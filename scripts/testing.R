@@ -3,13 +3,14 @@ library(devtools)
 load_all()
 
 metabolites <- Metabolites(project_name = "MYPROJECT",
-                           format = "metabolon_v2",
-                           filepath = '/Users/xx20081/Desktop/metabolomics/UNBR-0201-17ML+ Client Data Tables(220203).xlsx') # "/Users/xx20081/git/metaboprep2/inst/extdata/metabolon_v2_example.xlsx")
-# system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2")
+                           format = "metabolon_v1",
+                           filepath = system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2"))
+                             #'/Users/xx20081/Desktop/metabolomics/UNBR-0201-17ML+ Client Data Tables(220203).xlsx') #"/Users/xx20081/git/metaboprep2/inst/extdata/metabolon_v2_example.xlsx") #
+#
 metabolites <- import_data(metabolites)
 metabolites
 
-metabolites <- metabolite_qc(metabolites, source="raw", destination="post_qc")
+metabolites <- metabolite_qc(metabolites, source="raw")
 metabolites
 
 

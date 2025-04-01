@@ -19,8 +19,10 @@ in a format that is compatible with subsequent analysis steps in the \code{metab
 }
 \examples{
 # Example of importing data into a Metabolites object
-metabolites <- Metabolites(project_name = "MYPROJECT", format = "metabolon_v1",
-                           filepath = system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2"))
+file <- system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2")
+metabolites <- Metabolites(project_name = "MYPROJECT",
+                           format       = "metabolon_v1",
+                           filepath     = file)
 metabolites <- import_data(metabolites)
 
 }

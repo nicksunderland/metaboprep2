@@ -11,7 +11,6 @@ cramerV(
   conf = 0.95,
   type = "perc",
   R = 1000,
-  histogram = FALSE,
   digits = 4,
   bias.correct = FALSE,
   reportIncomplete = FALSE,
@@ -38,8 +37,6 @@ Can be any of "\code{norm}", "\code{basic}",
 Passed to \code{boot.ci}.}
 
 \item{R}{The number of replications to use for bootstrap.}
-
-\item{histogram}{If \code{TRUE}, produces a histogram of bootstrapped values.}
 
 \item{digits}{The number of significant digits in the output.}
 
@@ -85,25 +82,8 @@ Cramer's V.
       method may not be reliable, or the procedure may fail.
 }\if{html}{\out{</div>}}
 }
-\examples{
-### Example with table
-data(Anderson)
-fisher.test(Anderson)
-cramerV(Anderson)
-
-### Example with two vectors
-Species = c(rep("Species1", 16), rep("Species2", 16))
-Color   = c(rep(c("blue", "blue", "blue", "green"),4),
-            rep(c("green", "green", "green", "blue"),4))
-fisher.test(Species, Color)
-cramerV(Species, Color)
-
-}
 \references{
 \url{http://rcompanion.org/handbook/H_10.html}
-}
-\seealso{
-\code{\link{cohenW}}
 }
 \author{
 Salvatore Mangiafico, \email{mangiafico@njaes.rutgers.edu}

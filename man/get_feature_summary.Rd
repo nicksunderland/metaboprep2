@@ -7,8 +7,8 @@
 get_feature_summary(
   metabolites,
   layer,
-  apply_exclusions = TRUE,
   feature_ids = NULL,
+  drop = FALSE,
   as_df = FALSE
 )
 }
@@ -17,9 +17,9 @@ get_feature_summary(
 
 \item{layer}{A character string specifying the data layer from which to extract feature summary data.}
 
-\item{apply_exclusions}{Logical. Whether to exclude samples/features based on the current \verb{@exclusions} matrix.}
-
 \item{feature_ids}{Optional. A vector of row names (features) to extract. Defaults to \code{NULL}, meaning all features are included.}
+
+\item{drop}{Logical. Whether to drop all NA (excluded features)}
 
 \item{as_df}{Logical. Whether to return the result as a \code{data.frame}. Defaults to \code{FALSE}, meaning the result is returned as a matrix.}
 }
@@ -31,11 +31,12 @@ Extracts feature-level summary statistics from a \code{Metabolites} object for a
 with optional exclusions and subsetting.
 }
 \examples{
+file <- system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2")
 metabolites <- Metabolites(project_name = "MYPROJECT",
                            format       = "metabolon_v1",
-                           filepath     = system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2"))
+                           filepath     = file)
 metabolites <- import_data(metabolites)
-metabolites <- metabolite_qc(metabolites, source="raw", destination="post_qc")
+metabolites <- metabolite_qc(metabolites, source="raw")
 get_feature_summary(metabolites, layer = "post_qc")
 
 }

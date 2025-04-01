@@ -7,8 +7,8 @@
 get_sample_summary(
   metabolites,
   layer,
-  apply_exclusions = TRUE,
   sample_ids = NULL,
+  drop = FALSE,
   as_df = FALSE
 )
 }
@@ -17,13 +17,11 @@ get_sample_summary(
 
 \item{layer}{A character string specifying the data layer from which to extract sample summary data.}
 
-\item{apply_exclusions}{Logical. Whether to exclude samples/features based on the current \verb{@exclusions} matrix.}
-
 \item{sample_ids}{Optional. A vector of column names (samples) to extract. Defaults to \code{NULL}, meaning all samples are included.}
 
-\item{as_df}{Logical. Whether to return the result as a \code{data.frame}. Defaults to \code{FALSE}, meaning the result is returned as a matrix.}
+\item{drop}{Logical. Whether to drop all NA (excluded samples)}
 
-\item{feature_ids}{Optional. A vector of row names (features) to extract. Defaults to \code{NULL}, meaning all features are included.}
+\item{as_df}{Logical. Whether to return the result as a \code{data.frame}. Defaults to \code{FALSE}, meaning the result is returned as a matrix.}
 }
 \value{
 A matrix or \code{data.frame} (if \code{as_df = TRUE}) containing the sample summary data for the specified \code{layer}.
@@ -33,11 +31,12 @@ Extracts sample-level summary statistics from a \code{Metabolites} object for a 
 with optional exclusions and subsetting.
 }
 \examples{
+file <- system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2")
 metabolites <- Metabolites(project_name = "MYPROJECT",
                            format       = "metabolon_v1",
-                           filepath     = system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2"))
+                           filepath     = file)
 metabolites <- import_data(metabolites)
-metabolites <- metabolite_qc(metabolites, source="raw", destination="post_qc")
+metabolites <- metabolite_qc(metabolites, source="raw")
 get_sample_summary(metabolites, layer = "post_qc")
 
 }

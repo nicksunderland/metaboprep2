@@ -19,5 +19,4 @@ Read Metabolon Data (format 1)
 filepath <- system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2")
 read_metabolon_v1(filepath)
 
-
 }
