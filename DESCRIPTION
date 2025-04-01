@@ -29,6 +29,7 @@ Imports:
 URL: https://nicksunderland.github.io/metaboprep2/
 Suggests: 
     knitr,
+    kableExtra,
     MASS,
     dendextend
 Remotes:
