@@ -17,8 +17,9 @@ globalVariables(c("feature_id", "pathway", "sample_id", "derived_feature", "Exce
 #'
 read_nightingale_v1 <- function(filepath) {
 
+  # testing
   if (FALSE) {
-    filepath <- "/Users/xx20081/git/metaboprep2/inst/extdata/nightingale_v1_example.xlsx"
+    filepath <- system.file("extdata", "nightingale_v1_example.xlsx", package = "metaboprep2")
   }
 
   # check excel file
@@ -50,13 +51,12 @@ read_nightingale_v1 <- function(filepath) {
   # get the feature annotations data
   features <- suppressMessages(
     readxl::read_xlsx(filepath, sheet=sheets[["feature_annotations"]], na=c("","NA","NDEF","TAG")) |> data.table::as.data.table()
-  )[, list(feature_id      = clean_names(`Excel column name`),
+  )[, list(raw_feature_ids = `Excel column name`,
            feature_name    = `Biomarker name`,
            feature_unit    = `Unit`,
-           platform        = NA_character_,
            pathway         = `Group`,
-           sub_pathway     = `Subgroup`,
-           derived_feature = grepl("(?i)ratio|%", `Unit`))]
+           sub_pathway     = `Subgroup`)]
+  features <- annotate_features(features, id_col="raw_feature_ids", pathway_col = "pathway")
 
   # get the sample annotations data
   samp_annot <- suppressMessages(
@@ -88,15 +88,15 @@ read_nightingale_v1 <- function(filepath) {
   stopifnot(identical(samples$sample_id, raw_sample_id_order))
 
   # get the features
-  raw_feature_id_order <- clean_names(unname(unlist(raw[head_inds[1L,"row"]:head_inds[1L,"row"], (head_inds[1L,"col"]+1):ncol(raw)])))
-  features <- features[order(match(feature_id, raw_feature_id_order))]
-  stopifnot(identical(features$feature_id, raw_feature_id_order))
+  raw_feature_id_order <- unname(unlist(raw[head_inds[1L,"row"]:head_inds[1L,"row"], (head_inds[1L,"col"]+1):ncol(raw)]))
+  features <- features[order(match(raw_feature_ids, raw_feature_id_order))]
+  stopifnot(identical(features$raw_feature_ids, raw_feature_id_order))
 
   # get the data
   data <- as.matrix(raw[data_inds[1L,"row"]:nrow(raw), data_inds[1L,"col"]:ncol(raw)][, lapply(.SD, function(x) as.numeric(gsub(",","",x)))])
   data <- array(data,
                 dim = c(nrow(data), ncol(data), 1),
-                dimnames = list(raw_sample_id_order, raw_feature_id_order, "raw"))
+                dimnames = list(samples$sample_id, features$feature_id, "raw"))
 
   # return
   return(list(data       = data,

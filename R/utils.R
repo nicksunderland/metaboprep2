@@ -27,9 +27,21 @@ available_report_templates <- function() {
 }
 
 
+#' @title Standardize Column or Feature Names
+#' @description
+#' Cleans a character vector of names by replacing spaces with underscores,
+#' removing special characters (`-`, `.`), replacing `%` with `pct`,
+#' and converting to lowercase.
+#' @param names `character vector` A vector of names to be cleaned.
+#' @return `character vector` A standardized version of the input names.
+#' @export
+#' @examples
+#' clean_names(c("Sample ID", "Feature-Name.1", "Concentration %"))
+#' # Returns: c("sample_id", "featurename1", "concentration_pct")
 clean_names <- function(names) {
-  n <- gsub(" ", "_", names)
-  n <- gsub("[-\\.]", "", n)
-  n <- gsub("%", "pct", n)
-  tolower(n)
+  n <- gsub(" ", "_", names)   # Replace spaces with underscores
+  n <- gsub("[-\\.]", "", n)   # Remove dashes and dots
+  n <- gsub("%", "pct", n)     # Replace "%" with "pct"
+  tolower(n)                   # Convert to lowercase
 }
+

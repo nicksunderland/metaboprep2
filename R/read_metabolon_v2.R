@@ -15,6 +15,11 @@ globalVariables(c("derived_feature", "feature_id", "pathway", "sample_id"), pack
 #' @export
 read_metabolon_v2 <- function(filepath) {
 
+  # testing
+  if (FALSE) {
+    filepath <- system.file("extdata", "metabolon_v2_example.xlsx", package = "metaboprep2")
+  }
+
   if(!grepl("(?i)\\.(xls|xlsx)$", filepath)){
     stop(paste0("Expected a commercial Metabolon excel sheet with extension .xls or .xlsx\n"), call.=FALSE)
   }
@@ -44,12 +49,15 @@ read_metabolon_v2 <- function(filepath) {
       cnames   <- unlist(raw[data_header_row, 1L:batch_header_col])
       cnames[grep("(?i)hmdb", cnames)] <- "hmdb"
       data.table::setnames(features, clean_names(cnames))
+
       # must have columns
-      features[, feature_id := paste0("compid_", get(names(features)[grepl("(?i)COMP.*?ID", names(features))][1]))]
-      features[, derived_feature := FALSE]
-      features[, pathway := .SD, .SDcols = grep("(?i)super.*?pathway", names(features), value = TRUE)]
-      data.table::setnames(features, grep("(?i)platform", names(features), value = TRUE), "platform")
-      data.table::setcolorder(features, c("feature_id", "platform", "pathway", "derived_feature"))
+      comp_id_col  <- grep("(?i)COMP.*?ID", names(features), value = TRUE)[1]
+      pathway_col  <- grep("(?i)super.*?pathway", names(features), value = TRUE)[1]
+      platform_col <- grep("(?i)platform", names(features), value = TRUE)[1]
+      features <- annotate_features(features,
+                                    id_col = comp_id_col,
+                                    pathway_col = pathway_col,
+                                    platform_col = platform_col)
     }
 
     if (is.null(samples)) {
