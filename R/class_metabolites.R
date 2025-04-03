@@ -103,8 +103,8 @@ Metabolites <- new_class(
     derived_var_exclusion     = new_property(class_logical, default=TRUE),
     xenobiotics_var_exclusion = new_property(class_logical, default=TRUE),
     # data objects
-    samples               = new_property(class_data.frame, default=quote(data.table::data.table())),
-    features              = new_property(class_data.frame, default=quote(data.table::data.table())),
+    samples               = new_property(class_data.frame, default=quote(data.table::data.table(sample_id=character())), validator = function(value) if (length(setdiff(c("sample_id"), names(value))) > 0) "should have a column sample_id" else NULL),
+    features              = new_property(class_data.frame, default=quote(data.table::data.table(feature_id=character(), platform=character(), pathway=character(), derived_feature=logical())), validator = function(value) if (length(setdiff(c("feature_id", "platform", "pathway", "derived_feature"), names(value))) > 0) "should have columns feature_id, platform, pathway, derived_feature" else NULL),
     data                  = class_numeric,
     exclusions            = new_property(class_list,
                                          default=list(raw = list(samples  = list(extreme_sample_missingness        = character(),
@@ -139,12 +139,6 @@ Metabolites <- new_class(
     }
     if ((nrow(self@samples)>0 & length(self@data)>0) && (nrow(self@samples) != nrow(self@data))) {
       sprintf("Number of @samples (%i) must equal the number of samples in @data (%i)", nrow(self@samples), nrow(self@data))
-    }
-    if ((nrow(self@features)>0 & length(self@data)>0) && !check_features_table(self@features)) {
-      "DEVELOPER NOTE: @features does not contain the required columns, adjust your read function"
-    }
-    if ((nrow(self@samples)>0 & length(self@data)>0) && !check_samples_table(self@features)) {
-      "DEVELOPER NOTE: @samples does not contain the required columns, adjust your read function"
     }
     if ((nrow(self@samples)>0 & length(self@data)>0) && !identical(self@samples[, sample_id], rownames(self@data))) {
       "Column `sample_id` in @samples must be identical to the rownames of @data"
@@ -185,8 +179,9 @@ method(import_data, Metabolites) <- function(metabolites) {
   format <- match.arg(metabolites@format, choices=available_data_formats())
 
   data_list <- switch(format,
-                      metabolon_v1 = read_metabolon_v1(metabolites@filepath),
-                      metabolon_v2 = read_metabolon_v2(metabolites@filepath))
+                      metabolon_v1   = read_metabolon_v1(metabolites@filepath),
+                      metabolon_v2   = read_metabolon_v2(metabolites@filepath),
+                      nightingale_v1 = read_nightingale_v1(metabolites@filepath))
 
   metabolites@samples    <- data_list[["samples"]]
   metabolites@features   <- data_list[["features"]]

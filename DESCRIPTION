@@ -53,7 +53,7 @@ Collate:
     'pc_and_outliers.R'
     'read_metabolon_v1.R'
     'read_metabolon_v2.R'
-    'read_nightingale.R'
+    'read_nightingale_v1.R'
     'sample_summary.R'
     'total_peak_area.R'
     'tree_and_independent_features.R'

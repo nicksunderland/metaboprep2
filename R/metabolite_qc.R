@@ -34,7 +34,7 @@ method(metabolite_qc, Metabolites) <- function(metabolites, source="raw"){
   incl_feats <- setdiff(get_features(metabolites, layer=source)[, feature_id], unlist(metabolites@exclusions[[source]][["features"]]))
 
   # run normalisation
-  if (any(grepl("(?i)platform", names(get_features(metabolites, layer=source))))) {
+  if (!all(is.na(get_features(metabolites, layer=source)[, platform]))) {
     cli::cli_alert_info(glue::glue("Normalising raw data..."))
     metabolites <- batch_normalisation(metabolites)
     source <- "batch_normalised"

@@ -20,8 +20,9 @@ Metabolites(
   pc_outlier_sd = 5,
   derived_var_exclusion = TRUE,
   xenobiotics_var_exclusion = TRUE,
-  samples = data.table::data.table(),
-  features = data.table::data.table(),
+  samples = data.table::data.table(sample_id = character()),
+  features = data.table::data.table(feature_id = character(), platform = character(),
+    pathway = character(), derived_feature = logical()),
   data = integer(0),
   exclusions = list(raw = list(samples = list(extreme_sample_missingness = character(0),
     user_defined_sample_missingness = character(0), user_defined_sample_totalpeakarea =

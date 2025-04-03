@@ -50,8 +50,6 @@ read_metabolon_v1 <- function(filepath) {
       features[, pathway := .SD, .SDcols = grep("(?i)pathway", names(features), value = TRUE)]
       data.table::setnames(features, grep("(?i)platform", names(features), value = TRUE), "platform")
       data.table::setcolorder(features, c("feature_id", "platform", "pathway", "derived_feature"))
-      # check
-      stopifnot("DEVELOPER NOTE: read_metabolon_v1 has not created a valid @features table" = check_features_table(features))
     }
 
     if (is.null(samples)) {
@@ -61,8 +59,6 @@ read_metabolon_v1 <- function(filepath) {
       data.table::setnames(samples, clean_names(cnames))
       samples[, sample_id := .SD, .SDcols = names(samples)[grepl("(?i)sample.*?name", names(samples))][1]]
       data.table::setcolorder(samples, c("sample_id"))
-      # check
-      stopifnot("DEVELOPER NOTE: read_metabolon_v1 has not created a valid @samples table" = check_samples_table(samples))
     }
 
     data           <- t(raw[(data_header_row+1L):nrow(raw), (batch_header_col+1L):ncol(raw)][, lapply(.SD, function(x) as.numeric(gsub(",","",x)))])
