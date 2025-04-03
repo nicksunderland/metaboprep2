@@ -81,16 +81,16 @@ with optional exclusions and subsetting.</p>
 <span class="r-in"><span>                           format       <span class="op">=</span> <span class="st">"metabolon_v1"</span>,</span></span>
 <span class="r-in"><span>                           filepath     <span class="op">=</span> <span class="va">file</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">metabolites</span> <span class="op">&lt;-</span> <span class="fu"><a href="import_data.html">import_data</a></span><span class="op">(</span><span class="va">metabolites</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>86 unmapped features:</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>  - 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 137, 138, 139, 140, 141, 142, 143, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 172, 173, 174, 175, 176, 177, 178, 183, 184, 185, 186, 187, 188, 190, 191, 193, 195, 196, 198, 199, 200, 201, 202, 204, 205, 206, 207, 208, 209, 210, 211, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222</span>
 <span class="r-in"><span><span class="va">metabolites</span> <span class="op">&lt;-</span> <span class="fu"><a href="metabolite_qc.html">metabolite_qc</a></span><span class="op">(</span><span class="va">metabolites</span>, source<span class="op">=</span><span class="st">"raw"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Starting Metabolite QC Process</span> <span style="color: #00BBBB;">──────────────────────────────────────────────</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Validating input parameters...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Input validation complete.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Normalising raw data...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Normalised raw data.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample &amp; Feature Summary Statistics for raw data...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Sample &amp; Feature Summary Statistics for raw data...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Copying batch_normalised data to new 'qcing' data layer...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Copying raw data to new 'qcing' data layer...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> qcing data ready for QC.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Analysing exclusions...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Applying exclusion of derived features...</span>
@@ -120,212 +120,212 @@ with optional exclusions and subsetting.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Metabolite QC Process Completed</span> <span style="color: #00BBBB;">─────────────────────────────────────────────</span></span>
 <span class="r-in"><span><span class="fu">get_features</span><span class="op">(</span><span class="va">metabolites</span>, layer <span class="op">=</span> <span class="st">"post_qc"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Index: &lt;derived_feature&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      feature_id platform                pathway derived_feature metabolite_id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          &lt;char&gt;   &lt;char&gt;                 &lt;char&gt;          &lt;lgcl&gt;        &lt;char&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1: compid_123      neg             xenobiotic           FALSE          met1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   2: compid_124      neg             xenobiotic           FALSE          met2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   3: compid_125      neg             xenobiotic           FALSE          met3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   4: compid_126      neg                  lipid           FALSE          met4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   5: compid_127      neg                  lipid           FALSE          met5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   6: compid_128      neg                  lipid           FALSE          met6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   7: compid_129      neg                  lipid           FALSE          met7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   8: compid_130      neg                  lipid           FALSE          met8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   9: compid_131      neg                  lipid           FALSE          met9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  10: compid_132      neg                  lipid           FALSE         met10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  11: compid_133      neg                  lipid           FALSE         met11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  12: compid_134      neg                  lipid           FALSE         met12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  13: compid_135      neg                  lipid           FALSE         met13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  14: compid_136      neg                  lipid           FALSE         met14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  15: compid_137      neg                  lipid           FALSE         met15</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  16: compid_138      neg                  lipid           FALSE         met16</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  17: compid_139      neg                  lipid           FALSE         met17</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  18: compid_140      neg                  lipid           FALSE         met18</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  19: compid_141      neg                  lipid           FALSE         met19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  20: compid_142      neg                  lipid           FALSE         met20</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  21: compid_143      neg                  lipid           FALSE         met21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  22: compid_144      neg                  lipid           FALSE         met22</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  23: compid_145      neg                  lipid           FALSE         met23</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  24: compid_146      neg                  lipid           FALSE         met24</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  25: compid_147      neg                  lipid           FALSE         met25</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  26: compid_148      neg                  lipid           FALSE         met26</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  27: compid_149      neg                  lipid           FALSE         met27</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  28: compid_150      neg                  lipid           FALSE         met28</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  29: compid_151      neg                  lipid           FALSE         met29</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  30: compid_152      neg                  lipid           FALSE         met30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  31: compid_153      neg                  lipid           FALSE         met31</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  32: compid_154      neg                  lipid           FALSE         met32</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  33: compid_155      neg                  lipid           FALSE         met33</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  34: compid_156      neg                  lipid           FALSE         met34</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  35: compid_157      neg                  lipid           FALSE         met35</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  36: compid_158      neg                  lipid           FALSE         met36</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  37: compid_159      neg                  lipid           FALSE         met37</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  38: compid_160      neg                  lipid           FALSE         met38</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  39: compid_161      neg                  lipid           FALSE         met39</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  40: compid_162      neg                  lipid           FALSE         met40</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  41: compid_163      neg                  lipid           FALSE         met41</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  42: compid_164      neg                  lipid           FALSE         met42</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  43: compid_165      neg                  lipid           FALSE         met43</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  44: compid_166      neg                  lipid           FALSE         met44</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  45: compid_167      neg                  lipid           FALSE         met45</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  46: compid_168      neg                  lipid           FALSE         met46</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  47: compid_169      neg                  lipid           FALSE         met47</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  48: compid_170      neg                  lipid           FALSE         met48</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  49: compid_171      neg             amino acid           FALSE         met49</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  50: compid_172      pos             amino acid           FALSE         met50</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  51: compid_173      pos             amino acid           FALSE         met51</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  52: compid_174      pos             amino acid           FALSE         met52</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  53: compid_175      pos             amino acid           FALSE         met53</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  54: compid_176      pos             amino acid           FALSE         met54</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  55: compid_177      pos             amino acid           FALSE         met55</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  56: compid_178      pos             amino acid           FALSE         met56</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  57: compid_179      pos             amino acid           FALSE         met57</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  58: compid_180      pos             amino acid           FALSE         met58</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  59: compid_181      pos             amino acid           FALSE         met59</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  60: compid_182      pos           carbohydrate           FALSE         met60</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  61: compid_183      pos           carbohydrate           FALSE         met61</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  62: compid_184      pos           carbohydrate           FALSE         met62</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  63: compid_185      pos           carbohydrate           FALSE         met63</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  64: compid_186      pos           carbohydrate           FALSE         met64</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  65: compid_187      pos           carbohydrate           FALSE         met65</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  66: compid_188      pos           carbohydrate           FALSE         met66</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  67: compid_189      pos           carbohydrate           FALSE         met67</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  68: compid_190      pos           carbohydrate           FALSE         met68</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  69: compid_191      pos           carbohydrate           FALSE         met69</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  70: compid_192      pos cofactors and vitamins           FALSE         met70</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  71: compid_193      pos cofactors and vitamins           FALSE         met71</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  72: compid_194      pos cofactors and vitamins           FALSE         met72</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  73: compid_195      pos cofactors and vitamins           FALSE         met73</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  74: compid_196      pos cofactors and vitamins           FALSE         met74</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  75: compid_197      pos cofactors and vitamins           FALSE         met75</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  76: compid_198      pos cofactors and vitamins           FALSE         met76</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  77: compid_199      pos cofactors and vitamins           FALSE         met77</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  78: compid_200      pos cofactors and vitamins           FALSE         met78</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  79: compid_201      pos cofactors and vitamins           FALSE         met79</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  80: compid_202      pos cofactors and vitamins           FALSE         met80</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  81: compid_203      pos cofactors and vitamins           FALSE         met81</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  82: compid_204      pos cofactors and vitamins           FALSE         met82</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  83: compid_205      pos cofactors and vitamins           FALSE         met83</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  84: compid_206      pos cofactors and vitamins           FALSE         met84</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  85: compid_207      pos cofactors and vitamins           FALSE         met85</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  86: compid_208      pos cofactors and vitamins           FALSE         met86</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  87: compid_209      pos cofactors and vitamins           FALSE         met87</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  88: compid_210      pos cofactors and vitamins           FALSE         met88</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  89: compid_211      pos cofactors and vitamins           FALSE         met89</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  90: compid_212      pos                 energy           FALSE         met90</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  91: compid_213      pos                 energy           FALSE         met91</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  92: compid_214      pos                 energy           FALSE         met92</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  93: compid_215      pos                 energy           FALSE         met93</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  94: compid_216      pos                 energy           FALSE         met94</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  95: compid_217      pos                 energy           FALSE         met95</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  96: compid_218      pos                 energy           FALSE         met96</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  97: compid_219      pos                 energy           FALSE         met97</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  98: compid_220      pos                 energy           FALSE         met98</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  99: compid_221      pos                 energy           FALSE         met99</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 100: compid_222      pos                 energy           FALSE        met100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      feature_id platform                pathway derived_feature metabolite_id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      comp_id   kegg    hmdb</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;char&gt; &lt;char&gt;  &lt;char&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1:     123   K100   HMDB1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   2:     124   K100   HMDB2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   3:     125   K100   HMDB3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   4:     126   K200   HMDB4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   5:     127   K200   HMDB5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   6:     128   K200   HMDB6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   7:     129   K200   HMDB7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   8:     130   K200   HMDB8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   9:     131   K200   HMDB9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  10:     132   K200  HMDB10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  11:     133   K200  HMDB11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  12:     134   K200  HMDB12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  13:     135   K200  HMDB13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  14:     136   K200  HMDB14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  15:     137   K200  HMDB15</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  16:     138   K200  HMDB16</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  17:     139   K200  HMDB17</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  18:     140   K200  HMDB18</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  19:     141   K200  HMDB19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  20:     142   K200  HMDB20</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  21:     143   K200  HMDB21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  22:     144   K200  HMDB22</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  23:     145   K200  HMDB23</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  24:     146   K200  HMDB24</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  25:     147   K200  HMDB25</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  26:     148   K200  HMDB26</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  27:     149   K200  HMDB27</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  28:     150   K200  HMDB28</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  29:     151   K200  HMDB29</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  30:     152   K200  HMDB30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  31:     153   K200  HMDB31</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  32:     154   K200  HMDB32</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  33:     155   K200  HMDB33</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  34:     156   K200  HMDB34</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  35:     157   K200  HMDB35</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  36:     158   K200  HMDB36</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  37:     159   K200  HMDB37</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  38:     160   K200  HMDB38</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  39:     161   K200  HMDB39</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  40:     162   K200  HMDB40</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  41:     163   K200  HMDB41</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  42:     164   K200  HMDB42</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  43:     165   K200  HMDB43</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  44:     166   K200  HMDB44</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  45:     167   K200  HMDB45</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  46:     168   K200  HMDB46</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  47:     169   K200  HMDB47</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  48:     170   K200  HMDB48</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  49:     171   K300  HMDB49</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  50:     172   K300  HMDB50</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  51:     173   K300  HMDB51</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  52:     174   K300  HMDB52</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  53:     175   K300  HMDB53</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  54:     176   K300  HMDB54</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  55:     177   K300  HMDB55</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  56:     178   K300  HMDB56</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  57:     179   K300  HMDB57</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  58:     180   K300  HMDB58</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  59:     181   K300  HMDB59</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  60:     182   K200  HMDB60</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  61:     183   K200  HMDB61</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  62:     184   K200  HMDB62</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  63:     185   K200  HMDB63</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  64:     186   K200  HMDB64</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  65:     187   K200  HMDB65</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  66:     188   K200  HMDB66</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  67:     189   K200  HMDB67</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  68:     190   K200  HMDB68</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  69:     191   K200  HMDB69</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  70:     192   K400  HMDB70</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  71:     193   K400  HMDB71</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  72:     194   K400  HMDB72</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  73:     195   K400  HMDB73</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  74:     196   K400  HMDB74</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  75:     197   K400  HMDB75</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  76:     198   K400  HMDB76</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  77:     199   K400  HMDB77</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  78:     200   K400  HMDB78</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  79:     201   K400  HMDB79</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  80:     202   K400  HMDB80</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  81:     203   K400  HMDB81</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  82:     204   K400  HMDB82</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  83:     205   K400  HMDB83</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  84:     206   K400  HMDB84</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  85:     207   K400  HMDB85</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  86:     208   K400  HMDB86</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  87:     209   K400  HMDB87</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  88:     210   K400  HMDB88</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  89:     211   K400  HMDB89</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  90:     212   K400  HMDB90</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  91:     213   K400  HMDB91</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  92:     214   K400  HMDB92</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  93:     215   K400  HMDB93</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  94:     216   K400  HMDB94</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  95:     217   K400  HMDB95</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  96:     218   K400  HMDB96</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  97:     219   K400  HMDB97</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  98:     220   K400  HMDB98</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  99:     221   K400  HMDB99</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 100:     222   K400 HMDB100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      comp_id   kegg    hmdb</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        feature_id metabolite_id comp_id platform                pathway   kegg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            &lt;char&gt;        &lt;char&gt;  &lt;char&gt;   &lt;char&gt;                 &lt;char&gt; &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1: unmapped_123          met1     123     &lt;NA&gt;             xenobiotic   K100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2: unmapped_124          met2     124     &lt;NA&gt;             xenobiotic   K100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3: unmapped_125          met3     125     &lt;NA&gt;             xenobiotic   K100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4: unmapped_126          met4     126     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5: unmapped_127          met5     127     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   6: unmapped_128          met6     128     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   7: unmapped_129          met7     129     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   8: unmapped_130          met8     130     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   9: unmapped_131          met9     131     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  10: unmapped_132         met10     132     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  11: unmapped_133         met11     133     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  12: unmapped_134         met12     134     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  13: unmapped_135         met13     135     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  14:  chem_id_136         met14     136     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  15: unmapped_137         met15     137     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  16: unmapped_138         met16     138     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  17: unmapped_139         met17     139     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  18: unmapped_140         met18     140     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  19: unmapped_141         met19     141     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  20: unmapped_142         met20     142     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  21: unmapped_143         met21     143     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  22:  chem_id_144         met22     144     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  23: unmapped_145         met23     145     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  24: unmapped_146         met24     146     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  25: unmapped_147         met25     147     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  26: unmapped_148         met26     148     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  27: unmapped_149         met27     149     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  28: unmapped_150         met28     150     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  29: unmapped_151         met29     151     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  30: unmapped_152         met30     152     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  31: unmapped_153         met31     153     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  32: unmapped_154         met32     154     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  33: unmapped_155         met33     155     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  34: unmapped_156         met34     156     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  35: unmapped_157         met35     157     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  36:  chem_id_158         met36     158     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  37: unmapped_159         met37     159     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  38: unmapped_160         met38     160     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  39: unmapped_161         met39     161     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  40: unmapped_162         met40     162     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  41: unmapped_163         met41     163     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  42: unmapped_164         met42     164     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  43: unmapped_165         met43     165     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  44: unmapped_166         met44     166     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  45: unmapped_167         met45     167     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  46: unmapped_168         met46     168     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  47: unmapped_169         met47     169     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  48: unmapped_170         met48     170     &lt;NA&gt;                  lipid   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  49:  chem_id_171         met49     171     &lt;NA&gt;             amino acid   K300</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  50: unmapped_172         met50     172     &lt;NA&gt;             amino acid   K300</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  51: unmapped_173         met51     173     &lt;NA&gt;             amino acid   K300</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  52: unmapped_174         met52     174     &lt;NA&gt;             amino acid   K300</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  53: unmapped_175         met53     175     &lt;NA&gt;             amino acid   K300</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  54: unmapped_176         met54     176     &lt;NA&gt;             amino acid   K300</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  55: unmapped_177         met55     177     &lt;NA&gt;             amino acid   K300</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  56: unmapped_178         met56     178     &lt;NA&gt;             amino acid   K300</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  57:  chem_id_179         met57     179     &lt;NA&gt;             amino acid   K300</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  58:  chem_id_180         met58     180     &lt;NA&gt;             amino acid   K300</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  59:  chem_id_181         met59     181     &lt;NA&gt;             amino acid   K300</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  60:  chem_id_182         met60     182     &lt;NA&gt;           carbohydrate   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  61: unmapped_183         met61     183     &lt;NA&gt;           carbohydrate   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  62: unmapped_184         met62     184     &lt;NA&gt;           carbohydrate   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  63: unmapped_185         met63     185     &lt;NA&gt;           carbohydrate   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  64: unmapped_186         met64     186     &lt;NA&gt;           carbohydrate   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  65: unmapped_187         met65     187     &lt;NA&gt;           carbohydrate   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  66: unmapped_188         met66     188     &lt;NA&gt;           carbohydrate   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  67:  chem_id_189         met67     189     &lt;NA&gt;           carbohydrate   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  68: unmapped_190         met68     190     &lt;NA&gt;           carbohydrate   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  69: unmapped_191         met69     191     &lt;NA&gt;           carbohydrate   K200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  70:  chem_id_192         met70     192     &lt;NA&gt; cofactors and vitamins   K400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  71: unmapped_193         met71     193     &lt;NA&gt; cofactors and vitamins   K400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  72:  chem_id_194         met72     194     &lt;NA&gt; cofactors and vitamins   K400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  73: unmapped_195         met73     195     &lt;NA&gt; cofactors and vitamins   K400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  74: unmapped_196         met74     196     &lt;NA&gt; cofactors and vitamins   K400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  75:  chem_id_197         met75     197     &lt;NA&gt; cofactors and vitamins   K400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  76: unmapped_198         met76     198     &lt;NA&gt; cofactors and vitamins   K400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  77: unmapped_199         met77     199     &lt;NA&gt; cofactors and vitamins   K400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  78: unmapped_200         met78     200     &lt;NA&gt; cofactors and vitamins   K400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  79: unmapped_201         met79     201     &lt;NA&gt; cofactors and vitamins   K400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  80: unmapped_202         met80     202     &lt;NA&gt; cofactors and vitamins   K400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  81:  chem_id_203         met81     203     &lt;NA&gt; cofactors and vitamins   K400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  82: unmapped_204         met82     204     &lt;NA&gt; cofactors and vitamins   K400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  83: unmapped_205         met83     205     &lt;NA&gt; cofactors and vitamins   K400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  84: unmapped_206         met84     206     &lt;NA&gt; cofactors and vitamins   K400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  85: unmapped_207         met85     207     &lt;NA&gt; cofactors and vitamins   K400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  86: unmapped_208         met86     208     &lt;NA&gt; cofactors and vitamins   K400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  87: unmapped_209         met87     209     &lt;NA&gt; cofactors and vitamins   K400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  88: unmapped_210         met88     210     &lt;NA&gt; cofactors and vitamins   K400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  89: unmapped_211         met89     211     &lt;NA&gt; cofactors and vitamins   K400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  90:  chem_id_212         met90     212     &lt;NA&gt;                 energy   K400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  91: unmapped_213         met91     213     &lt;NA&gt;                 energy   K400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  92: unmapped_214         met92     214     &lt;NA&gt;                 energy   K400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  93: unmapped_215         met93     215     &lt;NA&gt;                 energy   K400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  94: unmapped_216         met94     216     &lt;NA&gt;                 energy   K400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  95: unmapped_217         met95     217     &lt;NA&gt;                 energy   K400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  96: unmapped_218         met96     218     &lt;NA&gt;                 energy   K400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  97: unmapped_219         met97     219     &lt;NA&gt;                 energy   K400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  98: unmapped_220         met98     220     &lt;NA&gt;                 energy   K400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  99: unmapped_221         met99     221     &lt;NA&gt;                 energy   K400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100: unmapped_222        met100     222     &lt;NA&gt;                 energy   K400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        feature_id metabolite_id comp_id platform                pathway   kegg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         hmdb derived_feature                chemical_name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;char&gt;          &lt;lgcl&gt;                       &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1:   HMDB1           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2:   HMDB2           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3:   HMDB3           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4:   HMDB4           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5:   HMDB5           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   6:   HMDB6           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   7:   HMDB7           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   8:   HMDB8           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   9:   HMDB9           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  10:  HMDB10           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  11:  HMDB11           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  12:  HMDB12           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  13:  HMDB13           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  14:  HMDB14           FALSE                      cholate</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  15:  HMDB15           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  16:  HMDB16           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  17:  HMDB17           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  18:  HMDB18           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  19:  HMDB19           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  20:  HMDB20           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  21:  HMDB21           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  22:  HMDB22           FALSE       4-hydroxyphenylacetate</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  23:  HMDB23           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  24:  HMDB24           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  25:  HMDB25           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  26:  HMDB26           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  27:  HMDB27           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  28:  HMDB28           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  29:  HMDB29           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  30:  HMDB30           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  31:  HMDB31           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  32:  HMDB32           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  33:  HMDB33           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  34:  HMDB34           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  35:  HMDB35           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  36:  HMDB36           FALSE           5,6-dihydrothymine</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  37:  HMDB37           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  38:  HMDB38           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  39:  HMDB39           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  40:  HMDB40           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  41:  HMDB41           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  42:  HMDB42           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  43:  HMDB43           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  44:  HMDB44           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  45:  HMDB45           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  46:  HMDB46           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  47:  HMDB47           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  48:  HMDB48           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  49:  HMDB49           FALSE                 hypoxanthine</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  50:  HMDB50           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  51:  HMDB51           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  52:  HMDB52           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  53:  HMDB53           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  54:  HMDB54           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  55:  HMDB55           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  56:  HMDB56           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  57:  HMDB57           FALSE                  9,10-DiHOME</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  58:  HMDB58           FALSE           linoleate (18:2n6)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  59:  HMDB59           FALSE               laurate (12:0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  60:  HMDB60           FALSE                  quinolinate</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  61:  HMDB61           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  62:  HMDB62           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  63:  HMDB63           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  64:  HMDB64           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  65:  HMDB65           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  66:  HMDB66           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  67:  HMDB67           FALSE     N6,N6,N6-trimethyllysine</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  68:  HMDB68           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  69:  HMDB69           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  70:  HMDB70           FALSE           N-acetylputrescine</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  71:  HMDB71           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  72:  HMDB72           FALSE           N-formylmethionine</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  73:  HMDB73           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  74:  HMDB74           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  75:  HMDB75           FALSE S-adenosylhomocysteine (SAH)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  76:  HMDB76           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  77:  HMDB77           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  78:  HMDB78           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  79:  HMDB79           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  80:  HMDB80           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  81:  HMDB81           FALSE   glycolate (hydroxyacetate)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  82:  HMDB82           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  83:  HMDB83           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  84:  HMDB84           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  85:  HMDB85           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  86:  HMDB86           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  87:  HMDB87           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  88:  HMDB88           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  89:  HMDB89           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  90:  HMDB90           FALSE  5-methylthioadenosine (MTA)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  91:  HMDB91           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  92:  HMDB92           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  93:  HMDB93           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  94:  HMDB94           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  95:  HMDB95           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  96:  HMDB96           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  97:  HMDB97           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  98:  HMDB98           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  99:  HMDB99           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100: HMDB100           FALSE                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         hmdb derived_feature                chemical_name</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

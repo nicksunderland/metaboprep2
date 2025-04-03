@@ -11,9 +11,11 @@
 <url><loc>https://nicksunderland.github.io/metaboprep2/index.html</loc></url>
 <url><loc>https://nicksunderland.github.io/metaboprep2/reference/Metabolites.html</loc></url>
 <url><loc>https://nicksunderland.github.io/metaboprep2/reference/add_layer.html</loc></url>
+<url><loc>https://nicksunderland.github.io/metaboprep2/reference/annotate_features.html</loc></url>
 <url><loc>https://nicksunderland.github.io/metaboprep2/reference/available_data_formats.html</loc></url>
 <url><loc>https://nicksunderland.github.io/metaboprep2/reference/available_report_templates.html</loc></url>
 <url><loc>https://nicksunderland.github.io/metaboprep2/reference/batch_normalisation.html</loc></url>
+<url><loc>https://nicksunderland.github.io/metaboprep2/reference/clean_names.html</loc></url>
 <url><loc>https://nicksunderland.github.io/metaboprep2/reference/continuous_power_plot.html</loc></url>
 <url><loc>https://nicksunderland.github.io/metaboprep2/reference/cramerV.html</loc></url>
 <url><loc>https://nicksunderland.github.io/metaboprep2/reference/eval.power.binary.imbalanced.html</loc></url>
@@ -49,6 +51,7 @@
 <url><loc>https://nicksunderland.github.io/metaboprep2/reference/read_metabolon_v1.html</loc></url>
 <url><loc>https://nicksunderland.github.io/metaboprep2/reference/read_metabolon_v2.html</loc></url>
 <url><loc>https://nicksunderland.github.io/metaboprep2/reference/read_nightingale_v1.html</loc></url>
+<url><loc>https://nicksunderland.github.io/metaboprep2/reference/read_nightingale_v2.html</loc></url>
 <url><loc>https://nicksunderland.github.io/metaboprep2/reference/sample_summary.html</loc></url>
 <url><loc>https://nicksunderland.github.io/metaboprep2/reference/total_peak_area.html</loc></url>
 <url><loc>https://nicksunderland.github.io/metaboprep2/reference/tree_and_independent_features.html</loc></url>

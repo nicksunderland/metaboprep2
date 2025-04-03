@@ -328,16 +328,16 @@ outlier treatment, and more.</p>
 <span class="r-in"><span>                           format       <span class="op">=</span> <span class="st">"metabolon_v1"</span>,</span></span>
 <span class="r-in"><span>                           filepath     <span class="op">=</span> <span class="va">file</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">metabolites</span> <span class="op">&lt;-</span> <span class="fu"><a href="import_data.html">import_data</a></span><span class="op">(</span><span class="va">metabolites</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>86 unmapped features:</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>  - 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 137, 138, 139, 140, 141, 142, 143, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 172, 173, 174, 175, 176, 177, 178, 183, 184, 185, 186, 187, 188, 190, 191, 193, 195, 196, 198, 199, 200, 201, 202, 204, 205, 206, 207, 208, 209, 210, 211, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222</span>
 <span class="r-in"><span><span class="va">metabolites</span> <span class="op">&lt;-</span> <span class="fu"><a href="metabolite_qc.html">metabolite_qc</a></span><span class="op">(</span><span class="va">metabolites</span>, source<span class="op">=</span><span class="st">"raw"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Starting Metabolite QC Process</span> <span style="color: #00BBBB;">──────────────────────────────────────────────</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Validating input parameters...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Input validation complete.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Normalising raw data...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Normalised raw data.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample &amp; Feature Summary Statistics for raw data...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Sample &amp; Feature Summary Statistics for raw data...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Copying batch_normalised data to new 'qcing' data layer...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Copying raw data to new 'qcing' data layer...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> qcing data ready for QC.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Analysing exclusions...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Applying exclusion of derived features...</span>
@@ -368,10 +368,10 @@ outlier treatment, and more.</p>
 <span class="r-in"><span><span class="va">metabolites</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;metaboprep2::Metabolites&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  @ project_name             : chr "MYPROJECT"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  @ created                  : POSIXct[1:1], format: "2025-04-03 03:25:48"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  @ created                  : POSIXct[1:1], format: "2025-04-03 10:35:42"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  @ filepath                 : chr "/home/runner/work/_temp/Library/metaboprep2/extdata/metabolon_v1_example.xlsx"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  @ format                   : chr "metabolon_v1"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  @ source                   : Named chr [1:2] "batch_normalised" "qcing"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  @ source                   : Named chr [1:2] "raw" "qcing"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  .. - attr(*, "names")= chr [1:2] "qcing" "post_qc"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  @ feature_missingness      : num 0.2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  @ sample_missingness       : num 0.2</span>
@@ -392,23 +392,24 @@ outlier treatment, and more.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  .. $ box_id     : chr  "box1" "box1" "box1" "box1" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  .. $ lot        : chr  "lot250" "lot250" "lot250" "lot250" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  .. - attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  @ features                 :Classes ‘data.table’ and 'data.frame':	100 obs. of  8 variables:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  .. $ feature_id     : chr  "compid_123" "compid_124" "compid_125" "compid_126" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  .. $ platform       : chr  "neg" "neg" "neg" "neg" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  .. $ pathway        : chr  "xenobiotic" "xenobiotic" "xenobiotic" "lipid" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  .. $ derived_feature: logi  FALSE FALSE FALSE FALSE FALSE FALSE ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  @ features                 :Classes ‘data.table’ and 'data.frame':	100 obs. of  9 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  .. $ feature_id     : chr  "unmapped_123" "unmapped_124" "unmapped_125" "unmapped_126" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  .. $ metabolite_id  : chr  "met1" "met2" "met3" "met4" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  .. $ comp_id        : chr  "123" "124" "125" "126" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  .. $ platform       : chr  NA NA NA NA ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  .. $ pathway        : chr  "xenobiotic" "xenobiotic" "xenobiotic" "lipid" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  .. $ kegg           : chr  "K100" "K100" "K100" "K200" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  .. $ hmdb           : chr  "HMDB1" "HMDB2" "HMDB3" "HMDB4" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  .. $ derived_feature: logi  FALSE FALSE FALSE FALSE FALSE FALSE ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  .. $ chemical_name  : chr  NA NA NA NA ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  .. - attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  .. - attr(*, "index")= int(0) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..- attr(*, "__derived_feature")= int(0) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  @ data                     : num [1:100, 1:100, 1:5] 11.03 12.5 NA 6.98 8.56 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  @ data                     : num [1:100, 1:100, 1:4] 11.03 12.5 NA 6.98 8.56 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  .. - attr(*, "dimnames")=List of 3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ : chr [1:100] "ind1" "ind2" "ind3" "ind4" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ : chr [1:100] "compid_123" "compid_124" "compid_125" "compid_126" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ : chr [1:5] "raw" "scaled" "batch_normalised" "qcing" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ : chr [1:100] "unmapped_123" "unmapped_124" "unmapped_125" "unmapped_126" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ : chr [1:4] "raw" "scaled" "qcing" "post_qc"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  @ exclusions               :List of 3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  .. $ raw    :List of 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ samples :List of 4</span>
@@ -424,7 +425,7 @@ outlier treatment, and more.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ..  .. ..$ extreme_sample_missingness       : chr(0) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ..  .. ..$ user_defined_sample_missingness  : chr [1:2] "ind9" "ind59"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ..  .. ..$ user_defined_sample_totalpeakarea: chr(0) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  .. ..$ user_defined_sample_pca_outlier  : chr "ind1"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  .. ..$ user_defined_sample_pca_outlier  : chr(0) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ features:List of 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ..  .. ..$ extreme_feature_missingness     : chr(0) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ..  .. ..$ user_defined_feature_missingness: chr(0) </span>
@@ -433,39 +434,39 @@ outlier treatment, and more.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ..  .. ..$ extreme_sample_missingness       : chr(0) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ..  .. ..$ user_defined_sample_missingness  : chr [1:2] "ind9" "ind59"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ..  .. ..$ user_defined_sample_totalpeakarea: chr(0) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  .. ..$ user_defined_sample_pca_outlier  : chr "ind1"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  .. ..$ user_defined_sample_pca_outlier  : chr(0) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ features:List of 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ..  .. ..$ extreme_feature_missingness     : chr(0) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ..  .. ..$ user_defined_feature_missingness: chr(0) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  @ feature_summary          : num [1:21, 1:100, 1:3] 0.2 NA 0 80 0.984 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  @ feature_summary          : num [1:21, 1:100, 1:3] 0.2 NA 0 80 10.5 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  .. - attr(*, "dimnames")=List of 3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ : chr [1:21] "missingness" "missingness_w_exclusions" "outlier_count" "n" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ : chr [1:100] "compid_123" "compid_124" "compid_125" "compid_126" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ : chr [1:3] "batch_normalised" "qcing" "post_qc"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ : chr [1:100] "unmapped_123" "unmapped_124" "unmapped_125" "unmapped_126" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ : chr [1:3] "raw" "qcing" "post_qc"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  @ feature_tree             :List of 3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  .. $ batch_normalised:List of 7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ merge      : int [1:99, 1:2] -11 -3 -75 -85 -4 -65 -55 -54 -60 -53 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ height     : num [1:99] 0.169 0.187 0.232 0.275 0.374 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ order      : int [1:100] 75 92 2 34 30 42 5 40 58 81 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ labels     : chr [1:100] "compid_123" "compid_124" "compid_125" "compid_126" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  .. $ raw    :List of 7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ merge      : int [1:99, 1:2] -11 -3 -75 -85 -54 -57 -55 -4 -65 -53 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ height     : num [1:99] 0.149 0.155 0.21 0.218 0.26 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ order      : int [1:100] 58 81 67 99 72 91 94 74 65 89 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ labels     : chr [1:100] "unmapped_123" "unmapped_124" "unmapped_125" "unmapped_126" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ method     : chr "complete"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ call       : language stats::hclust(d = dist_matrix, method = "complete")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ dist.method: NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..- attr(*, "class")= chr "hclust"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  .. $ qcing           :List of 7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ merge      : int [1:96, 1:2] -8 -72 -82 -1 -52 -62 -51 -50 -57 -88 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ height     : num [1:96] 0.169 0.24 0.273 0.368 0.376 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ order      : int [1:97] 83 90 16 29 14 33 95 3 17 43 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ labels     : chr [1:97] "compid_126" "compid_127" "compid_128" "compid_129" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  .. $ qcing  :List of 7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ merge      : int [1:96, 1:2] -8 -72 -82 -51 -52 -1 -50 -54 -62 -88 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ height     : num [1:96] 0.149 0.218 0.218 0.26 0.359 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ order      : int [1:97] 55 78 64 96 69 88 91 71 62 86 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ labels     : chr [1:97] "unmapped_126" "unmapped_127" "unmapped_128" "unmapped_129" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ method     : chr "complete"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ call       : language stats::hclust(d = dist_matrix, method = "complete")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ dist.method: NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..- attr(*, "class")= chr "hclust"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  .. $ post_qc         :List of 7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ merge      : int [1:99, 1:2] -8 -3 -72 -82 -1 -52 -62 -51 -29 -50 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ height     : num [1:99] 0.166 0.189 0.243 0.282 0.366 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ order      : int [1:100] 92 52 68 11 31 99 48 82 97 56 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ labels     : chr [1:100] "compid_126" "compid_127" "compid_128" "compid_129" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  .. $ post_qc:List of 7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ merge      : int [1:99, 1:2] -8 -3 -72 -82 -51 -52 -1 -50 -54 -62 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ height     : num [1:99] 0.149 0.155 0.218 0.218 0.26 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ order      : int [1:100] 23 45 20 21 1 38 10 74 15 41 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ labels     : chr [1:100] "unmapped_126" "unmapped_127" "unmapped_128" "unmapped_129" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ method     : chr "complete"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ call       : language stats::hclust(d = dist_matrix, method = "complete")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ dist.method: NULL</span>
@@ -474,26 +475,26 @@ outlier treatment, and more.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  .. - attr(*, "dimnames")=List of 3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ : chr [1:100] "ind1" "ind2" "ind3" "ind4" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ : chr [1:5] "missingness" "missingness_w_exclusions" "tpa_total" "tpa_complete_features" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ : chr [1:3] "batch_normalised" "qcing" "post_qc"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  @ pcs                      : num [1:100, 1:16, 1:3] -15.45 -14.14 1.42 -1.09 -2.86 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ : chr [1:3] "raw" "qcing" "post_qc"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  @ pcs                      : num [1:100, 1:16, 1:3] -11.67 -12.441 0.319 -0.826 -3.309 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  .. - attr(*, "dimnames")=List of 3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ : chr [1:100] "ind1" "ind2" "ind3" "ind4" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ : chr [1:16] "pc1" "pc2" "pc3" "pc4" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ : chr [1:3] "batch_normalised" "qcing" "post_qc"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  @ prob_pcs                 : num [1:100, 1:10, 1:3] -15.31 -14.08 1.73 -1.03 -2.78 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ : chr [1:3] "raw" "qcing" "post_qc"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  @ prob_pcs                 : num [1:100, 1:10, 1:3] -11.523 -12.42 0.44 -0.777 -3.216 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  .. - attr(*, "dimnames")=List of 3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ : chr [1:100] "ind1" "ind2" "ind3" "ind4" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ : chr [1:10] "prob_pc1" "prob_pc2" "prob_pc3" "prob_pc4" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ : chr [1:3] "batch_normalised" "qcing" "post_qc"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  @ var_exp                  : num [1:87, 1, 1:3] 0.0923 0.0617 0.0486 0.0413 0.0396 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ : chr [1:3] "raw" "qcing" "post_qc"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  @ var_exp                  : num [1:77, 1, 1:3] 0.1316 0.093 0.0449 0.0397 0.0353 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  .. - attr(*, "dimnames")=List of 3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ : chr [1:87] "PC1" "PC2" "PC3" "PC4" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ : chr [1:77] "PC1" "PC2" "PC3" "PC4" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ : chr "value"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ : chr [1:3] "batch_normalised" "qcing" "post_qc"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ..  ..$ : chr [1:3] "raw" "qcing" "post_qc"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  @ acceleration_factor      : Named num [1:3] 2 2 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  .. - attr(*, "names")= chr [1:3] "batch_normalised" "qcing" "post_qc"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  @ n_parallel               : Named int [1:3] 13 12 15</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  .. - attr(*, "names")= chr [1:3] "batch_normalised" "qcing" "post_qc"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  .. - attr(*, "names")= chr [1:3] "raw" "qcing" "post_qc"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  @ n_parallel               : Named int [1:3] 7 8 5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  .. - attr(*, "names")= chr [1:3] "raw" "qcing" "post_qc"</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
