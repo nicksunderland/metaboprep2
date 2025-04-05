@@ -26,7 +26,7 @@ The currently available formats are:
 
 
 ## Exporting processed data
-```{r export, include=FALSE}
+```{r export}
 # data file
 file <- system.file("extdata", "metabolon_v2_example.xlsx", package = "metaboprep2")
 
