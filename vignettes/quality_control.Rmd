@@ -14,9 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-## **Introduction**  
-
-Metabolomics data often contain missing values, outliers, and features that require filtering before downstream analysis. The `metabolite_qc()` function provides an efficient and automated way to perform **quality control (QC)** on a `Metabolites` object.  
+The quality control pipeline can be implemented with the following lines of code, namely the `metabolite_qc()` function. You must specify the QC parameters in the slots of the `Metabolomics` object, this can either be done at object instantiation, or by later setting the slots.  
 
 This vignette walks through the key parameters and steps for **performing QC** using this function.  
 
@@ -59,41 +57,13 @@ The `metabolite_qc()` function applies multiple QC filters based on missingness,
 metabolites <- metabolite_qc(metabolites, source = "raw")
 ```
 
-### Accessing QC'd data
-
-There are two primary ways to access data stored in a `Metabolites` object:
-
-1. **Using the `@` operator** to directly access object slots.
-2. **Using getter functions** like `get_data()` for structured data extraction.
-
-#### Accessing Data Using `@` Operator
-```{r}
-metabolites@data[, , "post_qc"][1:5,1:5]
-```
-
-#### Accessing Data Using Getter Functions
-```{r}
-get_data(metabolites, layer="post_qc", drop=TRUE)[1:5,1:5]
-```
-
-#### Accessing Only Data Passing QC
-```{r}
-get_data(metabolites, layer="post_qc", drop=TRUE)[1:5,1:5]
-```
-
-### Exclusions
-The underlying data still has all respresentations of the samples and features, however, the QC process builds a matrix of exclusion reasons.
-
-#### Accessing the Exclusions List
-```{r}
-str(metabolites@exclusions)
-```
-
 ### Figures
-Currently the feature tree object is stored in the metabolites object. 
+Currently the feature tree object is stored in the metabolites object `@feature_tree` slot. 
 
 More DataViz to come....
 ```{r, fig.width=14, fig.height=8, out.width="100%"}
 plot(get_feature_tree(metabolites, layer="post_qc"))
 ```
 
+## **Report**
+Please see the dedicated vignette on generating a QC report (html or pdf).
