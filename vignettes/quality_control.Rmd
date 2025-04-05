@@ -51,7 +51,7 @@ metabolites <- import_data(metabolites)
 
 ## **Performing Metabolite Quality Control**
 
-The `metabolite_qc()` function applies multiple QC filters based on missingness, outlier detection, PCA-based QC. This generates another layer to the data matrices named `post_qc`.
+The `metabolite_qc()` function applies multiple QC filters based on missingness, outlier detection, PCA-based QC. This generates another layer to the data matrices named `post_qc`. And intermediate `qcing` layer is also generated.
 
 ```{r}
 metabolites <- metabolite_qc(metabolites, source = "raw")
@@ -60,7 +60,6 @@ metabolites <- metabolite_qc(metabolites, source = "raw")
 ### Figures
 Currently the feature tree object is stored in the metabolites object `@feature_tree` slot. 
 
-More DataViz to come....
 ```{r, fig.width=14, fig.height=8, out.width="100%"}
 plot(get_feature_tree(metabolites, layer="post_qc"))
 ```
