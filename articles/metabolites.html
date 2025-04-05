@@ -34,6 +34,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/generate_report.html">Generate QC Report</a></li>
+    <li><a class="dropdown-item" href="../articles/import_and_export.html">Data Import and Export</a></li>
     <li><a class="dropdown-item" href="../articles/metabolites.html">Using the Metabolites S7 Class</a></li>
     <li><a class="dropdown-item" href="../articles/quality_control.html">Metabolite Quality Control</a></li>
   </ul>
@@ -96,7 +97,8 @@ options can be found using the function
 <code><a href="../reference/available_data_formats.html">available_data_formats()</a></code></p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/available_data_formats.html">available_data_formats</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "metabolon_v1"   "metabolon_v2"   "nightingale_v1" "nightingale_v2"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "metabolon_v1"   "metabolon_v2"   "metaboprep2"    "nightingale_v1"</span></span>
+<span><span class="co">#&gt; [5] "nightingale_v2"</span></span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Example Metabolon (format 1) raw data file</span></span>
 <span><span class="va">filepath</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"metabolon_v1_example.xlsx"</span>, package <span class="op">=</span> <span class="st">"metaboprep2"</span><span class="op">)</span></span>
@@ -115,7 +117,7 @@ options can be found using the function
 <span><span class="va">metabolites</span></span>
 <span><span class="co">#&gt; &lt;metaboprep2::Metabolites&gt;</span></span>
 <span><span class="co">#&gt;  @ project_name             : chr "ExampleProject"</span></span>
-<span><span class="co">#&gt;  @ created                  : POSIXct[1:1], format: "2025-04-03 10:50:21"</span></span>
+<span><span class="co">#&gt;  @ created                  : POSIXct[1:1], format: "2025-04-05 02:39:09"</span></span>
 <span><span class="co">#&gt;  @ filepath                 : chr "/home/runner/work/_temp/Library/metaboprep2/extdata/metabolon_v1_example.xlsx"</span></span>
 <span><span class="co">#&gt;  @ format                   : chr "metabolon_v1"</span></span>
 <span><span class="co">#&gt;  @ source                   : chr(0) </span></span>
@@ -138,15 +140,16 @@ options can be found using the function
 <span><span class="co">#&gt;  .. $ box_id     : chr  "box1" "box1" "box1" "box1" ...</span></span>
 <span><span class="co">#&gt;  .. $ lot        : chr  "lot250" "lot250" "lot250" "lot250" ...</span></span>
 <span><span class="co">#&gt;  .. - attr(*, ".internal.selfref")=&lt;externalptr&gt; </span></span>
-<span><span class="co">#&gt;  @ features                 :Classes 'data.table' and 'data.frame':  100 obs. of  9 variables:</span></span>
+<span><span class="co">#&gt;  @ features                 :Classes 'data.table' and 'data.frame':  100 obs. of  10 variables:</span></span>
 <span><span class="co">#&gt;  .. $ feature_id     : chr  "unmapped_123" "unmapped_124" "unmapped_125" "unmapped_126" ...</span></span>
-<span><span class="co">#&gt;  .. $ metabolite_id  : chr  "met1" "met2" "met3" "met4" ...</span></span>
 <span><span class="co">#&gt;  .. $ comp_id        : chr  "123" "124" "125" "126" ...</span></span>
+<span><span class="co">#&gt;  .. $ metabolite_id  : chr  "met1" "met2" "met3" "met4" ...</span></span>
 <span><span class="co">#&gt;  .. $ platform       : chr  NA NA NA NA ...</span></span>
 <span><span class="co">#&gt;  .. $ pathway        : chr  "xenobiotic" "xenobiotic" "xenobiotic" "lipid" ...</span></span>
 <span><span class="co">#&gt;  .. $ kegg           : chr  "K100" "K100" "K100" "K200" ...</span></span>
 <span><span class="co">#&gt;  .. $ hmdb           : chr  "HMDB1" "HMDB2" "HMDB3" "HMDB4" ...</span></span>
 <span><span class="co">#&gt;  .. $ derived_feature: logi  FALSE FALSE FALSE FALSE FALSE FALSE ...</span></span>
+<span><span class="co">#&gt;  .. $ id_source      : chr  NA NA NA NA ...</span></span>
 <span><span class="co">#&gt;  .. $ chemical_name  : chr  NA NA NA NA ...</span></span>
 <span><span class="co">#&gt;  .. - attr(*, ".internal.selfref")=&lt;externalptr&gt; </span></span>
 <span><span class="co">#&gt;  @ data                     : num [1:100, 1:100, 1:2] 11.03 12.5 NA 6.98 8.56 ...</span></span>
@@ -241,22 +244,22 @@ for structured data extraction.</li>
 </h4>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">metabolites</span><span class="op">@</span><span class="va">features</span><span class="op">)</span></span>
-<span><span class="co">#&gt;      feature_id metabolite_id comp_id platform    pathway   kegg   hmdb</span></span>
-<span><span class="co">#&gt;          &lt;char&gt;        &lt;char&gt;  &lt;char&gt;   &lt;char&gt;     &lt;char&gt; &lt;char&gt; &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1: unmapped_123          met1     123     &lt;NA&gt; xenobiotic   K100  HMDB1</span></span>
-<span><span class="co">#&gt; 2: unmapped_124          met2     124     &lt;NA&gt; xenobiotic   K100  HMDB2</span></span>
-<span><span class="co">#&gt; 3: unmapped_125          met3     125     &lt;NA&gt; xenobiotic   K100  HMDB3</span></span>
-<span><span class="co">#&gt; 4: unmapped_126          met4     126     &lt;NA&gt;      lipid   K200  HMDB4</span></span>
-<span><span class="co">#&gt; 5: unmapped_127          met5     127     &lt;NA&gt;      lipid   K200  HMDB5</span></span>
-<span><span class="co">#&gt; 6: unmapped_128          met6     128     &lt;NA&gt;      lipid   K200  HMDB6</span></span>
-<span><span class="co">#&gt;    derived_feature chemical_name</span></span>
-<span><span class="co">#&gt;             &lt;lgcl&gt;        &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1:           FALSE          &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 2:           FALSE          &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 3:           FALSE          &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 4:           FALSE          &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 5:           FALSE          &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 6:           FALSE          &lt;NA&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt;      feature_id comp_id metabolite_id platform    pathway   kegg   hmdb</span></span>
+<span><span class="co">#&gt;          &lt;char&gt;  &lt;char&gt;        &lt;char&gt;   &lt;char&gt;     &lt;char&gt; &lt;char&gt; &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1: unmapped_123     123          met1     &lt;NA&gt; xenobiotic   K100  HMDB1</span></span>
+<span><span class="co">#&gt; 2: unmapped_124     124          met2     &lt;NA&gt; xenobiotic   K100  HMDB2</span></span>
+<span><span class="co">#&gt; 3: unmapped_125     125          met3     &lt;NA&gt; xenobiotic   K100  HMDB3</span></span>
+<span><span class="co">#&gt; 4: unmapped_126     126          met4     &lt;NA&gt;      lipid   K200  HMDB4</span></span>
+<span><span class="co">#&gt; 5: unmapped_127     127          met5     &lt;NA&gt;      lipid   K200  HMDB5</span></span>
+<span><span class="co">#&gt; 6: unmapped_128     128          met6     &lt;NA&gt;      lipid   K200  HMDB6</span></span>
+<span><span class="co">#&gt;    derived_feature id_source chemical_name</span></span>
+<span><span class="co">#&gt;             &lt;lgcl&gt;    &lt;char&gt;        &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1:           FALSE      &lt;NA&gt;          &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 2:           FALSE      &lt;NA&gt;          &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 3:           FALSE      &lt;NA&gt;          &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 4:           FALSE      &lt;NA&gt;          &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 5:           FALSE      &lt;NA&gt;          &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 6:           FALSE      &lt;NA&gt;          &lt;NA&gt;</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="raw-metabolite-data">Raw Metabolite Data<a class="anchor" aria-label="anchor" href="#raw-metabolite-data"></a>

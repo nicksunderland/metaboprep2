@@ -21,6 +21,7 @@ to standardized annotations. Optionally, pathway and platform information can be
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/generate_report.html">Generate QC Report</a></li>
+    <li><a class="dropdown-item" href="../articles/import_and_export.html">Data Import and Export</a></li>
     <li><a class="dropdown-item" href="../articles/metabolites.html">Using the Metabolites S7 Class</a></li>
     <li><a class="dropdown-item" href="../articles/quality_control.html">Metabolite Quality Control</a></li>
   </ul></li>
@@ -68,13 +69,15 @@ or identifiers from Nightingale Excel or flat text files.</p></dd>
 <dt id="arg-pathway-col">pathway_col<a class="anchor" aria-label="anchor" href="#arg-pathway-col"></a></dt>
 <dd><p><code>character</code>, <em>optional</em>
 The name of the column containing pathway information.
-If provided, pathway data will be included in the annotation.</p></dd>
+If provided, source pathway data from <code>features</code> will be included in
+the annotation with standardised column name <code>pathway</code>.</p></dd>
 
 
 <dt id="arg-platform-col">platform_col<a class="anchor" aria-label="anchor" href="#arg-platform-col"></a></dt>
 <dd><p><code>character</code>, <em>optional</em>
 The name of the column specifying the platform type.
-If supplied, platform-specific annotations will be added.</p></dd>
+If supplied, source platform data from <code>features</code> will be included in
+the annotation with standardised column name <code>platform</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">

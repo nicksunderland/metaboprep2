@@ -19,6 +19,7 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/generate_report.html">Generate QC Report</a></li>
+    <li><a class="dropdown-item" href="../articles/import_and_export.html">Data Import and Export</a></li>
     <li><a class="dropdown-item" href="../articles/metabolites.html">Using the Metabolites S7 Class</a></li>
     <li><a class="dropdown-item" href="../articles/quality_control.html">Metabolite Quality Control</a></li>
   </ul></li>
@@ -381,23 +382,23 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>     Plasma sample</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $features</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            feature_id raw_feature_ids platform derived_feature</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                &lt;char&gt;          &lt;char&gt;   &lt;char&gt;          &lt;lgcl&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:   ng1_id_xxlvldlp      XXL-VLDL-P     &lt;NA&gt;           FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:   ng1_id_xxlvldll      XXL-VLDL-L     &lt;NA&gt;           FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:  ng1_id_xxlvldlpl     XXL-VLDL-PL     &lt;NA&gt;           FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:   ng1_id_xxlvldlc      XXL-VLDL-C     &lt;NA&gt;           FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:  ng1_id_xxlvldlce     XXL-VLDL-CE     &lt;NA&gt;           FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:  ng1_id_xxlvldlfc     XXL-VLDL-FC     &lt;NA&gt;           FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:  ng1_id_xxlvldltg     XXL-VLDL-TG     &lt;NA&gt;           FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:    ng1_id_xlvldlp       XL-VLDL-P     &lt;NA&gt;           FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:    ng1_id_xlvldll       XL-VLDL-L     &lt;NA&gt;           FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:   ng1_id_xlvldlpl      XL-VLDL-PL     &lt;NA&gt;           FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11:    ng1_id_xlvldlc       XL-VLDL-C     &lt;NA&gt;           FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12:   ng1_id_xlvldlce      XL-VLDL-CE     &lt;NA&gt;           FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13:   ng1_id_xlvldlfc      XL-VLDL-FC     &lt;NA&gt;           FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14:   ng1_id_xlvldltg      XL-VLDL-TG     &lt;NA&gt;           FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15: ng1_id_shdltg_pct      S-HDL-TG_%     &lt;NA&gt;            TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            feature_id       ng_id platform derived_feature id_source</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                &lt;char&gt;      &lt;char&gt;   &lt;char&gt;          &lt;lgcl&gt;    &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:   ng1_id_xxlvldlp  XXL-VLDL-P     &lt;NA&gt;           FALSE    ng1_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:   ng1_id_xxlvldll  XXL-VLDL-L     &lt;NA&gt;           FALSE    ng1_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:  ng1_id_xxlvldlpl XXL-VLDL-PL     &lt;NA&gt;           FALSE    ng1_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:   ng1_id_xxlvldlc  XXL-VLDL-C     &lt;NA&gt;           FALSE    ng1_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:  ng1_id_xxlvldlce XXL-VLDL-CE     &lt;NA&gt;           FALSE    ng1_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:  ng1_id_xxlvldlfc XXL-VLDL-FC     &lt;NA&gt;           FALSE    ng1_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:  ng1_id_xxlvldltg XXL-VLDL-TG     &lt;NA&gt;           FALSE    ng1_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:    ng1_id_xlvldlp   XL-VLDL-P     &lt;NA&gt;           FALSE    ng1_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:    ng1_id_xlvldll   XL-VLDL-L     &lt;NA&gt;           FALSE    ng1_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:   ng1_id_xlvldlpl  XL-VLDL-PL     &lt;NA&gt;           FALSE    ng1_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:    ng1_id_xlvldlc   XL-VLDL-C     &lt;NA&gt;           FALSE    ng1_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:   ng1_id_xlvldlce  XL-VLDL-CE     &lt;NA&gt;           FALSE    ng1_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13:   ng1_id_xlvldlfc  XL-VLDL-FC     &lt;NA&gt;           FALSE    ng1_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14:   ng1_id_xlvldltg  XL-VLDL-TG     &lt;NA&gt;           FALSE    ng1_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15: ng1_id_shdltg_pct  S-HDL-TG_%     &lt;NA&gt;            TRUE    ng1_id</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                        chemical_name</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                               &lt;char&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1: Concentration of chylomicrons and extremely large VLDL particles</span>

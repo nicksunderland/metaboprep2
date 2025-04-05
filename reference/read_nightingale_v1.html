@@ -19,6 +19,7 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/generate_report.html">Generate QC Report</a></li>
+    <li><a class="dropdown-item" href="../articles/import_and_export.html">Data Import and Export</a></li>
     <li><a class="dropdown-item" href="../articles/metabolites.html">Using the Metabolites S7 Class</a></li>
     <li><a class="dropdown-item" href="../articles/quality_control.html">Metabolite Quality Control</a></li>
   </ul></li>
@@ -595,20 +596,20 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>     Unidentified small molecule (c) Below limit of quantification</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $features</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               feature_id raw_feature_ids</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;char&gt;          &lt;char&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:        ng1_id_totalc         Total-C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:       ng1_id_nonhdlc       non-HDL-C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:      ng1_id_remnantc       Remnant-C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:         ng1_id_vldlc          VLDL-C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: ng1_id_clinical_ldlc  Clinical LDL-C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:          ng1_id_ldlc           LDL-C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:          ng1_id_hdlc           HDL-C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:       ng1_id_totaltg        Total-TG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:        ng1_id_vldltg         VLDL-TG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:         ng1_id_ldltg          LDL-TG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11:         ng1_id_hdltg          HDL-TG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12:    ng1_id_omega3_pct       Omega-3 %</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               feature_id          ng_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;char&gt;         &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:        ng1_id_totalc        Total-C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:       ng1_id_nonhdlc      non-HDL-C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:      ng1_id_remnantc      Remnant-C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:         ng1_id_vldlc         VLDL-C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: ng1_id_clinical_ldlc Clinical LDL-C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:          ng1_id_ldlc          LDL-C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:          ng1_id_hdlc          HDL-C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:       ng1_id_totaltg       Total-TG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:        ng1_id_vldltg        VLDL-TG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:         ng1_id_ldltg         LDL-TG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:         ng1_id_hdltg         HDL-TG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:    ng1_id_omega3_pct      Omega-3 %</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                            feature_name feature_unit</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                  &lt;char&gt;       &lt;char&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:                                   Total cholesterol       mmol/l</span>
@@ -623,20 +624,20 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10:                                Triglycerides in LDL       mmol/l</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 11:                                Triglycerides in HDL       mmol/l</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 12:   Ratio of omega-3 fatty acids to total fatty acids            %</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           pathway       sub_pathway platform derived_feature</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            &lt;char&gt;            &lt;char&gt;   &lt;char&gt;          &lt;lgcl&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:   Cholesterol              &lt;NA&gt;     &lt;NA&gt;           FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:   Cholesterol              &lt;NA&gt;     &lt;NA&gt;           FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:   Cholesterol              &lt;NA&gt;     &lt;NA&gt;           FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:   Cholesterol              &lt;NA&gt;     &lt;NA&gt;           FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:   Cholesterol              &lt;NA&gt;     &lt;NA&gt;           FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:   Cholesterol              &lt;NA&gt;     &lt;NA&gt;           FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:   Cholesterol              &lt;NA&gt;     &lt;NA&gt;           FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8: Triglycerides              &lt;NA&gt;     &lt;NA&gt;           FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9: Triglycerides              &lt;NA&gt;     &lt;NA&gt;           FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: Triglycerides              &lt;NA&gt;     &lt;NA&gt;           FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11: Triglycerides              &lt;NA&gt;     &lt;NA&gt;           FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12:   Fatty acids Fatty acid ratios     &lt;NA&gt;            TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           pathway       sub_pathway platform derived_feature id_source</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            &lt;char&gt;            &lt;char&gt;   &lt;char&gt;          &lt;lgcl&gt;    &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:   Cholesterol              &lt;NA&gt;     &lt;NA&gt;           FALSE    ng1_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:   Cholesterol              &lt;NA&gt;     &lt;NA&gt;           FALSE    ng1_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:   Cholesterol              &lt;NA&gt;     &lt;NA&gt;           FALSE    ng1_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:   Cholesterol              &lt;NA&gt;     &lt;NA&gt;           FALSE    ng1_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:   Cholesterol              &lt;NA&gt;     &lt;NA&gt;           FALSE    ng1_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:   Cholesterol              &lt;NA&gt;     &lt;NA&gt;           FALSE    ng1_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:   Cholesterol              &lt;NA&gt;     &lt;NA&gt;           FALSE    ng1_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: Triglycerides              &lt;NA&gt;     &lt;NA&gt;           FALSE    ng1_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9: Triglycerides              &lt;NA&gt;     &lt;NA&gt;           FALSE    ng1_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: Triglycerides              &lt;NA&gt;     &lt;NA&gt;           FALSE    ng1_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11: Triglycerides              &lt;NA&gt;     &lt;NA&gt;           FALSE    ng1_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:   Fatty acids Fatty acid ratios     &lt;NA&gt;            TRUE    ng1_id</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                           chemical_name</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                  &lt;char&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:                                   Total cholesterol</span>
