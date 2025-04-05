@@ -86,9 +86,9 @@ read_nightingale_v2 <- function(filepath) {
   # get the features
   raw_feature_ids <- unname(unlist(raw[head_inds[1L,"row"]:head_inds[1L,"row"], (head_inds[1L,"col"]+1):ncol(raw)]))
   features <- data.table::data.table(
-    raw_feature_ids = raw_feature_ids
+    ng_id = raw_feature_ids
   )
-  features <- annotate_features(features, id_col="raw_feature_ids")
+  features <- annotate_features(features, id_col="ng_id")
 
   # get the data
   data <- as.matrix(raw[data_inds[1L,"row"]:nrow(raw), data_inds[1L,"col"]:ncol(raw)][, lapply(.SD, function(x) as.numeric(gsub(",","",x)))])

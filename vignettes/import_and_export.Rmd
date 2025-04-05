@@ -1,0 +1,67 @@
+---
+title: "Data Import and Export"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Data Import and Export}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, include=FALSE}
+library(metaboprep2)
+
+formats <- paste0('* `', available_data_formats(), '`', collapse="  \n")
+```
+## Formats
+The currently available formats are:  
+
+`r formats`
+
+
+## Exporting processed data
+```{r export, include=FALSE}
+# data file
+file <- system.file("extdata", "metabolon_v2_example.xlsx", package = "metaboprep2")
+
+# Metabolites object
+metabolites <- Metabolites(project_name = "metaboprep_v2_example",
+                           format       = "metabolon_v2",
+                           filepath     = file)
+
+# Import
+metabolites <- import_data(metabolites)
+
+# Run some QC
+metabolites <- metabolite_qc(metabolites, source="raw")
+
+# Export to directory
+export_data(metabolites, directory = getwd())
+```
+
+```{r, echo=FALSE}
+# View directory structure
+output_dir <- list.dirs(getwd(), recursive = FALSE)
+output_dir <- output_dir[grepl("metaboprep_release", output_dir)]
+subsdirs   <- list.dirs(output_dir)[-1]
+out_str    <- stats::setNames(as.list(subsdirs), basename(subsdirs))
+out_str    <- lapply(out_str, function(x) as.list(list.files(x)))
+str(out_str)
+```
+
+## Importing `metaboprep2` format
+```{r}
+metabolites <- Metabolites(project_name = "import_previous",
+                           format       = "metaboprep2",
+                           filepath     = output_dir)
+
+metabolites <- import_data(metabolites)
+
+metabolites
+```

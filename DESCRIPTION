@@ -25,7 +25,8 @@ Imports:
     rmarkdown,
     S7,
     stats,
-    utils
+    utils,
+    yaml
 URL: https://nicksunderland.github.io/metaboprep2/
 Suggests: 
     knitr,
@@ -54,6 +55,7 @@ Collate:
     'pc_and_outliers.R'
     'read_metabolon_v1.R'
     'read_metabolon_v2.R'
+    'read_metaboprep2.R'
     'read_nightingale_v1.R'
     'read_nightingale_v2.R'
     'sample_summary.R'

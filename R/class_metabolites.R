@@ -89,7 +89,7 @@ Metabolites <- new_class(
     # parameters
     project_name              = new_property(class_character, default="", validator = function(value) if (value!="") NULL else "empty - please specify a project name"),
     created                   = new_property(class_POSIXct, default=quote(Sys.time())),
-    filepath                  = new_property(class_character, validator = function(value) if (file.exists(value)) NULL else "does not appear to exist"),
+    filepath                  = new_property(class_character, validator = function(value) if (file.exists(value) || dir.exists(value)) NULL else "does not appear to exist"),
     format                    = new_property(class_character, default="metabolon_v1", validator = function(value) if (value %in% available_data_formats()) NULL else paste("must be one of:", paste(available_data_formats(), collapse=", "))),
     source                    = new_property(class_character),
     feature_missingness       = new_property(class_numeric, default=0.2, validator = function(value) if (data.table::between(value, 0, 1)) NULL else "should be a value between 0 and 1, inclusive"),
@@ -178,14 +178,45 @@ method(import_data, Metabolites) <- function(metabolites) {
 
   format <- match.arg(metabolites@format, choices=available_data_formats())
 
-  data_list <- switch(format,
-                      metabolon_v1   = read_metabolon_v1(metabolites@filepath),
-                      metabolon_v2   = read_metabolon_v2(metabolites@filepath),
-                      nightingale_v1 = read_nightingale_v1(metabolites@filepath))
+  if (format != "metaboprep2") {
 
-  metabolites@samples    <- data_list[["samples"]]
-  metabolites@features   <- data_list[["features"]]
-  metabolites@data       <- data_list[["data"]]
+    data_list <- switch(format,
+                        metabolon_v1   = read_metabolon_v1(metabolites@filepath),
+                        metabolon_v2   = read_metabolon_v2(metabolites@filepath),
+                        nightingale_v1 = read_nightingale_v1(metabolites@filepath),
+                        nightingale_v2 = read_nightingale_v2(metabolites@filepath))
+
+    metabolites@samples    <- data_list[["samples"]]
+    metabolites@features   <- data_list[["features"]]
+    metabolites@data       <- data_list[["data"]]
+
+  } else {
+
+    data_list <- read_metaboprep2(dirpath = metabolites@filepath)
+
+    metabolites@samples         <- data_list[["samples"]]
+    metabolites@features        <- data_list[["features"]]
+    metabolites@data            <- data_list[["data"]]
+    metabolites@sample_summary  <- data_list[["sample_summary"]]
+    metabolites@feature_summary <- data_list[["feature_summary"]]
+    metabolites@pcs             <- data_list[["pcs"]]
+    metabolites@prob_pcs        <- data_list[["prob_pcs"]]
+    metabolites@var_exp         <- data_list[["var_exp"]]
+    metabolites@feature_tree    <- data_list[["feature_tree"]]
+
+    for (i in seq_along(data_list$config)) {
+      slot_name <- names(data_list$config)[i]
+      slot_data <- data_list$config[[i]]
+      S7::prop(metabolites, slot_name) <- switch(slot_name,
+                                                 "created"             = as.POSIXct(slot_data[[1]]),
+                                                 "exclusions"          = as.list(slot_data),
+                                                 "source"              = stats::na.omit(unlist(slot_data)),
+                                                 "acceleration_factor" = stats::na.omit(unlist(slot_data)),
+                                                 "n_parallel"          = stats::na.omit(unlist(slot_data)),
+                                                 slot_data[[1]])
+    }
+
+  }
 
   return(metabolites)
 }
@@ -772,7 +803,14 @@ method(get_data, list(Metabolites, class_character)) <- function(metabolites, la
 #' @title Export Data from a Metabolites Object
 #'
 #' @description
-#' Exports the data from a `Metabolites` object to a specified directory. The function allows the user to export the data in a format that is compatible with `data.table::fwrite` for efficient writing of large datasets.
+#' Exports all data layers from a `Metabolites` object to a structured directory format.
+#' For each data layer, the function creates a subdirectory containing:
+#' - the primary data matrix (`data.tsv`),
+#' - associated feature and sample metadata (`features.tsv`, `samples.tsv`),
+#' - feature and sample summaries (if present, `feature_summary.tsv`, `sample_summary.tsv`),
+#' - a serialized feature tree (if present),
+#' - and a `config.yml` file with additional metadata and processing parameters.
+#'
 #'
 #' @param metabolites A `Metabolites` object containing the data to be exported.
 #' @param directory A character string specifying the path to the directory where the data should be written.
@@ -792,29 +830,130 @@ method(get_data, list(Metabolites, class_character)) <- function(metabolites, la
 #' export_data(metabolites, directory = "path/to/directory")
 #' }
 #'
+#' @importFrom yaml write_yaml
+#'
 #' @export
 export_data <- new_generic("export_data", c("metabolites", "directory"), function(metabolites, directory) { S7_dispatch() })
 #' @name export_data
 method(export_data, list(Metabolites, class_character)) <- function(metabolites, directory) {
 
-  today <- gsub("-", "_", Sys.Date())
-  dir   <- file.path(sub("/$", "", directory), paste0("metaboprep_release_", today), "raw_data")
-  dir.create(dir, showWarnings = FALSE)
+  # make the directories
+  today    <- gsub("-", "_", Sys.Date())
+  dir      <- file.path(sub("/$", "", directory), paste0("metaboprep_release_", today))
+  layers   <- stats::setNames(dimnames(metabolites@data)[[3]], dimnames(metabolites@data)[[3]])
+  sub_dirs <- lapply(layers, function(x) file.path(dir, x))
+  invisible(lapply(sub_dirs, dir.create, showWarnings = FALSE, recursive = TRUE))
 
-  samples_path <- file.path(dir, paste(metabolites@project_name, today, "Metabolon_sampledata.txt", sep="_"))
-  data.table::fwrite(metabolites@samples, samples_path, sep="\t", quote=FALSE)
+  # combine and write the data for each layer
+  for (j in seq_along(layers)) {
 
-  features_path      <- file.path(dir, paste(metabolites@project_name, today, "Metabolon_featuredata.txt", sep="_"))
-  features           <- as.data.frame(metabolites@features)
-  rownames(features) <- features[, "feature_names"]
-  data.table::fwrite(features, features_path, row.names=TRUE, sep="\t", quote=TRUE)
+    layer <- layers[[j]]
 
-  sheet_names <- dimnames(metabolites@data)[[3]]
-  for (sheet in sheet_names) {
-    data_path <- file.path(dir, paste(metabolites@project_name, today, sheet, "Metabolon_metabolitedata.txt", sep="_"))
-    tbl       <- data.table::as.data.table(metabolites@data[, , sheet])
-    data.table::fwrite(tbl, data_path, row.names=TRUE, col.names = TRUE, sep="\t", quote=FALSE)
+    properties <- S7::props(metabolites)
+
+    # deal with feature tree separately
+    if (layer %in% names(properties$feature_tree)) {
+      tree_path <- file.path(sub_dirs[[layer]], "feature_tree.RDS")
+      saveRDS(properties$feature_tree[[layer]], tree_path)
+      properties$feature_tree[[layer]] <- tree_path
+    }
+
+    # write the yaml config
+    config <- list(layer = j)
+    for (i in seq_along(properties)) {
+      if (!inherits(properties[[i]], c("data.frame", "array", "matrix"))) {
+        if (layer %in% names(properties[[i]])) {
+          config[[names(properties)[i]]] <- properties[[i]][[layer]]
+        } else if (!is.null(names(properties[[i]]))) {
+          config[[names(properties)[i]]] <- NA_character_
+        } else if (inherits(properties[[i]], c("POSIXct"))) {
+          config[[names(properties)[i]]] <- as.character(properties[[i]])
+        } else {
+          config[[names(properties)[i]]] <- properties[[i]]
+        }
+      }
+    }
+    yaml::write_yaml(config, file.path(sub_dirs[[layer]], "config.yml"))
+
+    # exclusions
+    excl_feats <- unlist(metabolites@exclusions[[layer]][["features"]])
+    excl_samps <- unlist(metabolites@exclusions[[layer]][["samples"]])
+
+    # get the features
+    features   <- get_features(metabolites, layer=layer)
+    incl_feats <- features[!feature_id %in% excl_feats, feature_id]
+
+    # get the samples
+    samples    <- get_samples(metabolites, layer=layer)
+    incl_samps <- samples[!sample_id %in% excl_samps, sample_id]
+
+    # write the samples
+    data.table::fwrite(samples[sample_id %in% incl_samps], file.path(sub_dirs[[layer]], "samples.tsv"), sep="\t")
+
+    # write the features
+    data.table::fwrite(features[feature_id %in% incl_feats], file.path(sub_dirs[[layer]], "features.tsv"), sep="\t")
+
+    # write the feature summary if present
+    if (layer %in% dimnames(metabolites@feature_summary)[[3]]) {
+      feat_sum <- t(get_feature_summary(metabolites, layer=layer, feature_ids = incl_feats))
+      feat_sum <- cbind(
+        data.table::data.table(feature_id = rownames(feat_sum)),
+        data.table::as.data.table(feat_sum)
+      )
+      data.table::fwrite(feat_sum, file.path(sub_dirs[[layer]], "feature_summary.tsv"), sep="\t")
+    }
+
+    # write the sample summary if present
+    if (layer %in% dimnames(metabolites@sample_summary)[[3]]) {
+      samp_sum <- get_sample_summary(metabolites, layer=layer, sample_ids = incl_samps)
+      samp_sum <- cbind(
+        data.table::data.table(sample_id = rownames(samp_sum)),
+        data.table::as.data.table(samp_sum)
+      )
+      data.table::fwrite(samp_sum, file.path(sub_dirs[[layer]], "sample_summary.tsv"), sep="\t")
+    }
+
+    # write the data
+    if (layer %in% dimnames(metabolites@data)[[3]]) {
+      data <- get_data(metabolites, layer=layer, sample_ids = incl_samps, feature_ids = incl_feats)
+      data <- cbind(
+        data.table::data.table(sample_id = rownames(data)),
+        data.table::as.data.table(data)
+      )
+      data.table::fwrite(data, file.path(sub_dirs[[layer]], "data.tsv"), sep="\t")
+    }
+
+    # write the pcs
+    if (layer %in% dimnames(metabolites@data)[[3]]) {
+      pcs <- get_pcs(metabolites, layer=layer, sample_ids = incl_samps)
+      pcs <- cbind(
+        data.table::data.table(sample_id = rownames(pcs)),
+        data.table::as.data.table(pcs)
+      )
+      data.table::fwrite(pcs, file.path(sub_dirs[[layer]], "pcs.tsv"), sep="\t")
+    }
+
+    # write the prob pcs
+    if (layer %in% dimnames(metabolites@data)[[3]]) {
+      prob_pcs <- get_prob_pcs(metabolites, layer=layer, sample_ids = incl_samps)
+      prob_pcs <- cbind(
+        data.table::data.table(sample_id = rownames(prob_pcs)),
+        data.table::as.data.table(prob_pcs)
+      )
+      data.table::fwrite(prob_pcs, file.path(sub_dirs[[layer]], "prob_pcs.tsv"), sep="\t")
+    }
+
+    # write the var explained
+    if (layer %in% dimnames(metabolites@data)[[3]]) {
+      var_exp <- get_var_exp(metabolites, layer=layer)
+      var_exp <- data.table::data.table(pc    = names(var_exp),
+                                        value = var_exp)
+      data.table::fwrite(var_exp, file.path(sub_dirs[[layer]], "var_exp.tsv"), sep="\t")
+    }
+
+
+    cli::cli_alert_success("Exported `{layer}` data layer to directory {.file {sub_dirs[[layer]]}}")
   }
 
-  invisible(metabolites)
+  invisible(NULL)
 }

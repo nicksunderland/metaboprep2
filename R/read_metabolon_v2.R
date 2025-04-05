@@ -55,8 +55,8 @@ read_metabolon_v2 <- function(filepath) {
       pathway_col  <- grep("(?i)super.*?pathway", names(features), value = TRUE)[1]
       platform_col <- grep("(?i)platform", names(features), value = TRUE)[1]
       features <- annotate_features(features,
-                                    id_col = comp_id_col,
-                                    pathway_col = pathway_col,
+                                    id_col       = comp_id_col,
+                                    pathway_col  = pathway_col,
                                     platform_col = platform_col)
     }
 

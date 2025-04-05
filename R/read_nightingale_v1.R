@@ -1,6 +1,6 @@
 # Silence R CMD check
 globalVariables(c("feature_id", "pathway", "sample_id", "derived_feature", "Excel column name",
-                  "Biomarker name", "Unit", "Group", "Subgroup"), package = "metaboprep2")
+                  "Biomarker name", "Unit", "Group", "Subgroup", "ng_id"), package = "metaboprep2")
 
 #' @title Read Nightingale Data (format 1)
 #' @param filepath character, commercial Nightingale excel sheet with extension .xls or .xlsx
@@ -12,6 +12,7 @@ globalVariables(c("feature_id", "pathway", "sample_id", "derived_feature", "Exce
 #'
 #' @importFrom readxl excel_sheets read_xlsx
 #' @importFrom data.table setnames as.data.table
+#' @importFrom utils zip
 #'
 #' @export
 #'
@@ -51,12 +52,12 @@ read_nightingale_v1 <- function(filepath) {
   # get the feature annotations data
   features <- suppressMessages(
     readxl::read_xlsx(filepath, sheet=sheets[["feature_annotations"]], na=c("","NA","NDEF","TAG")) |> data.table::as.data.table()
-  )[, list(raw_feature_ids = `Excel column name`,
+  )[, list(ng_id           = `Excel column name`,
            feature_name    = `Biomarker name`,
            feature_unit    = `Unit`,
            pathway         = `Group`,
            sub_pathway     = `Subgroup`)]
-  features <- annotate_features(features, id_col="raw_feature_ids", pathway_col = "pathway")
+  features <- annotate_features(features, id_col="ng_id", pathway_col = "pathway")
 
   # get the sample annotations data
   samp_annot <- suppressMessages(
@@ -89,8 +90,8 @@ read_nightingale_v1 <- function(filepath) {
 
   # get the features
   raw_feature_id_order <- unname(unlist(raw[head_inds[1L,"row"]:head_inds[1L,"row"], (head_inds[1L,"col"]+1):ncol(raw)]))
-  features <- features[order(match(raw_feature_ids, raw_feature_id_order))]
-  stopifnot(identical(features$raw_feature_ids, raw_feature_id_order))
+  features <- features[order(match(ng_id, raw_feature_id_order))]
+  stopifnot(identical(features$ng_id, raw_feature_id_order))
 
   # get the data
   data <- as.matrix(raw[data_inds[1L,"row"]:nrow(raw), data_inds[1L,"col"]:ncol(raw)][, lapply(.SD, function(x) as.numeric(gsub(",","",x)))])

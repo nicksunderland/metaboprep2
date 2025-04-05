@@ -15,7 +15,15 @@ export_data(metabolites, directory)
 This function does not return a value. It writes the data to the specified directory as a file (e.g., CSV).
 }
 \description{
-Exports the data from a \code{Metabolites} object to a specified directory. The function allows the user to export the data in a format that is compatible with \code{data.table::fwrite} for efficient writing of large datasets.
+Exports all data layers from a \code{Metabolites} object to a structured directory format.
+For each data layer, the function creates a subdirectory containing:
+\itemize{
+\item the primary data matrix (\code{data.tsv}),
+\item associated feature and sample metadata (\code{features.tsv}, \code{samples.tsv}),
+\item feature and sample summaries (if present, \code{feature_summary.tsv}, \code{sample_summary.tsv}),
+\item a serialized feature tree (if present),
+\item and a \code{config.yml} file with additional metadata and processing parameters.
+}
 }
 \examples{
 file <- system.file("extdata", "metabolon_v1_example.xlsx", package = "metaboprep2")

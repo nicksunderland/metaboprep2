@@ -17,11 +17,13 @@ or identifiers from Nightingale Excel or flat text files.}
 
 \item{pathway_col}{\code{character}, \emph{optional}
 The name of the column containing pathway information.
-If provided, pathway data will be included in the annotation.}
+If provided, source pathway data from \code{features} will be included in
+the annotation with standardised column name \code{pathway}.}
 
 \item{platform_col}{\code{character}, \emph{optional}
 The name of the column specifying the platform type.
-If supplied, platform-specific annotations will be added.}
+If supplied, source platform data from \code{features} will be included in
+the annotation with standardised column name \code{platform}.}
 }
 \value{
 \code{data.table}

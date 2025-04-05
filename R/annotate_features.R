@@ -20,11 +20,13 @@ globalVariables(c("derived_feature", "feature_id", "pathway", "sample_id",
 #'
 #' @param pathway_col `character`, *optional*
 #'   The name of the column containing pathway information.
-#'   If provided, pathway data will be included in the annotation.
+#'   If provided, source pathway data from `features` will be included in
+#'   the annotation with standardised column name `pathway`.
 #'
 #' @param platform_col `character`, *optional*
 #'   The name of the column specifying the platform type.
-#'   If supplied, platform-specific annotations will be added.
+#'   If supplied, source platform data from `features` will be included in
+#'   the annotation with standardised column name `platform`.
 #'
 #' @return `data.table`
 #'   A modified version of `features` with annotations added based on the provided IDs.
@@ -57,11 +59,16 @@ annotate_features <- function(features,
   anno <- data.table::fread(anno_file)[exclude==FALSE, ]
   keys <- names(anno)[grepl("_id", names(anno)) & !grepl("old", names(anno))]
 
+  # make sure all characters
+  anno[, (keys) := lapply(.SD, as.character), .SDcols = keys]
+
   # initialize feature_id column as "unmapped" by default
   features[, `:=`(feature_id      = paste0("unmapped_", get(id_col)),
                   platform        = NA_character_,
                   derived_feature = FALSE,
                   idx             = .I)]
+  if (!is.null(pathway_col))  data.table::setnames(features, pathway_col, "pathway")
+  if (!is.null(platform_col)) data.table::setnames(features, platform_col, "platform")
 
   # cycle the possible join keys to find a match
   features[, clean_id := clean_names(get(id_col))]
@@ -69,7 +76,8 @@ annotate_features <- function(features,
   for (key in rev(keys)) { # rev ensures that order of precedence is chem_id>comp_id>ng1_id>ng2_id
     anno[, (key) := clean_names(get(key))]
     data.table::setkeyv(anno, key)
-    features[anno, `:=`(feature_id      = paste0(key, "_", get(paste0("i.",key))),
+    features[anno, `:=`(feature_id      = data.table::fcoalesce(Map(function(dat, cname) ifelse(!is.na(dat), paste0(cname, "_", dat), NA_character_), dat=mget(keys), cname=keys)),  # paste0(key, "_", get(paste0("i.",key))),
+                        id_source       = key,
                         derived_feature = i.derived_feature,
                         chemical_name   = i.chemical_name)]
     if (is.null(pathway_col)) {
@@ -81,8 +89,10 @@ annotate_features <- function(features,
   }
 
   # ensure same order as entry
-  data.table::setcolorder(features, "feature_id")
+  data.table::setcolorder(features, c("feature_id", id_col))
   features <- features[order(idx)]
+
+  # clean up temporary columns
   features[, idx := NULL]
   features[, clean_id := NULL]
 
