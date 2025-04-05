@@ -66,19 +66,14 @@
 
     
     
-<div class="section level2">
-<h2 id="introduction">
-<strong>Introduction</strong><a class="anchor" aria-label="anchor" href="#introduction"></a>
-</h2>
-<p>Metabolomics data often contain missing values, outliers, and
-features that require filtering before downstream analysis. The
-<code><a href="../reference/metabolite_qc.html">metabolite_qc()</a></code> function provides an efficient and
-automated way to perform <strong>quality control (QC)</strong> on a
-<code>Metabolites</code> object.</p>
+<p>The quality control pipeline can be implemented with the following
+lines of code, namely the <code><a href="../reference/metabolite_qc.html">metabolite_qc()</a></code> function. You
+must specify the QC parameters in the slots of the
+<code>Metabolomics</code> object, this can either be done at object
+instantiation, or by later setting the slots.</p>
 <p>This vignette walks through the key parameters and steps for
 <strong>performing QC</strong> using this function.</p>
 <hr>
-</div>
 <div class="section level2">
 <h2 id="creating-a-metabolites-object">
 <strong>Creating a Metabolites Object</strong><a class="anchor" aria-label="anchor" href="#creating-a-metabolites-object"></a>
@@ -155,106 +150,22 @@ another layer to the data matrices named <code>post_qc</code>.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Metabolite QC Process Completed</span> <span style="color: #00BBBB;">─────────────────────────────────────────────</span></span></span></code></pre></div>
 <div class="section level3">
-<h3 id="accessing-qcd-data">Accessing QC’d data<a class="anchor" aria-label="anchor" href="#accessing-qcd-data"></a>
-</h3>
-<p>There are two primary ways to access data stored in a
-<code>Metabolites</code> object:</p>
-<ol style="list-style-type: decimal">
-<li>
-<strong>Using the <code>@</code> operator</strong> to directly
-access object slots.</li>
-<li>
-<strong>Using getter functions</strong> like <code><a href="../reference/get_data.html">get_data()</a></code>
-for structured data extraction.</li>
-</ol>
-<div class="section level4">
-<h4 id="accessing-data-using-operator">Accessing Data Using <code>@</code> Operator<a class="anchor" aria-label="anchor" href="#accessing-data-using-operator"></a>
-</h4>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">metabolites</span><span class="op">@</span><span class="va">data</span><span class="op">[</span>, , <span class="st">"post_qc"</span><span class="op">]</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
-<span><span class="co">#&gt;      unmapped_123 unmapped_124 unmapped_125 unmapped_126 unmapped_127</span></span>
-<span><span class="co">#&gt; ind1    11.031464     10.79932    11.469142    10.448855     9.236774</span></span>
-<span><span class="co">#&gt; ind2    12.495436     13.73833    12.322201     7.752219    11.166760</span></span>
-<span><span class="co">#&gt; ind3           NA     14.38583           NA    10.649357     7.933557</span></span>
-<span><span class="co">#&gt; ind4     6.976256     10.85471    12.287431     7.776786    10.040024</span></span>
-<span><span class="co">#&gt; ind5     8.559816     12.42402     8.768468    12.604741     8.134009</span></span></code></pre></div>
-</div>
-<div class="section level4">
-<h4 id="accessing-data-using-getter-functions">Accessing Data Using Getter Functions<a class="anchor" aria-label="anchor" href="#accessing-data-using-getter-functions"></a>
-</h4>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_data.html">get_data</a></span><span class="op">(</span><span class="va">metabolites</span>, layer<span class="op">=</span><span class="st">"post_qc"</span>, drop<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
-<span><span class="co">#&gt;      unmapped_123 unmapped_124 unmapped_125 unmapped_126 unmapped_127</span></span>
-<span><span class="co">#&gt; ind1    11.031464     10.79932    11.469142    10.448855     9.236774</span></span>
-<span><span class="co">#&gt; ind2    12.495436     13.73833    12.322201     7.752219    11.166760</span></span>
-<span><span class="co">#&gt; ind3           NA     14.38583           NA    10.649357     7.933557</span></span>
-<span><span class="co">#&gt; ind4     6.976256     10.85471    12.287431     7.776786    10.040024</span></span>
-<span><span class="co">#&gt; ind5     8.559816     12.42402     8.768468    12.604741     8.134009</span></span></code></pre></div>
-</div>
-<div class="section level4">
-<h4 id="accessing-only-data-passing-qc">Accessing Only Data Passing QC<a class="anchor" aria-label="anchor" href="#accessing-only-data-passing-qc"></a>
-</h4>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_data.html">get_data</a></span><span class="op">(</span><span class="va">metabolites</span>, layer<span class="op">=</span><span class="st">"post_qc"</span>, drop<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
-<span><span class="co">#&gt;      unmapped_123 unmapped_124 unmapped_125 unmapped_126 unmapped_127</span></span>
-<span><span class="co">#&gt; ind1    11.031464     10.79932    11.469142    10.448855     9.236774</span></span>
-<span><span class="co">#&gt; ind2    12.495436     13.73833    12.322201     7.752219    11.166760</span></span>
-<span><span class="co">#&gt; ind3           NA     14.38583           NA    10.649357     7.933557</span></span>
-<span><span class="co">#&gt; ind4     6.976256     10.85471    12.287431     7.776786    10.040024</span></span>
-<span><span class="co">#&gt; ind5     8.559816     12.42402     8.768468    12.604741     8.134009</span></span></code></pre></div>
-</div>
-</div>
-<div class="section level3">
-<h3 id="exclusions">Exclusions<a class="anchor" aria-label="anchor" href="#exclusions"></a>
-</h3>
-<p>The underlying data still has all respresentations of the samples and
-features, however, the QC process builds a matrix of exclusion
-reasons.</p>
-<div class="section level4">
-<h4 id="accessing-the-exclusions-list">Accessing the Exclusions List<a class="anchor" aria-label="anchor" href="#accessing-the-exclusions-list"></a>
-</h4>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">metabolites</span><span class="op">@</span><span class="va">exclusions</span><span class="op">)</span></span>
-<span><span class="co">#&gt; List of 3</span></span>
-<span><span class="co">#&gt;  $ raw    :List of 2</span></span>
-<span><span class="co">#&gt;   ..$ samples :List of 4</span></span>
-<span><span class="co">#&gt;   .. ..$ extreme_sample_missingness       : chr(0) </span></span>
-<span><span class="co">#&gt;   .. ..$ user_defined_sample_missingness  : chr(0) </span></span>
-<span><span class="co">#&gt;   .. ..$ user_defined_sample_totalpeakarea: chr(0) </span></span>
-<span><span class="co">#&gt;   .. ..$ user_defined_sample_pca_outlier  : chr(0) </span></span>
-<span><span class="co">#&gt;   ..$ features:List of 2</span></span>
-<span><span class="co">#&gt;   .. ..$ extreme_feature_missingness     : chr(0) </span></span>
-<span><span class="co">#&gt;   .. ..$ user_defined_feature_missingness: chr(0) </span></span>
-<span><span class="co">#&gt;  $ qcing  :List of 2</span></span>
-<span><span class="co">#&gt;   ..$ samples :List of 4</span></span>
-<span><span class="co">#&gt;   .. ..$ extreme_sample_missingness       : chr(0) </span></span>
-<span><span class="co">#&gt;   .. ..$ user_defined_sample_missingness  : chr [1:2] "ind9" "ind59"</span></span>
-<span><span class="co">#&gt;   .. ..$ user_defined_sample_totalpeakarea: chr(0) </span></span>
-<span><span class="co">#&gt;   .. ..$ user_defined_sample_pca_outlier  : chr(0) </span></span>
-<span><span class="co">#&gt;   ..$ features:List of 2</span></span>
-<span><span class="co">#&gt;   .. ..$ extreme_feature_missingness     : chr(0) </span></span>
-<span><span class="co">#&gt;   .. ..$ user_defined_feature_missingness: chr(0) </span></span>
-<span><span class="co">#&gt;  $ post_qc:List of 2</span></span>
-<span><span class="co">#&gt;   ..$ samples :List of 4</span></span>
-<span><span class="co">#&gt;   .. ..$ extreme_sample_missingness       : chr(0) </span></span>
-<span><span class="co">#&gt;   .. ..$ user_defined_sample_missingness  : chr [1:2] "ind9" "ind59"</span></span>
-<span><span class="co">#&gt;   .. ..$ user_defined_sample_totalpeakarea: chr(0) </span></span>
-<span><span class="co">#&gt;   .. ..$ user_defined_sample_pca_outlier  : chr(0) </span></span>
-<span><span class="co">#&gt;   ..$ features:List of 2</span></span>
-<span><span class="co">#&gt;   .. ..$ extreme_feature_missingness     : chr(0) </span></span>
-<span><span class="co">#&gt;   .. ..$ user_defined_feature_missingness: chr(0)</span></span></code></pre></div>
-</div>
-</div>
-<div class="section level3">
 <h3 id="figures">Figures<a class="anchor" aria-label="anchor" href="#figures"></a>
 </h3>
-<p>Currently the feature tree object is stored in the metabolites
-object.</p>
+<p>Currently the feature tree object is stored in the metabolites object
+<code>@feature_tree</code> slot.</p>
 <p>More DataViz to come….</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="../reference/get_feature_tree.html">get_feature_tree</a></span><span class="op">(</span><span class="va">metabolites</span>, layer<span class="op">=</span><span class="st">"post_qc"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="quality_control_files/figure-html/unnamed-chunk-7-1.png" width="100%"></p>
+<p><img src="quality_control_files/figure-html/unnamed-chunk-3-1.png" width="100%"></p>
 </div>
+</div>
+<div class="section level2">
+<h2 id="report">
+<strong>Report</strong><a class="anchor" aria-label="anchor" href="#report"></a>
+</h2>
+<p>Please see the dedicated vignette on generating a QC report (html or
+pdf).</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
