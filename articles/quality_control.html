@@ -112,7 +112,8 @@ which contains metabolomics data along with metadata.</p>
 </h2>
 <p>The <code><a href="../reference/metabolite_qc.html">metabolite_qc()</a></code> function applies multiple QC filters
 based on missingness, outlier detection, PCA-based QC. This generates
-another layer to the data matrices named <code>post_qc</code>.</p>
+another layer to the data matrices named <code>post_qc</code>. And
+intermediate <code>qcing</code> layer is also generated.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">metabolites</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/metabolite_qc.html">metabolite_qc</a></span><span class="op">(</span><span class="va">metabolites</span>, source <span class="op">=</span> <span class="st">"raw"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -154,7 +155,6 @@ another layer to the data matrices named <code>post_qc</code>.</p>
 </h3>
 <p>Currently the feature tree object is stored in the metabolites object
 <code>@feature_tree</code> slot.</p>
-<p>More DataViz to come….</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="../reference/get_feature_tree.html">get_feature_tree</a></span><span class="op">(</span><span class="va">metabolites</span>, layer<span class="op">=</span><span class="st">"post_qc"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="quality_control_files/figure-html/unnamed-chunk-3-1.png" width="100%"></p>
