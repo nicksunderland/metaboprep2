@@ -39,8 +39,8 @@ available_report_templates <- function() {
 #' clean_names(c("Sample ID", "Feature-Name.1", "Concentration %"))
 #' # Returns: c("sample_id", "featurename1", "concentration_pct")
 clean_names <- function(names) {
-  n <- gsub(" ", "_", names)    # Replace spaces with underscores
-  n <- gsub("[-\\./]", "", n)   # Remove dashes and dots
+  n <- gsub("[\\. ]", "_", names)    # Replace spaces with underscores
+  n <- gsub("[-/]", "", n)   # Remove dashes and dots
   n <- gsub("%", "pct", n)      # Replace "%" with "pct"
   tolower(n)                    # Convert to lowercase
 }

@@ -10,6 +10,7 @@ Metabolites(
   filepath = character(0),
   format = "metabolon_v1",
   source = character(0),
+  batch_normalise = TRUE,
   feature_missingness = 0.2,
   sample_missingness = 0.2,
   total_peak_area_sd = 5,
@@ -44,11 +45,13 @@ Metabolites(
 
 \item{created}{POSIXct, the timestamp when the \code{Metabolites} object was created.}
 
-\item{filepath}{character, the file path to the original raw data file.}
+\item{filepath}{character, the file path to the original raw data file (can be a named vector if the read function has multiple paths).}
 
 \item{format}{character, the format of the metabolomic data (e.g., "metabolon_v1").}
 
 \item{source}{named character, the source for this data layer (e.g., 'raw' for 'post_qc').}
+
+\item{batch_normalise}{logical, whether to normalise the data first, default=TRUE}
 
 \item{feature_missingness}{numeric, the proportion (0-1) of missingness in features, used as a QC threshold. Default is 0.2.}
 
@@ -112,7 +115,7 @@ outlier treatment, and more.
 
 \item{\code{created}}{POSIXct, the timestamp when the \code{Metabolites} object was created.}
 
-\item{\code{filepath}}{character, path to the original raw data file.}
+\item{\code{filepath}}{character, path to the original raw data file (can be a named vector if the read function has multiple paths).}
 
 \item{\code{format}}{character, a valid metabolomic data source.}
 
@@ -129,6 +132,8 @@ outlier treatment, and more.
 \item{\code{feature_summary}}{numeric matrix, feature summary statistics.}
 
 \item{\code{sample_summary}}{numeric matrix, sample summary statistics.}
+
+\item{\code{batch_normalise}}{logical, whether to normalise the data first, default=TRUE}
 
 \item{\code{feature_missingness}}{numeric, proportion of missingness in features (QC threshold).}
 

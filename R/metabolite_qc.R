@@ -34,7 +34,7 @@ method(metabolite_qc, Metabolites) <- function(metabolites, source="raw"){
   incl_feats <- setdiff(get_features(metabolites, layer=source)[, feature_id], unlist(metabolites@exclusions[[source]][["features"]]))
 
   # run normalisation
-  if (!all(is.na(get_features(metabolites, layer=source)[, platform]))) {
+  if (metabolites@batch_normalise==TRUE && !all(is.na(get_features(metabolites, layer=source)[, platform]))) {
     cli::cli_alert_info(glue::glue("Normalising raw data..."))
     metabolites <- batch_normalisation(metabolites)
     source <- "batch_normalised"
@@ -155,7 +155,8 @@ method(metabolite_qc, Metabolites) <- function(metabolites, source="raw"){
 
 
   # PCA data
-  cli::cli_alert_info(glue::glue("Running principal component outlier analysis at +/- {metabolites@outlier_udist} Sdev..."))
+  # first deal with outlier data depending on option selected
+  cli::cli_alert_info(glue::glue("Running data outlier analysis at +/- {metabolites@outlier_udist} Sdev..."))
   dat <- get_data(metabolites, layer = "qcing", sample_ids=incl_samps, feature_ids=incl_feats)
   if (metabolites@outlier_treatment != "leave_be") {
 
@@ -184,11 +185,11 @@ method(metabolite_qc, Metabolites) <- function(metabolites, source="raw"){
         cli::cli_alert_info(glue::glue("Outliers were winsorized to the {winsorize_quantile * 100} quantile of remaining (non outlying) values."))
       }
     }
-  }#end dealing with PCA based adjustments
-  cli::cli_alert_info(glue::glue("PCA outlier analysis complete."))
+  }#end dealing with adjustments pre PCA run
+  cli::cli_alert_info(glue::glue("Data outlier analysis complete."))
 
 
-  # run sample summary with the current exclusions internally)
+  # run sample summary with the current exclusions internally
   cli::cli_alert_info(glue::glue("Re-running sample summary using current exclusions..."))
   metabolites <- sample_summary(metabolites, layer = "qcing", sample_ids=incl_samps, feature_ids=incl_feats)
   cli::cli_alert_info(glue::glue("QC sample summary complete."))

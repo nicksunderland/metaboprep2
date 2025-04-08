@@ -55,6 +55,7 @@ Collate:
     'pc_and_outliers.R'
     'read_metabolon_v1.R'
     'read_metabolon_v2.R'
+    'read_metaboprep1.R'
     'read_metaboprep2.R'
     'read_nightingale_v1.R'
     'read_nightingale_v2.R'

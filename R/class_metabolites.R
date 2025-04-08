@@ -10,8 +10,9 @@ globalVariables(c(""), package = "metaboprep2")
 #'
 #' @param project_name character, the name of the project associated with the data.
 #' @param created POSIXct, the timestamp when the `Metabolites` object was created.
-#' @param filepath character, the file path to the original raw data file.
+#' @param filepath character, the file path to the original raw data file (can be a named vector if the read function has multiple paths).
 #' @param format character, the format of the metabolomic data (e.g., "metabolon_v1").
+#' @param batch_normalise logical, whether to normalise the data first, default=TRUE
 #' @param feature_missingness numeric, the proportion (0-1) of missingness in features, used as a QC threshold. Default is 0.2.
 #' @param sample_missingness numeric, the proportion (0-1) of missingness in samples, used as a QC threshold. Default is 0.2.
 #' @param total_peak_area_sd numeric, the number of standard deviations from the mean to use for sample QC based on total abundance. Default is 5. If set to `NA`, total sum abundance will not be used for QC.
@@ -40,7 +41,7 @@ globalVariables(c(""), package = "metaboprep2")
 #'
 #' @slot project_name character, name for this project.
 #' @slot created POSIXct, the timestamp when the `Metabolites` object was created.
-#' @slot filepath character, path to the original raw data file.
+#' @slot filepath character, path to the original raw data file (can be a named vector if the read function has multiple paths).
 #' @slot format character, a valid metabolomic data source.
 #' @slot samples data.table, the samples data table.
 #' @slot features data.table, the features data table.
@@ -49,6 +50,7 @@ globalVariables(c(""), package = "metaboprep2")
 #' @slot exclusions list, exclusion codes (mask for data).
 #' @slot feature_summary numeric matrix, feature summary statistics.
 #' @slot sample_summary numeric matrix, sample summary statistics.
+#' @slot batch_normalise logical, whether to normalise the data first, default=TRUE
 #' @slot feature_missingness numeric, proportion of missingness in features (QC threshold).
 #' @slot sample_missingness numeric, proportion of missingness in samples (QC threshold).
 #' @slot total_peak_area_sd numeric, standard deviation for sample QC based on total abundance.
@@ -89,13 +91,14 @@ Metabolites <- new_class(
     # parameters
     project_name              = new_property(class_character, default="", validator = function(value) if (value!="") NULL else "empty - please specify a project name"),
     created                   = new_property(class_POSIXct, default=quote(Sys.time())),
-    filepath                  = new_property(class_character, validator = function(value) if (file.exists(value) || dir.exists(value)) NULL else "does not appear to exist"),
+    filepath                  = new_property(class_character, validator = function(value) if (all(file.exists(value)) || dir.exists(value)) NULL else "does not appear to exist"),
     format                    = new_property(class_character, default="metabolon_v1", validator = function(value) if (value %in% available_data_formats()) NULL else paste("must be one of:", paste(available_data_formats(), collapse=", "))),
     source                    = new_property(class_character),
+    batch_normalise           = new_property(class_logical, default=TRUE),
     feature_missingness       = new_property(class_numeric, default=0.2, validator = function(value) if (data.table::between(value, 0, 1)) NULL else "should be a value between 0 and 1, inclusive"),
     sample_missingness        = new_property(class_numeric, default=0.2, validator = function(value) if (data.table::between(value, 0, 1)) NULL else "should be a value between 0 and 1, inclusive"),
-    total_peak_area_sd        = new_property(class_numeric, default=5.0, validator = function(value) if (value>0) NULL else "should be a value >0"),
-    outlier_udist             = new_property(class_numeric, default=5.0, validator = function(value) if (value>0) NULL else "should be a value >0"),
+    total_peak_area_sd        = new_property(class_numeric, default=5.0, validator = function(value) if (is.na(value) || value>0) NULL else "should be a value >0 or NA"),
+    outlier_udist             = new_property(class_numeric, default=5.0, validator = function(value) if (is.na(value) || value>0) NULL else "should be a value >0 or NA"),
     outlier_treatment         = new_property(class_character, default="leave_be", validator = function(value) if (value %in% c("leave_be", "winsorize", "turn_NA")) NULL else "should be one of leave_be|winsorize|turn_NA"),
     winsorize_quantile        = new_property(class_numeric, default=1.0),
     tree_cut_height           = new_property(class_numeric, default=0.5, validator = function(value) if (value>=0) NULL else "should be a value >=0"),
@@ -178,21 +181,13 @@ method(import_data, Metabolites) <- function(metabolites) {
 
   format <- match.arg(metabolites@format, choices=available_data_formats())
 
-  if (format != "metaboprep2") {
+  if (grepl("metaboprep(1|2)", format)) {
 
-    data_list <- switch(format,
-                        metabolon_v1   = read_metabolon_v1(metabolites@filepath),
-                        metabolon_v2   = read_metabolon_v2(metabolites@filepath),
-                        nightingale_v1 = read_nightingale_v1(metabolites@filepath),
-                        nightingale_v2 = read_nightingale_v2(metabolites@filepath))
-
-    metabolites@samples    <- data_list[["samples"]]
-    metabolites@features   <- data_list[["features"]]
-    metabolites@data       <- data_list[["data"]]
-
-  } else {
-
-    data_list <- read_metaboprep2(dirpath = metabolites@filepath)
+    if (format == "metaboprep1") {
+      data_list <- do.call(read_metaboprep1, as.list(metabolites@filepath))
+    } else if (format == "metaboprep2") {
+      data_list <- read_metaboprep2(metabolites@filepath)
+    }
 
     metabolites@samples         <- data_list[["samples"]]
     metabolites@features        <- data_list[["features"]]
@@ -215,6 +210,18 @@ method(import_data, Metabolites) <- function(metabolites) {
                                                  "n_parallel"          = stats::na.omit(unlist(slot_data)),
                                                  slot_data[[1]])
     }
+
+  } else {
+
+    data_list <- switch(format,
+                        metabolon_v1   = read_metabolon_v1(metabolites@filepath),
+                        metabolon_v2   = read_metabolon_v2(metabolites@filepath),
+                        nightingale_v1 = read_nightingale_v1(metabolites@filepath),
+                        nightingale_v2 = read_nightingale_v2(metabolites@filepath))
+
+    metabolites@samples    <- data_list[["samples"]]
+    metabolites@features   <- data_list[["features"]]
+    metabolites@data       <- data_list[["data"]]
 
   }
 
