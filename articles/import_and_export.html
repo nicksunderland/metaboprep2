@@ -78,6 +78,9 @@
 <code>metabolon_v2</code><br>
 </li>
 <li>
+<code>metaboprep1</code><br>
+</li>
+<li>
 <code>metaboprep2</code><br>
 </li>
 <li>
@@ -128,8 +131,8 @@
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Feature missingness exclusions assessment complete. (1 features excluded)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Calculating total peak abundance outliers at +/- 5 Sdev...</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Total peak abundance outlier exclusions assessment complete. (0 samples excluded)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Running principal component outlier analysis at +/- 5 Sdev...</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> PCA outlier analysis complete.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Running data outlier analysis at +/- 5 Sdev...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Data outlier analysis complete.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Re-running sample summary using current exclusions...</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> QC sample summary complete.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Re-identify feature independence and PC outliers...</span></span>
@@ -142,9 +145,9 @@
 <span></span>
 <span><span class="co"># Export to directory</span></span>
 <span><span class="fu"><a href="../reference/export_data.html">export_data</a></span><span class="op">(</span><span class="va">metabolites</span>, directory <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Exported `raw` data layer to directory <span style="color: #0000BB;">/home/runner/work/metaboprep2/metaboprep2/vignettes/metaboprep_release_2025_04_05/raw</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Exported `qcing` data layer to directory <span style="color: #0000BB;">/home/runner/work/metaboprep2/metaboprep2/vignettes/metaboprep_release_2025_04_05/qcing</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Exported `post_qc` data layer to directory <span style="color: #0000BB;">/home/runner/work/metaboprep2/metaboprep2/vignettes/metaboprep_release_2025_04_05/post_qc</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Exported `raw` data layer to directory <span style="color: #0000BB;">/home/runner/work/metaboprep2/metaboprep2/vignettes/metaboprep_release_2025_04_08/raw</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Exported `qcing` data layer to directory <span style="color: #0000BB;">/home/runner/work/metaboprep2/metaboprep2/vignettes/metaboprep_release_2025_04_08/qcing</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Exported `post_qc` data layer to directory <span style="color: #0000BB;">/home/runner/work/metaboprep2/metaboprep2/vignettes/metaboprep_release_2025_04_08/post_qc</span></span></span></code></pre></div>
 <pre><code><span><span class="co">#&gt; List of 3</span></span>
 <span><span class="co">#&gt;  $ post_qc:List of 10</span></span>
 <span><span class="co">#&gt;   ..$ : chr "config.yml"</span></span>
@@ -193,13 +196,14 @@
 <span><span class="va">metabolites</span></span>
 <span><span class="co">#&gt; &lt;metaboprep2::Metabolites&gt;</span></span>
 <span><span class="co">#&gt;  @ project_name             : chr "metaboprep_v2_example"</span></span>
-<span><span class="co">#&gt;  @ created                  : POSIXct[1:1], format: "2025-04-05 22:31:37"</span></span>
+<span><span class="co">#&gt;  @ created                  : POSIXct[1:1], format: "2025-04-08 14:21:25"</span></span>
 <span><span class="co">#&gt;  @ filepath                 : chr "/home/runner/work/_temp/Library/metaboprep2/extdata/metabolon_v2_example.xlsx"</span></span>
 <span><span class="co">#&gt;  @ format                   : chr "metabolon_v2"</span></span>
 <span><span class="co">#&gt;  @ source                   : Named chr [1:2] "raw" "qcing"</span></span>
 <span><span class="co">#&gt;  .. - attr(*, "names")= chr [1:2] "qcing" "post_qc"</span></span>
 <span><span class="co">#&gt;  .. - attr(*, "na.action")= 'omit' Named int 1</span></span>
 <span><span class="co">#&gt;  ..  ..- attr(*, "names")= chr "raw"</span></span>
+<span><span class="co">#&gt;  @ batch_normalise          : logi TRUE</span></span>
 <span><span class="co">#&gt;  @ feature_missingness      : num 0.2</span></span>
 <span><span class="co">#&gt;  @ sample_missingness       : num 0.2</span></span>
 <span><span class="co">#&gt;  @ total_peak_area_sd       : num 5</span></span>

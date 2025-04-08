@@ -59,6 +59,7 @@ outlier treatment, and more.</p>
 <span>  filepath <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
 <span>  format <span class="op">=</span> <span class="st">"metabolon_v1"</span>,</span>
 <span>  source <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
+<span>  batch_normalise <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  feature_missingness <span class="op">=</span> <span class="fl">0.2</span>,</span>
 <span>  sample_missingness <span class="op">=</span> <span class="fl">0.2</span>,</span>
 <span>  total_peak_area_sd <span class="op">=</span> <span class="fl">5</span>,</span>
@@ -102,7 +103,7 @@ outlier treatment, and more.</p>
 
 
 <dt id="arg-filepath">filepath<a class="anchor" aria-label="anchor" href="#arg-filepath"></a></dt>
-<dd><p>character, the file path to the original raw data file.</p></dd>
+<dd><p>character, the file path to the original raw data file (can be a named vector if the read function has multiple paths).</p></dd>
 
 
 <dt id="arg-format">format<a class="anchor" aria-label="anchor" href="#arg-format"></a></dt>
@@ -111,6 +112,10 @@ outlier treatment, and more.</p>
 
 <dt id="arg-source">source<a class="anchor" aria-label="anchor" href="#arg-source"></a></dt>
 <dd><p>named character, the source for this data layer (e.g., 'raw' for 'post_qc').</p></dd>
+
+
+<dt id="arg-batch-normalise">batch_normalise<a class="anchor" aria-label="anchor" href="#arg-batch-normalise"></a></dt>
+<dd><p>logical, whether to normalise the data first, default=TRUE</p></dd>
 
 
 <dt id="arg-feature-missingness">feature_missingness<a class="anchor" aria-label="anchor" href="#arg-feature-missingness"></a></dt>
@@ -220,7 +225,7 @@ outlier treatment, and more.</p>
 
 
 <dt><code>filepath</code></dt>
-<dd><p>character, path to the original raw data file.</p></dd>
+<dd><p>character, path to the original raw data file (can be a named vector if the read function has multiple paths).</p></dd>
 
 
 <dt><code>format</code></dt>
@@ -253,6 +258,10 @@ outlier treatment, and more.</p>
 
 <dt><code>sample_summary</code></dt>
 <dd><p>numeric matrix, sample summary statistics.</p></dd>
+
+
+<dt><code>batch_normalise</code></dt>
+<dd><p>logical, whether to normalise the data first, default=TRUE</p></dd>
 
 
 <dt><code>feature_missingness</code></dt>
@@ -355,8 +364,8 @@ outlier treatment, and more.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Feature missingness exclusions assessment complete. (0 features excluded)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Calculating total peak abundance outliers at +/- 5 Sdev...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Total peak abundance outlier exclusions assessment complete. (0 samples excluded)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Running principal component outlier analysis at +/- 5 Sdev...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> PCA outlier analysis complete.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Running data outlier analysis at +/- 5 Sdev...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Data outlier analysis complete.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Re-running sample summary using current exclusions...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> QC sample summary complete.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Re-identify feature independence and PC outliers...</span>
@@ -369,11 +378,12 @@ outlier treatment, and more.</p>
 <span class="r-in"><span><span class="va">metabolites</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;metaboprep2::Metabolites&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  @ project_name             : chr "MYPROJECT"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  @ created                  : POSIXct[1:1], format: "2025-04-05 22:30:02"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  @ created                  : POSIXct[1:1], format: "2025-04-08 14:19:51"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  @ filepath                 : chr "/home/runner/work/_temp/Library/metaboprep2/extdata/metabolon_v1_example.xlsx"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  @ format                   : chr "metabolon_v1"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  @ source                   : Named chr [1:2] "raw" "qcing"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  .. - attr(*, "names")= chr [1:2] "qcing" "post_qc"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  @ batch_normalise          : logi TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  @ feature_missingness      : num 0.2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  @ sample_missingness       : num 0.2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  @ total_peak_area_sd       : num 5</span>
