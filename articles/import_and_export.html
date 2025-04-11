@@ -112,15 +112,15 @@
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Starting Metabolite QC Process</span> <span style="color: #00BBBB;">──────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Validating input parameters...</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Input validation complete.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Applying exclusion of xenobiotic features...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Xenobiotic features exclusions assessment complete. (7 features excluded)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Analysing exclusions...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Applying exclusion of derived features...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Derived features exclusions assessment complete. (0 features excluded)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample &amp; Feature Summary Statistics for raw data...</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Sample &amp; Feature Summary Statistics for raw data...</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Copying raw data to new 'qcing' data layer...</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> qcing data ready for QC.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Analysing exclusions...</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Applying exclusion of derived features...</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Derived features exclusions assessment complete. (0 features excluded)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Applying exclusion of xenobiotic features...</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Xenobiotic features exclusions assessment complete. (7 features excluded)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assessing for extreme sample missingness &gt;=80%...</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Extreme sample missingness exclusions assessment complete. (1 samples excluded)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assessing for extreme feature missingness &gt;=80%...</span></span>
@@ -133,9 +133,9 @@
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Total peak abundance outlier exclusions assessment complete. (0 samples excluded)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Running data outlier analysis at +/- 5 Sdev...</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Data outlier analysis complete.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Re-identify feature independence and PC outliers...</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Re-running sample summary using current exclusions...</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> QC sample summary complete.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Re-identify feature independence and PC outliers...</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> PCA outlier analysis 2 complete.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Creating final QC dataset...</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Rerunning Sample &amp; Feature Summary Statistics for QC data...</span></span>
@@ -145,9 +145,9 @@
 <span></span>
 <span><span class="co"># Export to directory</span></span>
 <span><span class="fu"><a href="../reference/export_data.html">export_data</a></span><span class="op">(</span><span class="va">metabolites</span>, directory <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Exported `raw` data layer to directory <span style="color: #0000BB;">/home/runner/work/metaboprep2/metaboprep2/vignettes/metaboprep_release_2025_04_08/raw</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Exported `qcing` data layer to directory <span style="color: #0000BB;">/home/runner/work/metaboprep2/metaboprep2/vignettes/metaboprep_release_2025_04_08/qcing</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Exported `post_qc` data layer to directory <span style="color: #0000BB;">/home/runner/work/metaboprep2/metaboprep2/vignettes/metaboprep_release_2025_04_08/post_qc</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Exported `raw` data layer to directory <span style="color: #0000BB;">/home/runner/work/metaboprep2/metaboprep2/vignettes/metaboprep_release_2025_04_11/raw</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Exported `qcing` data layer to directory <span style="color: #0000BB;">/home/runner/work/metaboprep2/metaboprep2/vignettes/metaboprep_release_2025_04_11/qcing</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Exported `post_qc` data layer to directory <span style="color: #0000BB;">/home/runner/work/metaboprep2/metaboprep2/vignettes/metaboprep_release_2025_04_11/post_qc</span></span></span></code></pre></div>
 <pre><code><span><span class="co">#&gt; List of 3</span></span>
 <span><span class="co">#&gt;  $ post_qc:List of 10</span></span>
 <span><span class="co">#&gt;   ..$ : chr "config.yml"</span></span>
@@ -196,7 +196,7 @@
 <span><span class="va">metabolites</span></span>
 <span><span class="co">#&gt; &lt;metaboprep2::Metabolites&gt;</span></span>
 <span><span class="co">#&gt;  @ project_name             : chr "metaboprep_v2_example"</span></span>
-<span><span class="co">#&gt;  @ created                  : POSIXct[1:1], format: "2025-04-08 14:21:25"</span></span>
+<span><span class="co">#&gt;  @ created                  : POSIXct[1:1], format: "2025-04-11 00:24:03"</span></span>
 <span><span class="co">#&gt;  @ filepath                 : chr "/home/runner/work/_temp/Library/metaboprep2/extdata/metabolon_v2_example.xlsx"</span></span>
 <span><span class="co">#&gt;  @ format                   : chr "metabolon_v2"</span></span>
 <span><span class="co">#&gt;  @ source                   : Named chr [1:2] "raw" "qcing"</span></span>
@@ -299,10 +299,10 @@
 <span><span class="co">#&gt;  ..  ..$ dist.method: NULL</span></span>
 <span><span class="co">#&gt;  ..  ..- attr(*, "class")= chr "hclust"</span></span>
 <span><span class="co">#&gt;  .. $ post_qc:List of 7</span></span>
-<span><span class="co">#&gt;  ..  ..$ merge      : int [1:102, 1:2] -31 -18 -63 -4 -19 -15 -84 -1 -7 -41 ...</span></span>
+<span><span class="co">#&gt;  ..  ..$ merge      : int [1:102, 1:2] -35 -22 -70 -5 -23 -19 -91 -1 -10 -46 ...</span></span>
 <span><span class="co">#&gt;  ..  ..$ height     : num [1:102] 0.632 0.646 0.659 0.664 0.671 ...</span></span>
-<span><span class="co">#&gt;  ..  ..$ order      : int [1:103] 87 93 7 27 13 25 67 82 24 89 ...</span></span>
-<span><span class="co">#&gt;  ..  ..$ labels     : chr [1:103] "unmapped_123" "unmapped_125" "unmapped_126" "unmapped_127" ...</span></span>
+<span><span class="co">#&gt;  ..  ..$ order      : int [1:103] 94 100 10 31 17 29 74 89 28 96 ...</span></span>
+<span><span class="co">#&gt;  ..  ..$ labels     : chr [1:103] "unmapped_123" "unmapped_124" "unmapped_125" "unmapped_126" ...</span></span>
 <span><span class="co">#&gt;  ..  ..$ method     : chr "complete"</span></span>
 <span><span class="co">#&gt;  ..  ..$ call       : language stats::hclust(d = dist_matrix, method = "complete")</span></span>
 <span><span class="co">#&gt;  ..  ..$ dist.method: NULL</span></span>

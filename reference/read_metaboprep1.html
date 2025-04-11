@@ -47,7 +47,7 @@ and returns a list containing a post-QC metabolomics data array, sample metadata
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">read_metaboprep1</span><span class="op">(</span><span class="va">rdata_path</span>, <span class="va">log_path</span>, <span class="va">clinical_path</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">read_metaboprep1</span><span class="op">(</span><span class="va">rdata_path</span>, <span class="va">log_path</span>, <span class="va">clinical_path</span>, manifest <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -65,6 +65,10 @@ and returns a list containing a post-QC metabolomics data array, sample metadata
 <dt id="arg-clinical-path">clinical_path<a class="anchor" aria-label="anchor" href="#arg-clinical-path"></a></dt>
 <dd><p>Character. Path to the clinical metadata file (e.g. age, sex, weight).</p></dd>
 
+
+<dt id="arg-manifest">manifest<a class="anchor" aria-label="anchor" href="#arg-manifest"></a></dt>
+<dd><p>Character. Path to the NMR manifest prerelease description</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -79,6 +83,10 @@ and returns a list containing a post-QC metabolomics data array, sample metadata
 
 
 </dl></div>
+    <div class="section level2">
+    <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
+    <p>Will probably need to rename this to be a specific BBS study import function due to the clinical annotating</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
