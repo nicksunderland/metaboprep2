@@ -2,7 +2,9 @@
 globalVariables(c("CHEMICAL_NAME", "PC_outlier_SD", "PLATFORM", "SUB_PATHWAY",
                   "SUPER_PATHWAY", "feature_missingness", "feature_names",
                   "project", "raw_data", "sample_missingness", "total_peak_area_SD",
-                  "tree_cut_height"), package = "metaboprep2")
+                  "tree_cut_height", "barcode", "combined_id", "derived_features",
+                  "i.barcode2", "label.no.units", "studyId", "study_id", "subclass",
+                  "timepoint", "timepoint2"), package = "metaboprep2")
 
 #' @title Read and Assemble Metaboprep 1 Metabolite Dataset
 #'
@@ -13,6 +15,7 @@ globalVariables(c("CHEMICAL_NAME", "PC_outlier_SD", "PLATFORM", "SUB_PATHWAY",
 #' @param rdata_path Character. Path to the RData file output from the Metaboprep 1 pipeline.
 #' @param log_path Character. Path to the Metaboprep 1 pipeline log file output.
 #' @param clinical_path Character. Path to the clinical metadata file (e.g. age, sex, weight).
+#' @param manifest Character. Path to the NMR manifest prerelease description
 #'
 #' @return A named list with the following components:
 #' \describe{
@@ -33,13 +36,20 @@ globalVariables(c("CHEMICAL_NAME", "PC_outlier_SD", "PLATFORM", "SUB_PATHWAY",
 #' @importFrom data.table fread
 #' @export
 #'
-read_metaboprep1 <- function(rdata_path, log_path, clinical_path) {
+#' @note
+#' Will probably need to rename this to be a specific BBS study import function due to the clinical annotating
+#'
+read_metaboprep1 <- function(rdata_path, log_path, clinical_path, manifest=NULL) {
 
   # testing
   if (FALSE) {
-    rdata_path     <- file.path(Sys.getenv("BBS_METABOLITE_DIR"), "ReportData.Rdata")
-    log_path   <- file.path(Sys.getenv("BBS_METABOLITE_DIR"), "bbs_only_2024_06_25_logfile.txt")
+    rdata_path    <- file.path(Sys.getenv("BBS_NIGHTINGALE_DIR"),  "ReportData.Rdata")
+    log_path      <- file.path(Sys.getenv("BBS_NIGHTINGALE_DIR"),  "bbs_primary_nmr_2023_11_20_logfile.txt")
     clinical_path <- file.path(Sys.getenv("BBS_CLINICAL_DIR"),   "03_sample_clinical_data_all.csv")
+    manifest      <- file.path(Sys.getenv("BBS_MANIFEST_DIR"),   "2023Q2_nmr_annotated_manifest_2023-08-14.csv")
+    # rdata_path    <- file.path(Sys.getenv("BBS_METABOLON_DIR"), "ReportData.Rdata")
+    # log_path      <- file.path(Sys.getenv("BBS_METABOLON_DIR"), "bbs_only_2024_06_25_logfile.txt")
+    #
   }
 
   # read the clinical data
@@ -47,6 +57,7 @@ read_metaboprep1 <- function(rdata_path, log_path, clinical_path) {
     study_id         = "studyId",
     timepoint        = "timepoint",
     client_sample_id = "Client.Sample.ID.",
+    study            = "source_study",
     sex              = "sex",
     age              = "age",
     ethnicity        = "ethnicity",
@@ -57,11 +68,13 @@ read_metaboprep1 <- function(rdata_path, log_path, clinical_path) {
     op_date          = "opdate",
     baseline_to_op   = "baseline_to_op",
     op_to_end        = "op_to_end",
-    baseline_to_end  = "baseline_to_end"
+    baseline_to_end  = "baseline_to_end",
+    site             = "site",
+    time_in_freezer  = "timeinfreezer"
   )
   clinical <- data.table::fread(clinical_path, select = unname(clinical_cols), col.names = names(clinical_cols))
 
-  # read th emetaboprep1 pipeline data
+  # read the metaboprep1 pipeline data
   pipeline <- load(rdata_path)
 
   # read the log file
@@ -87,26 +100,75 @@ read_metaboprep1 <- function(rdata_path, log_path, clinical_path) {
   )
 
   # get the features data
-  features <- raw_data$feature_data |> data.table::as.data.table()
-  features <- features[, list(feature_id      = feature_names,
-                              pathway         = SUPER_PATHWAY,
-                              sub_pathway     = SUB_PATHWAY,
-                              platform        = clean_names(PLATFORM),
-                              chemical_name   = CHEMICAL_NAME,
-                              derived_feature = FALSE)] # will need to adjust if when reading Nightingale
+  features_raw <- raw_data$feature_data |> data.table::as.data.table()
+  if (platform=="Nightingale") {
+    features     <- features_raw[, list(feature_id      = feature_names,
+                                        pathway         = class,
+                                        sub_pathway     = subclass,
+                                        platform        = NA_character_,
+                                        chemical_name   = label.no.units,
+                                        derived_feature = derived_features=="yes")]
+  } else if (platform=="Metabolon") {
+    features     <- features_raw[, list(feature_id      = feature_names,
+                                        pathway         = SUPER_PATHWAY,
+                                        sub_pathway     = SUB_PATHWAY,
+                                        platform        = clean_names(PLATFORM),
+                                        chemical_name   = CHEMICAL_NAME,
+                                        derived_feature = FALSE)]
+  } else {
+    stop("Only Nightingale and Metabolon inputs supported from Metaboprep1 currently.")
+  }
+
 
   # get the samples data (including the platform columns)
-  samples <- raw_data$sample_data |> data.table::as.data.table()
-  data.table::setnames(samples, names(samples), clean_names(names(samples)))
-  sample_cols <- c(sample_id        = "parent_sample_name",
-                   client_sample_id = "client_sample_id",
-                   study            = "source_study",
-                   stats::setNames(unique(features$platform), unique(features$platform)))
-  samples <- samples[, .SD, .SDcols = sample_cols]
-  data.table::setnames(samples, names(samples), names(sample_cols))
+  samples_raw <- raw_data$sample_data |> data.table::as.data.table()
+  data.table::setnames(samples_raw, names(samples_raw), clean_names(names(samples_raw)))
+  if (platform=="Nightingale") {
 
-  # join the clinical to samples
-  samples <- samples[clinical, on = "client_sample_id", nomatch = NULL]
+    sample_cols <- c(sample_id = "sample_id")
+    samples <- samples_raw[, .SD, .SDcols = sample_cols]
+
+    # get the NMR manifest
+    stopifnot("The NMR manifest file must be provided if reading Nightingale NMR prerelease" = !is.null(manifest))
+    manif <- data.table::fread(manifest)
+    manif[, `:=`(barcode2   = sub("\\{\\}", "_", barcode),
+                 timepoint2 = data.table::fcase(grepl("36 months", timepoint), "end",
+                                                grepl("oneyear", timepoint),   "end",
+                                                grepl("(?i)baseline", timepoint),  "Baseline"))]
+    manif[, combined_id := paste0(studyId, "_", timepoint2)]
+    data.table::setcolorder(manif, c("barcode2", "timepoint2","combined_id"))
+
+    clinical[, combined_id := paste0(study_id, "_", timepoint)]
+    clinical[manif, barcode := i.barcode2, on="combined_id"]
+    data.table::setcolorder(clinical, c("barcode"))
+
+    # join the clinical to samples
+    samples_clin <- samples[clinical, on = c("sample_id"="barcode"), nomatch = NULL]
+
+    # missing sample clinical data
+    miss <- setdiff(samples$sample_id, samples_clin$sample_id)
+    if (length(miss) > 0) {
+      msg <- paste0(length(miss), " missing clinical data for samples: ", paste0(miss, collapse=", "))
+      warning(msg)
+    }
+
+    samples <- samples_clin
+
+  } else if (platform=="Metabolon") {
+
+    sample_cols <- c(sample_id        = "parent_sample_name",
+                     client_sample_id = "client_sample_id",
+                     stats::setNames(unique(features$platform), unique(features$platform)))
+    samples <- samples_raw[, .SD, .SDcols = sample_cols]
+    data.table::setnames(samples, names(samples), names(sample_cols))
+
+    # join the clinical to samples
+    samples <- samples[clinical, on = "client_sample_id", nomatch = NULL]
+
+  } else {
+    stop("Only Nightingale and Metabolon inputs supported from Metaboprep1 currently.")
+  }
+
 
   # get the raw data
   data <- raw_data$metabolite_data[samples$sample_id, features$feature_id]

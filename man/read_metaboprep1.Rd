@@ -4,7 +4,7 @@
 \alias{read_metaboprep1}
 \title{Read and Assemble Metaboprep 1 Metabolite Dataset}
 \usage{
-read_metaboprep1(rdata_path, log_path, clinical_path)
+read_metaboprep1(rdata_path, log_path, clinical_path, manifest = NULL)
 }
 \arguments{
 \item{rdata_path}{Character. Path to the RData file output from the Metaboprep 1 pipeline.}
@@ -12,6 +12,8 @@ read_metaboprep1(rdata_path, log_path, clinical_path)
 \item{log_path}{Character. Path to the Metaboprep 1 pipeline log file output.}
 
 \item{clinical_path}{Character. Path to the clinical metadata file (e.g. age, sex, weight).}
+
+\item{manifest}{Character. Path to the NMR manifest prerelease description}
 }
 \value{
 A named list with the following components:
@@ -24,6 +26,9 @@ A named list with the following components:
 \description{
 Reads metabolomics and clinical data from specified file paths, merges relevant metadata,
 and returns a list containing a post-QC metabolomics data array, sample metadata, and feature metadata.
+}
+\note{
+Will probably need to rename this to be a specific BBS study import function due to the clinical annotating
 }
 \examples{
 \dontrun{
