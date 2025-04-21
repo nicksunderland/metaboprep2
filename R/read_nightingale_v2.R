@@ -1,6 +1,6 @@
 # Silence R CMD check
 globalVariables(c("feature_id", "pathway", "sample_id", "derived_feature", "Excel column name",
-                  "Biomarker name", "Unit", "Group", "Subgroup"), package = "metaboprep2")
+                  "Biomarker name", "Unit", "Group", "Subgroup", "anno_derived_feature", "anno_main_class"), package = "metaboprep2")
 
 #' @title Read Nightingale Data (format 2)
 #' @param filepath character, commercial Nightingale excel sheet with extension .xls or .xlsx
@@ -41,31 +41,6 @@ read_nightingale_v2 <- function(filepath) {
   }
   sheet <- sheets[1]
 
-  # # get the feature annotations data
-  # features <- suppressMessages(
-  #   readxl::read_xlsx(filepath, sheet=sheets[["feature_annotations"]], na=c("","NA","NDEF","TAG")) |> data.table::as.data.table()
-  # )[, list(feature_id      = clean_names(`Excel column name`),
-  #          feature_name    = `Biomarker name`,
-  #          feature_unit    = `Unit`,
-  #          platform        = NA_character_,
-  #          pathway         = `Group`,
-  #          sub_pathway     = `Subgroup`,
-  #          derived_feature = grepl("(?i)ratio|%", `Unit`))]
-  #
-  # # get the sample annotations data
-  # samp_annot <- suppressMessages(
-  #   readxl::read_xlsx(filepath, sheet=sheets[["sample_tags"]], na=c("","NA","NDEF","TAG")) |> data.table::as.data.table()
-  # )
-  #
-  # # get sample data positioning
-  # top_corner <- as.matrix(samp_annot[1:ifelse(nrow(samp_annot)<20,nrow(samp_annot),20), 1:ifelse(nrow(samp_annot)<10,nrow(samp_annot),10)])
-  # head_inds  <- which(top_corner == "Sample id", arr.ind = TRUE) + c(-1,1)
-  # data_inds  <- which(top_corner == "Sample id", arr.ind = TRUE) + c(3,0)
-  #
-  # # extract sample data
-  # samples <- samp_annot[data_inds[1L,"row"]:nrow(samp_annot), data_inds[1L,"col"]:ncol(samp_annot)] |> data.table::as.data.table()
-  # names(samples) <- c("sample_id", unlist(samp_annot[head_inds[1L,"row"]:head_inds[1L,"row"], head_inds[1L,"col"]:ncol(samp_annot)]))
-
   # get raw data
   raw <- suppressMessages(
     readxl::read_xlsx(filepath, sheet=sheet, col_names=FALSE, na=c("","NA","NDEF","TAG")) |> data.table::as.data.table()
@@ -86,11 +61,20 @@ read_nightingale_v2 <- function(filepath) {
   # get the features
   raw_feature_ids <- unname(unlist(raw[head_inds[1L,"row"]:head_inds[1L,"row"], (head_inds[1L,"col"]+1):ncol(raw)]))
   features <- data.table::data.table(
-    ng_id = raw_feature_ids
+    feature_id = raw_feature_ids
   )
-  features <- annotate_features(features, id_col="ng_id")
 
-  # get the data
+  features <- annotate_features(features,
+                                fixed_match_cols = list(name = "feature_id"),
+                                fuzzy_match_cols = list(name = NULL)) # dont fuzzy match
+
+  # must have columns
+  features[, `:=`(pathway  = anno_main_class,
+                  platform = NA_character_,
+                  derived_feature = anno_derived_feature)]
+
+
+    # get the data
   data <- as.matrix(raw[data_inds[1L,"row"]:nrow(raw), data_inds[1L,"col"]:ncol(raw)][, lapply(.SD, function(x) as.numeric(gsub(",","",x)))])
   data <- array(data,
                 dim = c(nrow(data), ncol(data), 1),

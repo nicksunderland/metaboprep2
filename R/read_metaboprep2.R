@@ -25,7 +25,7 @@ read_metaboprep2 <- function(dirpath) {
 
   # testing
   if (FALSE) {
-    dirpath <- "/Users/xx20081/git/metaboprep2/scripts/metaboprep_release_2025_04_05"
+    dirpath <- "/Users/xx20081/git/metaboprep2/vignettes/metaboprep_release_2025_04_21"
   }
 
   # read optional matrix from a TSV
@@ -136,7 +136,7 @@ read_metaboprep2 <- function(dirpath) {
     }
 
     # core data matrices
-    dat <- data.table::fread(file.path(path, "data.tsv"))
+    dat <- data.table::fread(file.path(path, "data.tsv"), header = TRUE)
     row_ids <- dat$sample_id
     dat$sample_id <- NULL
     mat <- as.matrix(dat)

@@ -54,10 +54,18 @@ read_metabolon_v2 <- function(filepath) {
       comp_id_col  <- grep("(?i)COMP.*?ID", names(features), value = TRUE)[1]
       pathway_col  <- grep("(?i)super.*?pathway", names(features), value = TRUE)[1]
       platform_col <- grep("(?i)platform", names(features), value = TRUE)[1]
+      data.table::setnames(features, c(comp_id_col, pathway_col, platform_col), c("comp_id", "pathway", "platform"))
+
+      # annotate
       features <- annotate_features(features,
-                                    id_col       = comp_id_col,
-                                    pathway_col  = pathway_col,
-                                    platform_col = platform_col)
+                                    fixed_match_cols = list(hmdb_id = "hmdb", kegg_id = "kegg", name = "biochemical", pubchem_id = "pubchem",  chem_id = "chemical_id", comp_id = "comp_id"),
+                                    fuzzy_match_cols = list(name = NULL)) # dont fuzzy match
+
+      # must have columns
+      features[, `:=`(feature_id = paste0("comp_id_", comp_id),
+                      pathway  = pathway,
+                      platform = platform,
+                      derived_feature = anno_derived_feature)]
     }
 
     if (is.null(samples)) {

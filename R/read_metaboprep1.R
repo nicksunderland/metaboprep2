@@ -1,7 +1,8 @@
 # Silence R CMD check
-globalVariables(c("CHEMICAL_NAME", "PC_outlier_SD", "PLATFORM", "SUB_PATHWAY",
-                  "SUPER_PATHWAY", "feature_missingness", "feature_names",
-                  "project", "raw_data", "sample_missingness", "total_peak_area_SD",
+globalVariables(c("CHEMICAL_NAME", "PC_outlier_SD", "PLATFORM", "SUB_PATHWAY", "CHEM_ID", "PUBCHEM",
+                  "KEGG", "HMDB", "INCHIKEY", "SMILES", "SUPER_PATHWAY",
+                  "feature_missingness", "feature_names", "project", "raw_data",
+                  "sample_missingness", "total_peak_area_SD",
                   "tree_cut_height", "barcode", "combined_id", "derived_features",
                   "i.barcode2", "label.no.units", "studyId", "study_id", "subclass",
                   "timepoint", "timepoint2"), package = "metaboprep2")
@@ -43,12 +44,12 @@ read_metaboprep1 <- function(rdata_path, log_path, clinical_path, manifest=NULL)
 
   # testing
   if (FALSE) {
-    rdata_path    <- file.path(Sys.getenv("BBS_NIGHTINGALE_DIR"),  "ReportData.Rdata")
-    log_path      <- file.path(Sys.getenv("BBS_NIGHTINGALE_DIR"),  "bbs_primary_nmr_2023_11_20_logfile.txt")
+    # rdata_path    <- file.path(Sys.getenv("BBS_NIGHTINGALE_DIR"),  "ReportData.Rdata")
+    # log_path      <- file.path(Sys.getenv("BBS_NIGHTINGALE_DIR"),  "bbs_primary_nmr_2023_11_20_logfile.txt")
     clinical_path <- file.path(Sys.getenv("BBS_CLINICAL_DIR"),   "03_sample_clinical_data_all.csv")
     manifest      <- file.path(Sys.getenv("BBS_MANIFEST_DIR"),   "2023Q2_nmr_annotated_manifest_2023-08-14.csv")
-    # rdata_path    <- file.path(Sys.getenv("BBS_METABOLON_DIR"), "ReportData.Rdata")
-    # log_path      <- file.path(Sys.getenv("BBS_METABOLON_DIR"), "bbs_only_2024_06_25_logfile.txt")
+    rdata_path    <- file.path(Sys.getenv("BBS_METABOLON_DIR"), "ReportData.Rdata")
+    log_path      <- file.path(Sys.getenv("BBS_METABOLON_DIR"), "bbs_only_2024_06_25_logfile.txt")
     #
   }
 
@@ -102,23 +103,42 @@ read_metaboprep1 <- function(rdata_path, log_path, clinical_path, manifest=NULL)
   # get the features data
   features_raw <- raw_data$feature_data |> data.table::as.data.table()
   if (platform=="Nightingale") {
-    features     <- features_raw[, list(feature_id      = feature_names,
-                                        pathway         = class,
-                                        sub_pathway     = subclass,
+    features     <- features_raw[, list(feature_id      = as.character(feature_names),
+                                        pathway         = as.character(class),
+                                        sub_pathway     = as.character(subclass),
                                         platform        = NA_character_,
-                                        chemical_name   = label.no.units,
-                                        derived_feature = derived_features=="yes")]
+                                        chemical_name   = as.character(label.no.units),
+                                        pubchem_id      = NA_character_,
+                                        chem_id         = NA_character_,
+                                        kegg            = NA_character_,
+                                        hmdb            = NA_character_,
+                                        inchikey        = NA_character_,
+                                        smiles          = NA_character_,
+                                        derived_feature = derived_features=="yes",
+                                        comp_id         = sub(".*?([0-9]+).*", "\\1", feature_names))]
   } else if (platform=="Metabolon") {
-    features     <- features_raw[, list(feature_id      = feature_names,
-                                        pathway         = SUPER_PATHWAY,
-                                        sub_pathway     = SUB_PATHWAY,
+    features     <- features_raw[, list(feature_id      = as.character(feature_names),
+                                        pathway         = as.character(SUPER_PATHWAY),
+                                        sub_pathway     = as.character(SUB_PATHWAY),
                                         platform        = clean_names(PLATFORM),
-                                        chemical_name   = CHEMICAL_NAME,
-                                        derived_feature = FALSE)]
+                                        chemical_name   = as.character(CHEMICAL_NAME),
+                                        pubchem_id      = as.character(PUBCHEM),
+                                        chem_id         = as.character(CHEM_ID),
+                                        kegg            = as.character(KEGG),
+                                        hmdb            = as.character(HMDB),
+                                        inchikey        = as.character(INCHIKEY),
+                                        smiles          = as.character(SMILES),
+                                        derived_feature = FALSE,
+                                        comp_id         = sub(".*?([0-9]+).*", "\\1", feature_names))]
+
   } else {
     stop("Only Nightingale and Metabolon inputs supported from Metaboprep1 currently.")
   }
 
+  # annotate from MetaboAnalystR and internal custom annotations
+  features <- annotate_features(features,
+                                fixed_match_cols = list(hmdb_id = "hmdb", kegg_id = "kegg", name = "chemical_name", smiles = "smiles", inchi_key = "inchikey", pubchem_id = "pubchem_id", chem_id = "chem_id", comp_id = "comp_id",  chebi_id = NULL, metlin_id = NULL),
+                                fuzzy_match_cols = list(name = NULL)) # dont fuzzy match
 
   # get the samples data (including the platform columns)
   samples_raw <- raw_data$sample_data |> data.table::as.data.table()

@@ -4,26 +4,34 @@
 \alias{annotate_features}
 \title{Annotate Features with Common IDs}
 \usage{
-annotate_features(features, id_col, pathway_col = NULL, platform_col = NULL)
+annotate_features(
+  features,
+  fixed_match_cols = list(pubchem_id = NULL, hmdb_id = NULL, kegg_id = NULL, chebi_id =
+    NULL, metlin_id = NULL, name = NULL, smiles = NULL, inchi_key = NULL, chem_id = NULL,
+    comp_id = NULL),
+  fuzzy_match_cols = list(name = NULL),
+  fuzzy_method = "jw",
+  fuzzy_dist = 0.1
+)
 }
 \arguments{
 \item{features}{\code{data.table}
 The dataset containing features to be annotated.}
 
-\item{id_col}{\code{character}
-The name of the column containing feature IDs.
+\item{fixed_match_cols}{\code{list}
+The name of the column containing feature IDs - can be a vector of column names if multiple columns are to be tried.
 This can be a column with identifiers such as \code{comp_ids}, \code{chem_ids},
-or identifiers from Nightingale Excel or flat text files.}
+or identifiers from Nightingale Excel or flat text files. If multiple columns are given then the resulting match precedence will
+be in order of the columns given.}
 
-\item{pathway_col}{\code{character}, \emph{optional}
+\item{fuzzy_match_cols}{\code{list},
 The name of the column containing pathway information.
 If provided, source pathway data from \code{features} will be included in
 the annotation with standardised column name \code{pathway}.}
 
-\item{platform_col}{\code{character}, \emph{optional}
-The name of the column specifying the platform type.
-If supplied, source platform data from \code{features} will be included in
-the annotation with standardised column name \code{platform}.}
+\item{fuzzy_method}{method for fuzzy matching see fuzzyjoin::stringdist_inner_join}
+
+\item{fuzzy_dist}{distance for fuzzy matching see fuzzyjoin::stringdist_inner_join}
 }
 \value{
 \code{data.table}
@@ -38,12 +46,7 @@ to standardized annotations. Optionally, pathway and platform information can be
 features <- data.table::data.table(comp_ids = c("63042", "62919", "62921"))
 
 # Annotate features using 'comp_ids'
-annotated_features <- annotate_features(features, id_col = "comp_ids")
-
-# Annotate with additional pathway and platform information
-annotated_features <- annotate_features(features,
-                                        id_col = "comp_ids",
-                                        pathway_col = "pathway",
-                                        platform_col = "platform")
+annotated_features <- annotate_features(features, fixed_match_cols = list(comp_id = 'comp_ids'))
+annotated_features
 
 }

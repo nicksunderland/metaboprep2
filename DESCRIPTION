@@ -14,6 +14,7 @@ Imports:
     car,
     cli,
     data.table,
+    fuzzyjoin,
     ggplot2,
     ggpubr,
     glue,
@@ -21,6 +22,7 @@ Imports:
     pcaMethods,
     psych,
     pwr,
+    qs,
     readxl,
     rmarkdown,
     S7,
@@ -34,7 +36,6 @@ Suggests:
     MASS,
     dendextend
 Remotes:
-    Bioconductor/SparseArray,
     hredestig/pcaMethods
 VignetteBuilder: knitr
 Collate: 

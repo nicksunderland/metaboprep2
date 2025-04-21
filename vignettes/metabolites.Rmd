@@ -110,7 +110,7 @@ original_data[1:5, 1:5]
 ```{r}
 subset_data <- get_data(metabolites, 
                         layer = "raw", 
-                        feature_ids = c("unmapped_123", "unmapped_124"), 
+                        feature_ids = c("comp_id_123", "comp_id_124"), 
                         sample_ids = c("ind1", "ind2"))
 subset_data
 ```
@@ -121,7 +121,7 @@ subset_data
 The `write_data()` method allows saving the structured data to a specified directory.
 
 ```{r, eval=FALSE}
-write_data(metabolites, directory = "output_directory")
+export_data(metabolites, directory = "output_directory")
 ```
 
 ## Summary
