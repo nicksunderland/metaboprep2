@@ -82,13 +82,19 @@ with optional exclusions and subsetting.</p>
 <span class="r-in"><span>                           format       <span class="op">=</span> <span class="st">"metabolon_v1"</span>,</span></span>
 <span class="r-in"><span>                           filepath     <span class="op">=</span> <span class="va">file</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">metabolites</span> <span class="op">&lt;-</span> <span class="fu"><a href="import_data.html">import_data</a></span><span class="op">(</span><span class="va">metabolites</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>86 unmapped features:</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>  - 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 137, 138, 139, 140, 141, 142, 143, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 172, 173, 174, 175, 176, 177, 178, 183, 184, 185, 186, 187, 188, 190, 191, 193, 195, 196, 198, 199, 200, 201, 202, 204, 205, 206, 207, 208, 209, 210, 211, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Using cached MetaboAnalyst DB.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Attempting join [features$hmdb] ~ [annotation$hmdb_id] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Attempting join [features$kegg] ~ [annotation$kegg_id] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Attempting join [features$metabolite_id] ~ [annotation$name] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Attempting join [features$comp_id] ~ [annotation$comp_id] </span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>100 unannotated metabolites remain after merging with metabolomics database</span>
 <span class="r-in"><span><span class="va">metabolites</span> <span class="op">&lt;-</span> <span class="fu"><a href="metabolite_qc.html">metabolite_qc</a></span><span class="op">(</span><span class="va">metabolites</span>, source<span class="op">=</span><span class="st">"raw"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Starting Metabolite QC Process</span> <span style="color: #00BBBB;">──────────────────────────────────────────────</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Validating input parameters...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Input validation complete.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Batch normalising raw data...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Normalised raw data.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Applying exclusion of xenobiotic features...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Xenobiotic features exclusions assessment complete. (3 features excluded)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Analysing exclusions...</span>
@@ -96,7 +102,7 @@ with optional exclusions and subsetting.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Derived features exclusions assessment complete. (0 features excluded)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample &amp; Feature Summary Statistics for raw data...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Sample &amp; Feature Summary Statistics for raw data...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Copying raw data to new 'qcing' data layer...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Copying batch_normalised data to new 'qcing' data layer...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> qcing data ready for QC.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assessing for extreme sample missingness &gt;=80%...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Extreme sample missingness exclusions assessment complete. (0 samples excluded)</span>
@@ -120,213 +126,624 @@ with optional exclusions and subsetting.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Metabolite QC Process Completed</span> <span style="color: #00BBBB;">─────────────────────────────────────────────</span></span>
 <span class="r-in"><span><span class="fu">get_features</span><span class="op">(</span><span class="va">metabolites</span>, layer <span class="op">=</span> <span class="st">"post_qc"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Index: &lt;derived_feature&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        feature_id comp_id metabolite_id platform                pathway   kegg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            &lt;char&gt;  &lt;char&gt;        &lt;char&gt;   &lt;char&gt;                 &lt;char&gt; &lt;char&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1: unmapped_123     123          met1     &lt;NA&gt;             xenobiotic   K100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   2: unmapped_124     124          met2     &lt;NA&gt;             xenobiotic   K100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   3: unmapped_125     125          met3     &lt;NA&gt;             xenobiotic   K100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   4: unmapped_126     126          met4     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   5: unmapped_127     127          met5     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   6: unmapped_128     128          met6     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   7: unmapped_129     129          met7     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   8: unmapped_130     130          met8     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   9: unmapped_131     131          met9     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  10: unmapped_132     132         met10     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  11: unmapped_133     133         met11     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  12: unmapped_134     134         met12     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  13: unmapped_135     135         met13     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  14:  chem_id_136     136         met14     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  15: unmapped_137     137         met15     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  16: unmapped_138     138         met16     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  17: unmapped_139     139         met17     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  18: unmapped_140     140         met18     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  19: unmapped_141     141         met19     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  20: unmapped_142     142         met20     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  21: unmapped_143     143         met21     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  22:  chem_id_144     144         met22     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  23: unmapped_145     145         met23     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  24: unmapped_146     146         met24     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  25: unmapped_147     147         met25     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  26: unmapped_148     148         met26     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  27: unmapped_149     149         met27     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  28: unmapped_150     150         met28     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  29: unmapped_151     151         met29     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  30: unmapped_152     152         met30     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  31: unmapped_153     153         met31     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  32: unmapped_154     154         met32     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  33: unmapped_155     155         met33     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  34: unmapped_156     156         met34     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  35: unmapped_157     157         met35     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  36:  chem_id_158     158         met36     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  37: unmapped_159     159         met37     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  38: unmapped_160     160         met38     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  39: unmapped_161     161         met39     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  40: unmapped_162     162         met40     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  41: unmapped_163     163         met41     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  42: unmapped_164     164         met42     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  43: unmapped_165     165         met43     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  44: unmapped_166     166         met44     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  45: unmapped_167     167         met45     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  46: unmapped_168     168         met46     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  47: unmapped_169     169         met47     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  48: unmapped_170     170         met48     &lt;NA&gt;                  lipid   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  49:  chem_id_171     171         met49     &lt;NA&gt;             amino acid   K300</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  50: unmapped_172     172         met50     &lt;NA&gt;             amino acid   K300</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  51: unmapped_173     173         met51     &lt;NA&gt;             amino acid   K300</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  52: unmapped_174     174         met52     &lt;NA&gt;             amino acid   K300</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  53: unmapped_175     175         met53     &lt;NA&gt;             amino acid   K300</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  54: unmapped_176     176         met54     &lt;NA&gt;             amino acid   K300</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  55: unmapped_177     177         met55     &lt;NA&gt;             amino acid   K300</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  56: unmapped_178     178         met56     &lt;NA&gt;             amino acid   K300</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  57:  chem_id_179     179         met57     &lt;NA&gt;             amino acid   K300</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  58:  chem_id_180     180         met58     &lt;NA&gt;             amino acid   K300</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  59:  chem_id_181     181         met59     &lt;NA&gt;             amino acid   K300</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  60:  chem_id_182     182         met60     &lt;NA&gt;           carbohydrate   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  61: unmapped_183     183         met61     &lt;NA&gt;           carbohydrate   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  62: unmapped_184     184         met62     &lt;NA&gt;           carbohydrate   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  63: unmapped_185     185         met63     &lt;NA&gt;           carbohydrate   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  64: unmapped_186     186         met64     &lt;NA&gt;           carbohydrate   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  65: unmapped_187     187         met65     &lt;NA&gt;           carbohydrate   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  66: unmapped_188     188         met66     &lt;NA&gt;           carbohydrate   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  67:  chem_id_189     189         met67     &lt;NA&gt;           carbohydrate   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  68: unmapped_190     190         met68     &lt;NA&gt;           carbohydrate   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  69: unmapped_191     191         met69     &lt;NA&gt;           carbohydrate   K200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  70:  chem_id_192     192         met70     &lt;NA&gt; cofactors and vitamins   K400</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  71: unmapped_193     193         met71     &lt;NA&gt; cofactors and vitamins   K400</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  72:  chem_id_194     194         met72     &lt;NA&gt; cofactors and vitamins   K400</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  73: unmapped_195     195         met73     &lt;NA&gt; cofactors and vitamins   K400</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  74: unmapped_196     196         met74     &lt;NA&gt; cofactors and vitamins   K400</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  75:  chem_id_197     197         met75     &lt;NA&gt; cofactors and vitamins   K400</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  76: unmapped_198     198         met76     &lt;NA&gt; cofactors and vitamins   K400</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  77: unmapped_199     199         met77     &lt;NA&gt; cofactors and vitamins   K400</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  78: unmapped_200     200         met78     &lt;NA&gt; cofactors and vitamins   K400</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  79: unmapped_201     201         met79     &lt;NA&gt; cofactors and vitamins   K400</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  80: unmapped_202     202         met80     &lt;NA&gt; cofactors and vitamins   K400</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  81:  chem_id_203     203         met81     &lt;NA&gt; cofactors and vitamins   K400</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  82: unmapped_204     204         met82     &lt;NA&gt; cofactors and vitamins   K400</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  83: unmapped_205     205         met83     &lt;NA&gt; cofactors and vitamins   K400</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  84: unmapped_206     206         met84     &lt;NA&gt; cofactors and vitamins   K400</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  85: unmapped_207     207         met85     &lt;NA&gt; cofactors and vitamins   K400</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  86: unmapped_208     208         met86     &lt;NA&gt; cofactors and vitamins   K400</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  87: unmapped_209     209         met87     &lt;NA&gt; cofactors and vitamins   K400</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  88: unmapped_210     210         met88     &lt;NA&gt; cofactors and vitamins   K400</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  89: unmapped_211     211         met89     &lt;NA&gt; cofactors and vitamins   K400</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  90:  chem_id_212     212         met90     &lt;NA&gt;                 energy   K400</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  91: unmapped_213     213         met91     &lt;NA&gt;                 energy   K400</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  92: unmapped_214     214         met92     &lt;NA&gt;                 energy   K400</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  93: unmapped_215     215         met93     &lt;NA&gt;                 energy   K400</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  94: unmapped_216     216         met94     &lt;NA&gt;                 energy   K400</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  95: unmapped_217     217         met95     &lt;NA&gt;                 energy   K400</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  96: unmapped_218     218         met96     &lt;NA&gt;                 energy   K400</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  97: unmapped_219     219         met97     &lt;NA&gt;                 energy   K400</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  98: unmapped_220     220         met98     &lt;NA&gt;                 energy   K400</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  99: unmapped_221     221         met99     &lt;NA&gt;                 energy   K400</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 100: unmapped_222     222        met100     &lt;NA&gt;                 energy   K400</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        feature_id comp_id metabolite_id platform                pathway   kegg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         hmdb derived_feature id_source                chemical_name</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;char&gt;          &lt;lgcl&gt;    &lt;char&gt;                       &lt;char&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1:   HMDB1           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   2:   HMDB2           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   3:   HMDB3           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   4:   HMDB4           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   5:   HMDB5           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   6:   HMDB6           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   7:   HMDB7           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   8:   HMDB8           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   9:   HMDB9           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  10:  HMDB10           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  11:  HMDB11           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  12:  HMDB12           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  13:  HMDB13           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  14:  HMDB14           FALSE   chem_id                      cholate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  15:  HMDB15           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  16:  HMDB16           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  17:  HMDB17           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  18:  HMDB18           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  19:  HMDB19           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  20:  HMDB20           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  21:  HMDB21           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  22:  HMDB22           FALSE   chem_id       4-hydroxyphenylacetate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  23:  HMDB23           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  24:  HMDB24           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  25:  HMDB25           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  26:  HMDB26           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  27:  HMDB27           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  28:  HMDB28           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  29:  HMDB29           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  30:  HMDB30           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  31:  HMDB31           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  32:  HMDB32           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  33:  HMDB33           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  34:  HMDB34           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  35:  HMDB35           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  36:  HMDB36           FALSE   chem_id           5,6-dihydrothymine</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  37:  HMDB37           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  38:  HMDB38           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  39:  HMDB39           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  40:  HMDB40           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  41:  HMDB41           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  42:  HMDB42           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  43:  HMDB43           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  44:  HMDB44           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  45:  HMDB45           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  46:  HMDB46           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  47:  HMDB47           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  48:  HMDB48           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  49:  HMDB49           FALSE   chem_id                 hypoxanthine</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  50:  HMDB50           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  51:  HMDB51           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  52:  HMDB52           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  53:  HMDB53           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  54:  HMDB54           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  55:  HMDB55           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  56:  HMDB56           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  57:  HMDB57           FALSE   chem_id                  9,10-DiHOME</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  58:  HMDB58           FALSE   chem_id           linoleate (18:2n6)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  59:  HMDB59           FALSE   chem_id               laurate (12:0)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  60:  HMDB60           FALSE   chem_id                  quinolinate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  61:  HMDB61           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  62:  HMDB62           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  63:  HMDB63           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  64:  HMDB64           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  65:  HMDB65           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  66:  HMDB66           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  67:  HMDB67           FALSE   chem_id     N6,N6,N6-trimethyllysine</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  68:  HMDB68           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  69:  HMDB69           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  70:  HMDB70           FALSE   chem_id           N-acetylputrescine</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  71:  HMDB71           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  72:  HMDB72           FALSE   chem_id           N-formylmethionine</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  73:  HMDB73           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  74:  HMDB74           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  75:  HMDB75           FALSE   chem_id S-adenosylhomocysteine (SAH)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  76:  HMDB76           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  77:  HMDB77           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  78:  HMDB78           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  79:  HMDB79           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  80:  HMDB80           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  81:  HMDB81           FALSE   chem_id   glycolate (hydroxyacetate)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  82:  HMDB82           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  83:  HMDB83           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  84:  HMDB84           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  85:  HMDB85           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  86:  HMDB86           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  87:  HMDB87           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  88:  HMDB88           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  89:  HMDB89           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  90:  HMDB90           FALSE   chem_id  5-methylthioadenosine (MTA)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  91:  HMDB91           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  92:  HMDB92           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  93:  HMDB93           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  94:  HMDB94           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  95:  HMDB95           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  96:  HMDB96           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  97:  HMDB97           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  98:  HMDB98           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  99:  HMDB99           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 100: HMDB100           FALSE      &lt;NA&gt;                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         hmdb derived_feature id_source                chemical_name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      metabolite_id comp_id platform                pathway   kegg    hmdb</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             &lt;char&gt;  &lt;char&gt;   &lt;char&gt;                 &lt;char&gt; &lt;char&gt;  &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1:          met1     123      neg             xenobiotic   K100   HMDB1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2:          met2     124      neg             xenobiotic   K100   HMDB2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3:          met3     125      neg             xenobiotic   K100   HMDB3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4:          met4     126      neg                  lipid   K200   HMDB4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5:          met5     127      neg                  lipid   K200   HMDB5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   6:          met6     128      neg                  lipid   K200   HMDB6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   7:          met7     129      neg                  lipid   K200   HMDB7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   8:          met8     130      neg                  lipid   K200   HMDB8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   9:          met9     131      neg                  lipid   K200   HMDB9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  10:         met10     132      neg                  lipid   K200  HMDB10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  11:         met11     133      neg                  lipid   K200  HMDB11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  12:         met12     134      neg                  lipid   K200  HMDB12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  13:         met13     135      neg                  lipid   K200  HMDB13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  14:         met14     136      neg                  lipid   K200  HMDB14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  15:         met15     137      neg                  lipid   K200  HMDB15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  16:         met16     138      neg                  lipid   K200  HMDB16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  17:         met17     139      neg                  lipid   K200  HMDB17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  18:         met18     140      neg                  lipid   K200  HMDB18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  19:         met19     141      neg                  lipid   K200  HMDB19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  20:         met20     142      neg                  lipid   K200  HMDB20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  21:         met21     143      neg                  lipid   K200  HMDB21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  22:         met22     144      neg                  lipid   K200  HMDB22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  23:         met23     145      neg                  lipid   K200  HMDB23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  24:         met24     146      neg                  lipid   K200  HMDB24</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  25:         met25     147      neg                  lipid   K200  HMDB25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  26:         met26     148      neg                  lipid   K200  HMDB26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  27:         met27     149      neg                  lipid   K200  HMDB27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  28:         met28     150      neg                  lipid   K200  HMDB28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  29:         met29     151      neg                  lipid   K200  HMDB29</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  30:         met30     152      neg                  lipid   K200  HMDB30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  31:         met31     153      neg                  lipid   K200  HMDB31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  32:         met32     154      neg                  lipid   K200  HMDB32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  33:         met33     155      neg                  lipid   K200  HMDB33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  34:         met34     156      neg                  lipid   K200  HMDB34</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  35:         met35     157      neg                  lipid   K200  HMDB35</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  36:         met36     158      neg                  lipid   K200  HMDB36</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  37:         met37     159      neg                  lipid   K200  HMDB37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  38:         met38     160      neg                  lipid   K200  HMDB38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  39:         met39     161      neg                  lipid   K200  HMDB39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  40:         met40     162      neg                  lipid   K200  HMDB40</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  41:         met41     163      neg                  lipid   K200  HMDB41</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  42:         met42     164      neg                  lipid   K200  HMDB42</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  43:         met43     165      neg                  lipid   K200  HMDB43</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  44:         met44     166      neg                  lipid   K200  HMDB44</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  45:         met45     167      neg                  lipid   K200  HMDB45</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  46:         met46     168      neg                  lipid   K200  HMDB46</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  47:         met47     169      neg                  lipid   K200  HMDB47</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  48:         met48     170      neg                  lipid   K200  HMDB48</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  49:         met49     171      neg             amino acid   K300  HMDB49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  50:         met50     172      pos             amino acid   K300  HMDB50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  51:         met51     173      pos             amino acid   K300  HMDB51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  52:         met52     174      pos             amino acid   K300  HMDB52</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  53:         met53     175      pos             amino acid   K300  HMDB53</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  54:         met54     176      pos             amino acid   K300  HMDB54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  55:         met55     177      pos             amino acid   K300  HMDB55</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  56:         met56     178      pos             amino acid   K300  HMDB56</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  57:         met57     179      pos             amino acid   K300  HMDB57</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  58:         met58     180      pos             amino acid   K300  HMDB58</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  59:         met59     181      pos             amino acid   K300  HMDB59</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  60:         met60     182      pos           carbohydrate   K200  HMDB60</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  61:         met61     183      pos           carbohydrate   K200  HMDB61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  62:         met62     184      pos           carbohydrate   K200  HMDB62</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  63:         met63     185      pos           carbohydrate   K200  HMDB63</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  64:         met64     186      pos           carbohydrate   K200  HMDB64</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  65:         met65     187      pos           carbohydrate   K200  HMDB65</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  66:         met66     188      pos           carbohydrate   K200  HMDB66</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  67:         met67     189      pos           carbohydrate   K200  HMDB67</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  68:         met68     190      pos           carbohydrate   K200  HMDB68</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  69:         met69     191      pos           carbohydrate   K200  HMDB69</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  70:         met70     192      pos cofactors and vitamins   K400  HMDB70</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  71:         met71     193      pos cofactors and vitamins   K400  HMDB71</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  72:         met72     194      pos cofactors and vitamins   K400  HMDB72</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  73:         met73     195      pos cofactors and vitamins   K400  HMDB73</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  74:         met74     196      pos cofactors and vitamins   K400  HMDB74</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  75:         met75     197      pos cofactors and vitamins   K400  HMDB75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  76:         met76     198      pos cofactors and vitamins   K400  HMDB76</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  77:         met77     199      pos cofactors and vitamins   K400  HMDB77</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  78:         met78     200      pos cofactors and vitamins   K400  HMDB78</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  79:         met79     201      pos cofactors and vitamins   K400  HMDB79</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  80:         met80     202      pos cofactors and vitamins   K400  HMDB80</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  81:         met81     203      pos cofactors and vitamins   K400  HMDB81</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  82:         met82     204      pos cofactors and vitamins   K400  HMDB82</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  83:         met83     205      pos cofactors and vitamins   K400  HMDB83</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  84:         met84     206      pos cofactors and vitamins   K400  HMDB84</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  85:         met85     207      pos cofactors and vitamins   K400  HMDB85</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  86:         met86     208      pos cofactors and vitamins   K400  HMDB86</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  87:         met87     209      pos cofactors and vitamins   K400  HMDB87</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  88:         met88     210      pos cofactors and vitamins   K400  HMDB88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  89:         met89     211      pos cofactors and vitamins   K400  HMDB89</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  90:         met90     212      pos                 energy   K400  HMDB90</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  91:         met91     213      pos                 energy   K400  HMDB91</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  92:         met92     214      pos                 energy   K400  HMDB92</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  93:         met93     215      pos                 energy   K400  HMDB93</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  94:         met94     216      pos                 energy   K400  HMDB94</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  95:         met95     217      pos                 energy   K400  HMDB95</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  96:         met96     218      pos                 energy   K400  HMDB96</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  97:         met97     219      pos                 energy   K400  HMDB97</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  98:         met98     220      pos                 energy   K400  HMDB98</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  99:         met99     221      pos                 energy   K400  HMDB99</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100:        met100     222      pos                 energy   K400 HMDB100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      metabolite_id comp_id platform                pathway   kegg    hmdb</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      join_key anno_hmdb_id anno_pubchem_id anno_chebi_id anno_kegg_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;char&gt;       &lt;char&gt;          &lt;char&gt;        &lt;char&gt;       &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   6:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   7:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   8:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   9:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  10:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  11:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  12:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  13:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  14:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  15:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  16:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  17:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  18:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  19:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  20:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  21:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  22:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  23:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  24:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  25:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  26:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  27:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  28:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  29:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  30:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  31:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  32:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  33:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  34:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  35:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  36:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  37:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  38:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  39:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  40:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  41:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  42:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  43:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  44:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  45:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  46:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  47:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  48:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  49:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  50:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  51:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  52:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  53:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  54:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  55:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  56:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  57:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  58:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  59:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  60:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  61:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  62:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  63:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  64:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  65:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  66:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  67:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  68:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  69:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  70:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  71:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  72:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  73:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  74:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  75:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  76:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  77:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  78:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  79:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  80:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  81:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  82:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  83:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  84:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  85:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  86:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  87:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  88:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  89:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  90:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  91:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  92:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  93:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  94:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  95:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  96:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  97:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  98:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  99:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100:     &lt;NA&gt;         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      join_key anno_hmdb_id anno_pubchem_id anno_chebi_id anno_kegg_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      anno_metlin_id anno_lipid anno_smiles anno_exactmass anno_formula</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              &lt;char&gt;     &lt;char&gt;      &lt;char&gt;         &lt;char&gt;       &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   6:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   7:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   8:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   9:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  10:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  11:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  12:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  13:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  14:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  15:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  16:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  17:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  18:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  19:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  20:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  21:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  22:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  23:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  24:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  25:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  26:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  27:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  28:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  29:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  30:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  31:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  32:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  33:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  34:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  35:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  36:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  37:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  38:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  39:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  40:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  41:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  42:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  43:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  44:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  45:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  46:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  47:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  48:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  49:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  50:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  51:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  52:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  53:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  54:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  55:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  56:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  57:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  58:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  59:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  60:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  61:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  62:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  63:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  64:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  65:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  66:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  67:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  68:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  69:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  70:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  71:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  72:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  73:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  74:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  75:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  76:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  77:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  78:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  79:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  80:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  81:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  82:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  83:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  84:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  85:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  86:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  87:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  88:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  89:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  90:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  91:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  92:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  93:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  94:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  95:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  96:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  97:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  98:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  99:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100:           &lt;NA&gt;       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      anno_metlin_id anno_lipid anno_smiles anno_exactmass anno_formula</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      anno_inchi_key anno_super_class anno_main_class anno_sub_class</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              &lt;char&gt;           &lt;char&gt;          &lt;char&gt;         &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   6:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   7:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   8:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   9:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  10:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  11:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  12:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  13:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  14:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  15:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  16:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  17:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  18:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  19:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  20:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  21:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  22:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  23:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  24:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  25:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  26:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  27:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  28:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  29:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  30:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  31:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  32:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  33:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  34:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  35:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  36:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  37:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  38:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  39:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  40:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  41:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  42:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  43:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  44:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  45:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  46:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  47:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  48:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  49:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  50:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  51:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  52:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  53:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  54:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  55:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  56:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  57:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  58:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  59:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  60:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  61:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  62:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  63:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  64:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  65:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  66:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  67:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  68:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  69:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  70:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  71:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  72:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  73:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  74:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  75:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  76:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  77:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  78:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  79:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  80:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  81:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  82:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  83:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  84:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  85:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  86:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  87:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  88:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  89:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  90:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  91:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  92:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  93:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  94:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  95:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  96:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  97:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  98:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  99:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100:           &lt;NA&gt;             &lt;NA&gt;            &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      anno_inchi_key anno_super_class anno_main_class anno_sub_class</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      anno_synonym anno_chem_id anno_comp_id anno_derived_feature anno_name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            &lt;char&gt;       &lt;char&gt;       &lt;char&gt;               &lt;char&gt;    &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   6:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   7:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   8:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   9:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  10:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  11:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  12:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  13:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  14:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  15:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  16:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  17:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  18:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  19:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  20:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  21:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  22:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  23:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  24:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  25:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  26:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  27:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  28:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  29:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  30:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  31:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  32:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  33:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  34:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  35:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  36:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  37:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  38:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  39:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  40:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  41:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  42:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  43:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  44:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  45:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  46:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  47:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  48:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  49:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  50:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  51:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  52:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  53:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  54:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  55:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  56:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  57:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  58:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  59:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  60:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  61:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  62:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  63:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  64:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  65:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  66:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  67:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  68:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  69:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  70:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  71:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  72:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  73:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  74:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  75:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  76:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  77:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  78:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  79:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  80:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  81:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  82:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  83:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  84:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  85:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  86:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  87:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  88:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  89:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  90:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  91:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  92:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  93:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  94:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  95:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  96:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  97:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  98:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  99:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100:         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;                 &lt;NA&gt;      &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      anno_synonym anno_chem_id anno_comp_id anno_derived_feature anno_name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       feature_id derived_feature</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           &lt;char&gt;          &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1: comp_id_123            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2: comp_id_124            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3: comp_id_125            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4: comp_id_126            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5: comp_id_127            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   6: comp_id_128            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   7: comp_id_129            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   8: comp_id_130            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   9: comp_id_131            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  10: comp_id_132            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  11: comp_id_133            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  12: comp_id_134            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  13: comp_id_135            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  14: comp_id_136            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  15: comp_id_137            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  16: comp_id_138            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  17: comp_id_139            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  18: comp_id_140            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  19: comp_id_141            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  20: comp_id_142            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  21: comp_id_143            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  22: comp_id_144            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  23: comp_id_145            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  24: comp_id_146            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  25: comp_id_147            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  26: comp_id_148            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  27: comp_id_149            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  28: comp_id_150            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  29: comp_id_151            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  30: comp_id_152            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  31: comp_id_153            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  32: comp_id_154            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  33: comp_id_155            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  34: comp_id_156            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  35: comp_id_157            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  36: comp_id_158            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  37: comp_id_159            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  38: comp_id_160            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  39: comp_id_161            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  40: comp_id_162            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  41: comp_id_163            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  42: comp_id_164            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  43: comp_id_165            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  44: comp_id_166            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  45: comp_id_167            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  46: comp_id_168            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  47: comp_id_169            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  48: comp_id_170            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  49: comp_id_171            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  50: comp_id_172            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  51: comp_id_173            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  52: comp_id_174            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  53: comp_id_175            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  54: comp_id_176            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  55: comp_id_177            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  56: comp_id_178            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  57: comp_id_179            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  58: comp_id_180            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  59: comp_id_181            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  60: comp_id_182            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  61: comp_id_183            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  62: comp_id_184            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  63: comp_id_185            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  64: comp_id_186            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  65: comp_id_187            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  66: comp_id_188            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  67: comp_id_189            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  68: comp_id_190            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  69: comp_id_191            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  70: comp_id_192            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  71: comp_id_193            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  72: comp_id_194            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  73: comp_id_195            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  74: comp_id_196            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  75: comp_id_197            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  76: comp_id_198            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  77: comp_id_199            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  78: comp_id_200            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  79: comp_id_201            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  80: comp_id_202            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  81: comp_id_203            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  82: comp_id_204            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  83: comp_id_205            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  84: comp_id_206            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  85: comp_id_207            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  86: comp_id_208            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  87: comp_id_209            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  88: comp_id_210            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  89: comp_id_211            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  90: comp_id_212            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  91: comp_id_213            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  92: comp_id_214            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  93: comp_id_215            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  94: comp_id_216            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  95: comp_id_217            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  96: comp_id_218            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  97: comp_id_219            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  98: comp_id_220            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  99: comp_id_221            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100: comp_id_222            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       feature_id derived_feature</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

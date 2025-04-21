@@ -71,13 +71,19 @@
 <span class="r-in"><span>                           format       <span class="op">=</span> <span class="st">"metabolon_v1"</span>,</span></span>
 <span class="r-in"><span>                           filepath     <span class="op">=</span> <span class="va">file</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">metabolites</span> <span class="op">&lt;-</span> <span class="fu"><a href="import_data.html">import_data</a></span><span class="op">(</span><span class="va">metabolites</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>86 unmapped features:</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>  - 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 137, 138, 139, 140, 141, 142, 143, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 172, 173, 174, 175, 176, 177, 178, 183, 184, 185, 186, 187, 188, 190, 191, 193, 195, 196, 198, 199, 200, 201, 202, 204, 205, 206, 207, 208, 209, 210, 211, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Using cached MetaboAnalyst DB.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Attempting join [features$hmdb] ~ [annotation$hmdb_id] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Attempting join [features$kegg] ~ [annotation$kegg_id] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Attempting join [features$metabolite_id] ~ [annotation$name] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Attempting join [features$comp_id] ~ [annotation$comp_id] </span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>100 unannotated metabolites remain after merging with metabolomics database</span>
 <span class="r-in"><span><span class="va">metabolites</span> <span class="op">&lt;-</span> <span class="fu"><a href="metabolite_qc.html">metabolite_qc</a></span><span class="op">(</span><span class="va">metabolites</span>, source<span class="op">=</span><span class="st">"raw"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Starting Metabolite QC Process</span> <span style="color: #00BBBB;">──────────────────────────────────────────────</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Validating input parameters...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Input validation complete.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Batch normalising raw data...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Normalised raw data.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Applying exclusion of xenobiotic features...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Xenobiotic features exclusions assessment complete. (3 features excluded)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Analysing exclusions...</span>
@@ -85,7 +91,7 @@
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Derived features exclusions assessment complete. (0 features excluded)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample &amp; Feature Summary Statistics for raw data...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Sample &amp; Feature Summary Statistics for raw data...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Copying raw data to new 'qcing' data layer...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Copying batch_normalised data to new 'qcing' data layer...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> qcing data ready for QC.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assessing for extreme sample missingness &gt;=80%...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Extreme sample missingness exclusions assessment complete. (0 samples excluded)</span>

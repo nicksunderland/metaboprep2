@@ -92,13 +92,19 @@ with optional exclusions and subsetting.</p>
 <span class="r-in"><span>                           format       <span class="op">=</span> <span class="st">"metabolon_v1"</span>,</span></span>
 <span class="r-in"><span>                           filepath     <span class="op">=</span> <span class="va">file</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">metabolites</span> <span class="op">&lt;-</span> <span class="fu"><a href="import_data.html">import_data</a></span><span class="op">(</span><span class="va">metabolites</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>86 unmapped features:</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>  - 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 137, 138, 139, 140, 141, 142, 143, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 172, 173, 174, 175, 176, 177, 178, 183, 184, 185, 186, 187, 188, 190, 191, 193, 195, 196, 198, 199, 200, 201, 202, 204, 205, 206, 207, 208, 209, 210, 211, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Using cached MetaboAnalyst DB.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Attempting join [features$hmdb] ~ [annotation$hmdb_id] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Attempting join [features$kegg] ~ [annotation$kegg_id] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Attempting join [features$metabolite_id] ~ [annotation$name] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Attempting join [features$comp_id] ~ [annotation$comp_id] </span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>100 unannotated metabolites remain after merging with metabolomics database</span>
 <span class="r-in"><span><span class="va">metabolites</span> <span class="op">&lt;-</span> <span class="fu"><a href="metabolite_qc.html">metabolite_qc</a></span><span class="op">(</span><span class="va">metabolites</span>, source<span class="op">=</span><span class="st">"raw"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Starting Metabolite QC Process</span> <span style="color: #00BBBB;">──────────────────────────────────────────────</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Validating input parameters...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Input validation complete.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Batch normalising raw data...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Normalised raw data.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Applying exclusion of xenobiotic features...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Xenobiotic features exclusions assessment complete. (3 features excluded)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Analysing exclusions...</span>
@@ -106,7 +112,7 @@ with optional exclusions and subsetting.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Derived features exclusions assessment complete. (0 features excluded)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample &amp; Feature Summary Statistics for raw data...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Sample &amp; Feature Summary Statistics for raw data...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Copying raw data to new 'qcing' data layer...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Copying batch_normalised data to new 'qcing' data layer...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> qcing data ready for QC.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assessing for extreme sample missingness &gt;=80%...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Extreme sample missingness exclusions assessment complete. (0 samples excluded)</span>
@@ -131,108 +137,108 @@ with optional exclusions and subsetting.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Metabolite QC Process Completed</span> <span style="color: #00BBBB;">─────────────────────────────────────────────</span></span>
 <span class="r-in"><span><span class="fu">get_sample_summary</span><span class="op">(</span><span class="va">metabolites</span>, layer <span class="op">=</span> <span class="st">"post_qc"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        missingness missingness_w_exclusions tpa_total tpa_complete_features</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind1          0.00                        0  429.3981              418.1846</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind2          0.00                        0  445.8317              432.1929</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind3          0.02                        0  305.6836              300.3210</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind4          0.00                        0  330.2005              320.3710</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind5          0.00                        0  350.4338              340.8450</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind6          0.00                        0  323.3249              312.7040</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind7          0.00                        0  331.3949              321.6856</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind8          0.00                        0  348.0044              337.8921</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind1            NA                       NA        NA                    NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind2          0.00                        0  508.7894              492.8786</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind3          0.02                        0  353.3467              346.9899</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind4          0.00                        0  381.7751              369.9670</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind5          0.00                        0  403.2351              391.6733</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind6          0.00                        0  373.1347              360.5262</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind7          0.00                        0  382.8729              371.2553</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind8          0.00                        0  401.7967              389.7508</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ind9            NA                       NA        NA                    NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind10         0.00                        0  357.0769              348.1124</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind11         0.00                        0  347.4778              336.1425</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind12         0.01                        0  316.7135              311.2105</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind13         0.00                        0  299.7482              290.3293</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind14         0.00                        0  336.7379              327.6420</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind15         0.01                        0  300.6866              294.7594</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind16         0.00                        0  293.8122              284.0910</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind17         0.00                        0  361.8988              352.9619</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind18         0.01                        0  347.2309              341.4984</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind19         0.01                        0  312.1795              306.2072</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind20         0.00                        0  334.9327              325.2223</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind21         0.01                        0  347.6117              340.8737</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind22         0.01                        0  328.7270              322.1908</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind23         0.01                        0  337.3916              333.0592</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind24         0.01                        0  321.7626              316.2721</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind25         0.01                        0  347.4914              342.7891</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind26         0.02                        0  338.3327              335.7303</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind27         0.01                        0  317.4020              315.6527</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind28         0.01                        0  307.3521              301.3430</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind29         0.00                        0  329.5923              319.2297</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind30         0.00                        0  359.1920              347.7323</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind31         0.01                        0  326.3588              320.8185</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind32         0.01                        0  314.4292              306.2326</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind33         0.00                        0  320.5111              311.7081</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind34         0.01                        0  348.1397              340.9728</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind35         0.00                        0  339.5943              329.9637</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind36         0.00                        0  356.3353              345.5204</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind37         0.00                        0  301.1192              291.2797</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind38         0.01                        0  310.7453              303.6725</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind39         0.01                        0  318.9477              314.0924</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind40         0.01                        0  307.0884              301.5534</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind41         0.00                        0  311.0102              301.3099</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind42         0.00                        0  318.0804              307.9378</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind43         0.00                        0  323.0416              310.1692</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind44         0.01                        0  309.5491              305.7485</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind45         0.00                        0  341.2931              334.1877</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind46         0.01                        0  327.6826              323.6172</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind47         0.00                        0  323.4631              314.7083</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind48         0.00                        0  300.3607              291.4474</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind49         0.00                        0  338.5495              326.1048</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind50         0.00                        0  373.3480              362.8027</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind51         0.00                        0  403.8585              395.0482</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind52         0.01                        0  351.5407              343.2161</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind53         0.00                        0  406.9835              395.8279</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind54         0.01                        0  406.1964              401.0412</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind55         0.00                        0  383.5741              377.1375</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind56         0.00                        0  368.1418              359.0292</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind57         0.00                        0  380.3077              367.5933</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind58         0.00                        0  372.2861              362.5520</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind10         0.00                        0  410.6914              399.8748</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind11         0.00                        0  401.4834              388.0937</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind12         0.01                        0  366.9062              360.2909</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind13         0.00                        0  347.2292              335.9061</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind14         0.00                        0  388.8691              377.9240</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind15         0.01                        0  347.5606              340.4478</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind16         0.00                        0  341.6616              330.0813</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind17         0.00                        0  417.3087              406.5103</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind18         0.01                        0  399.8966              392.8238</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind19         0.01                        0  361.1083              353.9565</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind20         0.00                        0  386.0828              374.4718</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind21         0.01                        0  400.4804              392.5644</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind22         0.01                        0  379.2166              371.2341</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind23         0.01                        0  389.6081              384.0383</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind24         0.01                        0  371.6540              364.8369</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind25         0.01                        0  401.0630              395.0934</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind26         0.02                        0  390.2171              386.9443</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind27         0.01                        0  367.1512              364.4205</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind28         0.01                        0  354.9185              347.5067</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind29         0.00                        0  381.2393              368.8625</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind30         0.00                        0  413.8298              400.3422</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind31         0.01                        0  376.4718              369.8023</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind32         0.01                        0  364.1226              354.5883</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind33         0.00                        0  370.7611              360.1066</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind34         0.01                        0  401.5134              393.0931</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind35         0.00                        0  391.2666              379.7223</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind36         0.00                        0  409.8471              396.9707</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind37         0.00                        0  349.3609              337.6469</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind38         0.01                        0  358.6038              350.3004</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind39         0.01                        0  370.0657              364.0988</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind40         0.01                        0  355.9358              349.2635</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind41         0.00                        0  359.9534              348.3273</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind42         0.00                        0  367.8827              355.7330</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind43         0.00                        0  374.3105              359.2484</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind44         0.01                        0  359.0955              354.2752</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind45         0.00                        0  394.4488              385.7001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind46         0.01                        0  378.5787              373.4887</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind47         0.00                        0  374.2399              363.6766</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind48         0.00                        0  347.6765              336.9237</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind49         0.00                        0  390.7546              376.1562</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind50         0.00                        0  430.2432              417.6961</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind51         0.00                        0  400.8457              391.6795</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind52         0.01                        0  348.5621              340.2470</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind53         0.00                        0  403.9982              392.5695</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind54         0.01                        0  403.0875              397.6857</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind55         0.00                        0  380.6361              373.7841</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind56         0.00                        0  365.8299              356.3817</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind57         0.00                        0  377.1005              364.1852</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind58         0.00                        0  369.4984              359.4607</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ind59           NA                       NA        NA                    NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind60         0.00                        0  379.0648              368.3538</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind61         0.00                        0  404.6702              394.0665</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind62         0.01                        0  356.7894              348.3922</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind63         0.00                        0  382.0445              372.4209</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind64         0.00                        0  371.5869              359.1085</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind65         0.00                        0  363.0435              353.2881</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind66         0.01                        0  393.3985              385.2493</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind67         0.00                        0  385.9002              376.5585</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind68         0.00                        0  387.5416              376.1354</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind69         0.00                        0  380.6284              368.9180</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind70         0.00                        0  395.8335              384.5292</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind71         0.01                        0  399.1562              388.2660</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind72         0.00                        0  367.8114              355.9107</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind73         0.01                        0  363.2988              356.2844</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind74         0.01                        0  389.5995              381.5605</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind75         0.00                        0  377.2995              364.2316</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind76         0.01                        0  333.6146              324.1795</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind77         0.00                        0  358.5985              346.0571</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind78         0.00                        0  356.8877              345.2503</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind79         0.00                        0  355.5831              345.2696</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind80         0.00                        0  319.9851              307.8824</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind81         0.02                        0  338.6808              333.9001</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind82         0.00                        0  307.9087              296.3680</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind83         0.01                        0  308.5287              301.5340</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind84         0.00                        0  351.9746              343.1257</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind85         0.00                        0  325.4163              313.7341</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind86         0.02                        0  338.6869              334.6070</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind87         0.00                        0  338.2676              327.8050</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind88         0.01                        0  321.7062              314.1764</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind89         0.01                        0  356.5756              349.5830</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind90         0.01                        0  329.1736              324.0362</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind91         0.00                        0  363.1633              349.1504</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind92         0.01                        0  288.2985              277.5573</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind93         0.00                        0  325.6924              314.3378</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind94         0.00                        0  309.1097              299.8323</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind95         0.01                        0  334.2227              327.1458</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind96         0.01                        0  356.1463              348.7503</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind97         0.00                        0  349.0920              336.2951</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind98         0.01                        0  360.7229              351.4024</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind99         0.01                        0  311.6307              303.4713</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind100        0.00                        0  356.6426              344.5812</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind60         0.00                        0  376.5645              365.6023</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind61         0.00                        0  401.5256              390.5735</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind62         0.01                        0  354.9646              346.3308</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind63         0.00                        0  378.8121              368.8956</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind64         0.00                        0  369.2687              356.5206</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind65         0.00                        0  360.4123              350.3926</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind66         0.01                        0  390.3517              382.2087</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind67         0.00                        0  383.0492              373.3305</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind68         0.00                        0  384.5966              372.9140</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind69         0.00                        0  378.3576              366.4013</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind70         0.00                        0  392.7291              381.1438</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind71         0.01                        0  396.1722              385.4032</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind72         0.00                        0  365.8605              353.6817</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind73         0.01                        0  360.5525              353.4829</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind74         0.01                        0  387.0433              378.7725</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind75         0.00                        0  374.8655              361.5894</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind76         0.01                        0  372.5086              363.1284</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind77         0.00                        0  404.1672              391.4608</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind78         0.00                        0  398.6028              386.7687</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind79         0.00                        0  400.2317              389.6509</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind80         0.00                        0  363.4649              351.0852</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind81         0.02                        0  385.7676              381.0244</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind82         0.00                        0  349.4534              337.6808</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind83         0.01                        0  351.5077              344.1981</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind84         0.00                        0  394.1948              385.0049</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind85         0.00                        0  371.1594              359.2531</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind86         0.02                        0  384.6302              380.5426</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind87         0.00                        0  378.7804              368.0198</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind88         0.01                        0  363.1606              355.3499</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind89         0.01                        0  402.4704              395.2352</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind90         0.01                        0  372.2764              366.8107</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind91         0.00                        0  411.6871              397.4729</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind92         0.01                        0  326.8889              316.2764</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind93         0.00                        0  364.3073              352.7148</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind94         0.00                        0  350.6093              341.0099</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind95         0.01                        0  379.3109              371.9853</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind96         0.01                        0  401.8077              394.1858</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind97         0.00                        0  394.2284              381.1877</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind98         0.01                        0  403.1847              393.9233</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind99         0.01                        0  354.0465              345.6860</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind100        0.00                        0  401.4720              389.1460</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        outlier_count</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind1               1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ind1              NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ind2               1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ind3               0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ind4               0</span>
