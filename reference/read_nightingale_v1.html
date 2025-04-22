@@ -561,76 +561,90 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10:         LDL-TG                                Triglycerides in LDL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 11:         HDL-TG                                Triglycerides in HDL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 12:      Omega-3 %   Ratio of omega-3 fatty acids to total fatty acids</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     feature_unit       pathway       sub_pathway            join_key</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           &lt;char&gt;        &lt;char&gt;            &lt;char&gt;              &lt;char&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:       mmol/l   Cholesterol              &lt;NA&gt; feature_name ~ name</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:       mmol/l   Cholesterol              &lt;NA&gt; feature_name ~ name</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:       mmol/l   Cholesterol              &lt;NA&gt; feature_name ~ name</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:       mmol/l   Cholesterol              &lt;NA&gt; feature_name ~ name</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:       mmol/l   Cholesterol              &lt;NA&gt; feature_name ~ name</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:       mmol/l    Thioethers              &lt;NA&gt; feature_name ~ name</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:       mmol/l    Thioethers              &lt;NA&gt; feature_name ~ name</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:       mmol/l Triglycerides              &lt;NA&gt; feature_name ~ name</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:       mmol/l Triglycerides              &lt;NA&gt; feature_name ~ name</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:       mmol/l Triglycerides              &lt;NA&gt; feature_name ~ name</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11:       mmol/l Triglycerides              &lt;NA&gt; feature_name ~ name</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12:            %   Fatty acids Fatty acid ratios feature_name ~ name</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     anno_hmdb_id anno_pubchem_id anno_chebi_id anno_kegg_id anno_metlin_id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           &lt;char&gt;          &lt;char&gt;        &lt;char&gt;       &lt;char&gt;         &lt;char&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:         &lt;NA&gt;            &lt;NA&gt;         47774         &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:         &lt;NA&gt;            &lt;NA&gt;         47775         &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11:         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12:         &lt;NA&gt;            &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     anno_lipid anno_smiles anno_exactmass anno_formula anno_inchi_key</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;char&gt;      &lt;char&gt;         &lt;char&gt;       &lt;char&gt;         &lt;char&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:          1        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:          1        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11:       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12:       &lt;NA&gt;        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     feature_unit       pathway       sub_pathway                     join_key</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           &lt;char&gt;        &lt;char&gt;            &lt;char&gt;                       &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:       mmol/l   Cholesterol              &lt;NA&gt; feature_name ~ split_synonym</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:       mmol/l   Cholesterol              &lt;NA&gt; feature_name ~ split_synonym</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:       mmol/l   Cholesterol              &lt;NA&gt; feature_name ~ split_synonym</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:       mmol/l   Cholesterol              &lt;NA&gt; feature_name ~ split_synonym</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:       mmol/l   Cholesterol              &lt;NA&gt; feature_name ~ split_synonym</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:       mmol/l    Thioethers              &lt;NA&gt; feature_name ~ split_synonym</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:       mmol/l    Thioethers              &lt;NA&gt; feature_name ~ split_synonym</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:       mmol/l Triglycerides              &lt;NA&gt; feature_name ~ split_synonym</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:       mmol/l Triglycerides              &lt;NA&gt; feature_name ~ split_synonym</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:       mmol/l Triglycerides              &lt;NA&gt; feature_name ~ split_synonym</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:       mmol/l Triglycerides              &lt;NA&gt; feature_name ~ split_synonym</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:            %   Fatty acids Fatty acid ratios feature_name ~ split_synonym</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     anno_hmdb_id                                           anno_name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           &lt;char&gt;                                              &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:         &lt;NA&gt;                                   Total cholesterol</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:         &lt;NA&gt;                       Total cholesterol minus HDL-C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:         &lt;NA&gt; Remnant cholesterol (non-HDL, non-LDL -cholesterol)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:         &lt;NA&gt;                                    VLDL cholesterol</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:         &lt;NA&gt;                            Clinical LDL cholesterol</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:         &lt;NA&gt;                                     LDL cholesterol</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:         &lt;NA&gt;                                     HDL cholesterol</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:         &lt;NA&gt;                                 Total triglycerides</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:         &lt;NA&gt;                               Triglycerides in VLDL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:         &lt;NA&gt;                                Triglycerides in LDL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:         &lt;NA&gt;                                Triglycerides in HDL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:         &lt;NA&gt;   Ratio of omega-3 fatty acids to total fatty acids</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     anno_pubchem_id anno_chebi_id anno_kegg_id anno_metlin_id anno_lipid</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              &lt;char&gt;        &lt;char&gt;       &lt;char&gt;         &lt;char&gt;     &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:            &lt;NA&gt;          &lt;NA&gt;                        &lt;NA&gt;       &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:            &lt;NA&gt;          &lt;NA&gt;                        &lt;NA&gt;       &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:            &lt;NA&gt;          &lt;NA&gt;                        &lt;NA&gt;       &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:            &lt;NA&gt;          &lt;NA&gt;                        &lt;NA&gt;       &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:            &lt;NA&gt;          &lt;NA&gt;                        &lt;NA&gt;       &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:            &lt;NA&gt;         47774         &lt;NA&gt;           &lt;NA&gt;          1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:            &lt;NA&gt;         47775         &lt;NA&gt;           &lt;NA&gt;          1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:            &lt;NA&gt;          &lt;NA&gt;                        &lt;NA&gt;       &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:            &lt;NA&gt;          &lt;NA&gt;                        &lt;NA&gt;       &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:            &lt;NA&gt;          &lt;NA&gt;                        &lt;NA&gt;       &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:            &lt;NA&gt;          &lt;NA&gt;                        &lt;NA&gt;       &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:            &lt;NA&gt;          &lt;NA&gt;                        &lt;NA&gt;       &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     anno_smiles anno_exactmass anno_formula anno_inchi_key</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          &lt;char&gt;         &lt;char&gt;       &lt;char&gt;         &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:                       &lt;NA&gt;         &lt;NA&gt;               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:                       &lt;NA&gt;         &lt;NA&gt;               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:                       &lt;NA&gt;         &lt;NA&gt;               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:                       &lt;NA&gt;         &lt;NA&gt;               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:                       &lt;NA&gt;         &lt;NA&gt;               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:        &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:                       &lt;NA&gt;         &lt;NA&gt;               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:                       &lt;NA&gt;         &lt;NA&gt;               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:                       &lt;NA&gt;         &lt;NA&gt;               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:                       &lt;NA&gt;         &lt;NA&gt;               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:                       &lt;NA&gt;         &lt;NA&gt;               </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           anno_super_class anno_main_class    anno_sub_class</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                     &lt;char&gt;          &lt;char&gt;            &lt;char&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:                   &lt;NA&gt;     Cholesterol              &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:                   &lt;NA&gt;     Cholesterol              &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:                   &lt;NA&gt;     Cholesterol              &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:                   &lt;NA&gt;     Cholesterol              &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:                   &lt;NA&gt;     Cholesterol              &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:                   &lt;NA&gt;     Cholesterol                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:                   &lt;NA&gt;     Cholesterol                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:                   &lt;NA&gt;     Cholesterol                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:                   &lt;NA&gt;     Cholesterol                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:                   &lt;NA&gt;     Cholesterol                  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  6: Organosulfur compounds      Thioethers   Aryl thioethers</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  7: Organosulfur compounds      Thioethers   Aryl thioethers</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:                   &lt;NA&gt;   Triglycerides              &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:                   &lt;NA&gt;   Triglycerides              &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:                   &lt;NA&gt;   Triglycerides              &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11:                   &lt;NA&gt;   Triglycerides              &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:                   &lt;NA&gt;   Triglycerides                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:                   &lt;NA&gt;   Triglycerides                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:                   &lt;NA&gt;   Triglycerides                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:                   &lt;NA&gt;   Triglycerides                  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 12:                   &lt;NA&gt;     Fatty acids Fatty acid ratios</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                    anno_synonym</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                          &lt;char&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:                                                Total cholesterol; Total-C; Total_C; Serum-C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:                                         Total cholesterol minus HDL-C; non-HDL-C; non_HDL_C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:                   Remnant cholesterol (non-HDL, non-LDL -cholesterol); Remnant-C; Remnant_C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:                                                            VLDL cholesterol; VLDL-C; VLDL_C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:                                    Clinical LDL cholesterol; Clinical LDL-C; Clinical_LDL_C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:   LDL cholesterol; beta-lipoprotein cholesterol; low-density lipoprotein cholesterol; LDL-C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: HDL cholesterol; alpha-lipoprotein cholesterol; high-density lipoprotein cholesterol; HDL-C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:                                           Total triglycerides; Total-TG; Total_TG; Serum-TG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:                                                     Triglycerides in VLDL; VLDL-TG; VLDL_TG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:                                                        Triglycerides in LDL; LDL-TG; LDL_TG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11:                                                        Triglycerides in HDL; HDL-TG; HDL_TG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12:          Ratio of omega-3 fatty acids to total fatty acids; Omega-3 %; Omega_3_pct; FAw3/FA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                      anno_synonym</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                            &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:                                          Total cholesterol; Total-C; Total_C; Serum-C; totalc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:                                  Total cholesterol minus HDL-C; non-HDL-C; non_HDL_C; nonhdlc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:           Remnant cholesterol (non-HDL, non-LDL -cholesterol); Remnant-C; Remnant_C; remnantc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:                                                       VLDL cholesterol; VLDL-C; VLDL_C; vldlc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:                        Clinical LDL cholesterol; Clinical LDL-C; Clinical_LDL_C; clinicalldlc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:     LDL cholesterol; beta-lipoprotein cholesterol; low-density lipoprotein cholesterol; LDL-C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:   HDL cholesterol; alpha-lipoprotein cholesterol; high-density lipoprotein cholesterol; HDL-C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:                                    Total triglycerides; Total-TG; Total_TG; Serum-TG; totaltg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:                                               Triglycerides in VLDL; VLDL-TG; VLDL_TG; vldltg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:                                                   Triglycerides in LDL; LDL-TG; LDL_TG; ldltg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:                                                   Triglycerides in HDL; HDL-TG; HDL_TG; hdltg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12: Ratio of omega-3 fatty acids to total fatty acids; Omega-3 %; Omega_3_pct; FAw3/FA; omega3pct</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     anno_chem_id anno_comp_id anno_derived_feature</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           &lt;char&gt;       &lt;char&gt;               &lt;lgcl&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:         &lt;NA&gt;         &lt;NA&gt;                FALSE</span>
@@ -645,7 +659,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10:         &lt;NA&gt;         &lt;NA&gt;                FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 11:         &lt;NA&gt;         &lt;NA&gt;                FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 12:         &lt;NA&gt;         &lt;NA&gt;                 TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                               anno_name anno_fuzzy_dist</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                      anno_split_synonym anno_fuzzy_dist</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                  &lt;char&gt;           &lt;num&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:                                   Total cholesterol              NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  2:                       Total cholesterol minus HDL-C              NA</span>

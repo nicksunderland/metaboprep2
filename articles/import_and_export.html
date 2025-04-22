@@ -148,9 +148,9 @@
 <span></span>
 <span><span class="co"># Export to directory</span></span>
 <span><span class="fu"><a href="../reference/export_data.html">export_data</a></span><span class="op">(</span><span class="va">metabolites</span>, directory <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Exported `raw` data layer to directory <span style="color: #0000BB;">/home/runner/work/metaboprep2/metaboprep2/vignettes/metaboprep_release_2025_04_21/raw</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Exported `qcing` data layer to directory <span style="color: #0000BB;">/home/runner/work/metaboprep2/metaboprep2/vignettes/metaboprep_release_2025_04_21/qcing</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Exported `post_qc` data layer to directory <span style="color: #0000BB;">/home/runner/work/metaboprep2/metaboprep2/vignettes/metaboprep_release_2025_04_21/post_qc</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Exported `raw` data layer to directory <span style="color: #0000BB;">/home/runner/work/metaboprep2/metaboprep2/vignettes/metaboprep_release_2025_04_22/raw</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Exported `qcing` data layer to directory <span style="color: #0000BB;">/home/runner/work/metaboprep2/metaboprep2/vignettes/metaboprep_release_2025_04_22/qcing</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Exported `post_qc` data layer to directory <span style="color: #0000BB;">/home/runner/work/metaboprep2/metaboprep2/vignettes/metaboprep_release_2025_04_22/post_qc</span></span></span></code></pre></div>
 <pre><code><span><span class="co">#&gt; List of 3</span></span>
 <span><span class="co">#&gt;  $ post_qc:List of 10</span></span>
 <span><span class="co">#&gt;   ..$ : chr "config.yml"</span></span>
@@ -199,7 +199,7 @@
 <span><span class="va">metabolites</span></span>
 <span><span class="co">#&gt; &lt;metaboprep2::Metabolites&gt;</span></span>
 <span><span class="co">#&gt;  @ project_name             : chr "metaboprep_v2_example"</span></span>
-<span><span class="co">#&gt;  @ created                  : POSIXct[1:1], format: "2025-04-21 21:31:57"</span></span>
+<span><span class="co">#&gt;  @ created                  : POSIXct[1:1], format: "2025-04-22 15:12:06"</span></span>
 <span><span class="co">#&gt;  @ filepath                 : chr "/home/runner/work/_temp/Library/metaboprep2/extdata/metabolon_v2_example.xlsx"</span></span>
 <span><span class="co">#&gt;  @ format                   : chr "metabolon_v2"</span></span>
 <span><span class="co">#&gt;  @ source                   : Named chr [1:2] "raw" "qcing"</span></span>
@@ -225,7 +225,7 @@
 <span><span class="co">#&gt;  .. $ pair             : int  99999 99999 99999 99999 99999 99999 99999 99999 99999 99999 ...</span></span>
 <span><span class="co">#&gt;  .. $ volume_extracted : int  100 100 100 100 100 100 100 100 100 100 ...</span></span>
 <span><span class="co">#&gt;  .. - attr(*, ".internal.selfref")=&lt;externalptr&gt; </span></span>
-<span><span class="co">#&gt;  @ features                 :Classes 'data.table' and 'data.frame':  104 obs. of  35 variables:</span></span>
+<span><span class="co">#&gt;  @ features                 :Classes 'data.table' and 'data.frame':  104 obs. of  36 variables:</span></span>
 <span><span class="co">#&gt;  .. $ pathway_sortorder   : int  1 2 3 4 5 6 7 8 9 10 ...</span></span>
 <span><span class="co">#&gt;  .. $ biochemical         : chr  "(N(1) + N(8))-acetylspermidine" "1,2,3-benzenetriol sulfate (2)" "1,2-dilinoleoyl-GPC (18:2/18:2)" "1,2-dilinoleoyl-GPE (18:2/18:2)*" ...</span></span>
 <span><span class="co">#&gt;  .. $ pathway             : chr  "Amino Acid" "Xenobiotics" "Lipid" "Lipid" ...</span></span>
@@ -239,8 +239,9 @@
 <span><span class="co">#&gt;  .. $ pubchem             : int  NA NA 11111 11112 11113 11114 NA 11115 11116 11117 ...</span></span>
 <span><span class="co">#&gt;  .. $ kegg                : chr  "" "" "" "" ...</span></span>
 <span><span class="co">#&gt;  .. $ hmdb                : chr  "" "" "HMDB123" "HMDB124" ...</span></span>
-<span><span class="co">#&gt;  .. $ join_key            : chr  "biochemical ~ name" "biochemical ~ name" "biochemical ~ name" "biochemical ~ name" ...</span></span>
+<span><span class="co">#&gt;  .. $ join_key            : chr  "biochemical ~ split_synonym" "biochemical ~ split_synonym" "biochemical ~ split_synonym" "biochemical ~ split_synonym" ...</span></span>
 <span><span class="co">#&gt;  .. $ anno_hmdb_id        : chr  "" "" "HMDB08138" "HMDB09093" ...</span></span>
+<span><span class="co">#&gt;  .. $ anno_name           : chr  "(N(1) + N(8))-acetylspermidine" "1,2,3-benzenetriol sulfate (2)" "1,2-dilinoleoyl-GPC (18:2/18:2)" "1,2-dilinoleoyl-GPE (18:2/18:2)*" ...</span></span>
 <span><span class="co">#&gt;  .. $ anno_pubchem_id     : int  NA NA NA NA NA NA NA 39681 NA NA ...</span></span>
 <span><span class="co">#&gt;  .. $ anno_chebi_id       : int  NA NA NA NA NA NA NA 6047 NA NA ...</span></span>
 <span><span class="co">#&gt;  .. $ anno_kegg_id        : chr  "" "" "" "" ...</span></span>
@@ -257,7 +258,7 @@
 <span><span class="co">#&gt;  .. $ anno_chem_id        : int  100016038 100006374 100008903 100009217 100000657 100009204 100009169 NA 100001106 100000580 ...</span></span>
 <span><span class="co">#&gt;  .. $ anno_comp_id        : int  57814 48762 52603 53174 19130 57341 57375 NA 32391 20675 ...</span></span>
 <span><span class="co">#&gt;  .. $ anno_derived_feature: logi  FALSE FALSE FALSE FALSE FALSE FALSE ...</span></span>
-<span><span class="co">#&gt;  .. $ anno_name           : chr  "(N(1) + N(8))-acetylspermidine" "1,2,3-benzenetriol sulfate (2)" "1,2-dilinoleoyl-GPC (18:2/18:2)" "1,2-dilinoleoyl-GPE (18:2/18:2)*" ...</span></span>
+<span><span class="co">#&gt;  .. $ anno_split_synonym  : chr  "(N(1) + N(8))-acetylspermidine" "1,2,3-benzenetriol sulfate (2)" "1,2-dilinoleoyl-GPC (18:2/18:2)" "1,2-dilinoleoyl-GPE (18:2/18:2)*" ...</span></span>
 <span><span class="co">#&gt;  .. $ anno_fuzzy_dist     : logi  NA NA NA NA NA NA ...</span></span>
 <span><span class="co">#&gt;  .. $ feature_id          : chr  "comp_id_123" "comp_id_124" "comp_id_125" "comp_id_126" ...</span></span>
 <span><span class="co">#&gt;  .. $ derived_feature     : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...</span></span>
