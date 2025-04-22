@@ -92,16 +92,14 @@ annotate_features <- function(features,
 
   # get the additional annotations file
   anno_file <- system.file("extdata", "feature_annotations.tsv", package = "metaboprep2")
-  local_anno <- data.table::fread(anno_file, na.strings=c("NA", ""))
+  local_anno <- data.table::fread(anno_file)[hmdb_id=="", hmdb_id := NA_character_]
   local_anno <- local_anno[, list(hmdb_id = unlist(tstrsplit(hmdb_id, ",", fixed=TRUE))), by=setdiff(names(local_anno), "hmdb_id")]
 
   # combine annotation tables
   anno <- rbind(ma_anno, local_anno, fill=TRUE)
 
   # expand the synonyms if searching by name
-  if ("name" %in% names(c(fixed_match_cols, fuzzy_match_cols))) {
-    anno <- anno[, list(name = unlist(tstrsplit(synonym, "; ?"))), by=setdiff(names(anno), "name")]
-  }
+  anno <- anno[, list(split_synonym = unlist(tstrsplit(synonym, "; ?"))), by=names(anno)]
 
   # unique
   anno <- unique(anno)
@@ -118,17 +116,26 @@ annotate_features <- function(features,
     feature_key <- key[[1]]
     anno_key    <- names(key)[1]
     cat("Attempting join", paste0("[features$", feature_key, "]"), "~", paste0("[annotation$", anno_key, "]"), "\n")
+    if (anno_key=="name") anno_key <- "split_synonym"
 
-    # unmatched and has a local key
-    unmatched <- features[is.na(join_key) & !is.na(get(feature_key)), list(row_id__ = row_id__, key_value = get(feature_key))]
-    if (anno_key != "name") { # dont split names which might actually have commas
+    # unmatched
+    unmatched <- features[is.na(join_key), list(row_id__ = row_id__, key_value = get(feature_key))]
+    if (nrow(unmatched) == 0) break  # all done
+
+    # need at least one key to try to match
+    unmatched <- unmatched[!is.na(key_value), ]
+    if (nrow(unmatched) == 0) next
+
+    # split key in case comma or ; separated, into multiple rows
+    # but dont split names which might actually have commas in
+    if (anno_key != "split_synonym") {
       unmatched <- unmatched[,
                              list(row_id__ = row_id__,
                                key_value = trimws(unlist(tstrsplit(key_value, "[,;]", fixed = FALSE)))),
                              by = .SD
       ][!is.na(key_value)]
     }
-    if (nrow(unmatched) == 0) break  # all done
+
 
     # has an anno key
     filtered_anno <- anno[!is.na(get(anno_key))]

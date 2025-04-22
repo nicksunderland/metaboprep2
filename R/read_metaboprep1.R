@@ -50,7 +50,7 @@ read_metaboprep1 <- function(rdata_path, log_path, clinical_path, manifest=NULL)
     manifest      <- file.path(Sys.getenv("BBS_MANIFEST_DIR"),   "2023Q2_nmr_annotated_manifest_2023-08-14.csv")
     rdata_path    <- file.path(Sys.getenv("BBS_METABOLON_DIR"), "ReportData.Rdata")
     log_path      <- file.path(Sys.getenv("BBS_METABOLON_DIR"), "bbs_only_2024_06_25_logfile.txt")
-    #
+
   }
 
   # read the clinical data
@@ -107,7 +107,7 @@ read_metaboprep1 <- function(rdata_path, log_path, clinical_path, manifest=NULL)
                                         pathway         = as.character(class),
                                         sub_pathway     = as.character(subclass),
                                         platform        = NA_character_,
-                                        chemical_name   = as.character(label.no.units),
+                                        chemical_name   = as.character(feature_names),
                                         pubchem_id      = NA_character_,
                                         chem_id         = NA_character_,
                                         kegg            = NA_character_,
@@ -115,7 +115,7 @@ read_metaboprep1 <- function(rdata_path, log_path, clinical_path, manifest=NULL)
                                         inchikey        = NA_character_,
                                         smiles          = NA_character_,
                                         derived_feature = derived_features=="yes",
-                                        comp_id         = sub(".*?([0-9]+).*", "\\1", feature_names))]
+                                        comp_id         = NA_character_)]
   } else if (platform=="Metabolon") {
     features     <- features_raw[, list(feature_id      = as.character(feature_names),
                                         pathway         = as.character(SUPER_PATHWAY),
@@ -137,7 +137,7 @@ read_metaboprep1 <- function(rdata_path, log_path, clinical_path, manifest=NULL)
 
   # annotate from MetaboAnalystR and internal custom annotations
   features <- annotate_features(features,
-                                fixed_match_cols = list(hmdb_id = "hmdb", kegg_id = "kegg", name = "chemical_name", smiles = "smiles", inchi_key = "inchikey", pubchem_id = "pubchem_id", chem_id = "chem_id", comp_id = "comp_id",  chebi_id = NULL, metlin_id = NULL),
+                                fixed_match_cols = list(hmdb_id = "hmdb", kegg_id = "kegg", name = "chemical_name", name = "feature_id", smiles = "smiles", inchi_key = "inchikey", pubchem_id = "pubchem_id", chem_id = "chem_id", comp_id = "comp_id",  chebi_id = NULL, metlin_id = NULL),
                                 fuzzy_match_cols = list(name = NULL)) # dont fuzzy match
 
   # get the samples data (including the platform columns)
