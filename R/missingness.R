@@ -37,7 +37,7 @@ missingness <- function(data, exclude_features = NA, by = "row") {
   }
 
   miss <- apply(data, margin, function(x) { sum(is.na(x)) / length(x) })
-  out <- data.table::data.table(ids         = names(miss),
+  out <- data.table::data.table(ids         = names(miss), #ifelse(is.null(names(miss)), character(), names(miss)),
                                 missingness = miss,
                                 missingness_w_exclusions = NA_real_)
 
