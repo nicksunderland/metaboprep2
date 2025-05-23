@@ -114,6 +114,15 @@ method(metabolite_qc, Metabolites) <- function(metabolites, source="raw"){
   cli::cli_alert_success(glue::glue("Extreme feature missingness exclusions assessment complete. ({length(excl_feats)} features excluded)"))
 
 
+  # handle xenobiotic feature missingness of 100% - exclude as this is useless
+  cli::cli_alert_info(glue::glue("Assessing for total feature missingness (100%) of xenobiotics..."))
+  dat        <- get_data(metabolites, layer = "qcing", sample_ids=incl_samps, feature_ids=xenobiotic_feats)
+  featuremis <- missingness(dat, by="column")
+  excl_feats <- featuremis[missingness == 1.0, feature_id]
+  metabolites@exclusions[["qcing"]][["features"]][["extreme_feature_missingness"]] <- unique(c(metabolites@exclusions[["qcing"]][["features"]][["extreme_feature_missingness"]], excl_feats))
+  incl_feats <- setdiff(incl_feats, excl_feats)
+  cli::cli_alert_success(glue::glue("Total xenobiotic feature missingness exclusions assessment complete. ({length(excl_feats)} features excluded)"))
+
 
   # re-estimate sample missingness and exclude based on user-defined
   cli::cli_alert_info(glue::glue("Assessing for sample missingness at specified level of >={round(metabolites@sample_missingness*100)}%..."))
