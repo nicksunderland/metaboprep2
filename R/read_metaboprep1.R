@@ -105,7 +105,7 @@ read_metaboprep1 <- function(rdata_path, log_path, clinical_path, manifest=NULL)
   # get the features data
   features_raw <- raw_data$feature_data |> data.table::as.data.table()
   if (platform=="Nightingale") {
-    features     <- features_raw[, list(feature_id      = as.character(feature_names),
+    features     <- features_raw[, list(feature_id      = tolower(gsub("_","", feature_names)),
                                         pathway         = as.character(class),
                                         sub_pathway     = as.character(subclass),
                                         platform        = NA_character_,
@@ -119,7 +119,7 @@ read_metaboprep1 <- function(rdata_path, log_path, clinical_path, manifest=NULL)
                                         derived_feature = derived_features=="yes",
                                         comp_id         = NA_character_)]
   } else if (platform=="Metabolon") {
-    features     <- features_raw[, list(feature_id      = as.character(feature_names),
+    features     <- features_raw[, list(feature_id      = tolower(gsub("_","", feature_names)),
                                         pathway         = as.character(SUPER_PATHWAY),
                                         sub_pathway     = as.character(SUB_PATHWAY),
                                         platform        = clean_names(PLATFORM),
