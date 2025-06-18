@@ -46,10 +46,12 @@ read_metaboprep1 <- function(rdata_path, log_path, clinical_path, manifest=NULL)
   if (FALSE) {
     # rdata_path    <- file.path(Sys.getenv("BBS_NIGHTINGALE_DIR"),  "ReportData.Rdata")
     # log_path      <- file.path(Sys.getenv("BBS_NIGHTINGALE_DIR"),  "bbs_primary_nmr_2023_11_20_logfile.txt")
-    clinical_path <- file.path(Sys.getenv("BBS_CLINICAL_DIR"),   "03_sample_clinical_data_all.csv")
-    manifest      <- file.path(Sys.getenv("BBS_MANIFEST_DIR"),   "2023Q2_nmr_annotated_manifest_2023-08-14.csv")
-    rdata_path    <- file.path(Sys.getenv("BBS_METABOLON_DIR"), "ReportData.Rdata")
-    log_path      <- file.path(Sys.getenv("BBS_METABOLON_DIR"), "bbs_only_2024_06_25_logfile.txt")
+    # clinical_path <- file.path(Sys.getenv("BBS_CLINICAL_DIR"),   "03_sample_clinical_data_all.csv")
+    # manifest      <- file.path(Sys.getenv("BBS_MANIFEST_DIR"),   "2023Q2_nmr_annotated_manifest_2023-08-14.csv")
+    # rdata_path    <- file.path(Sys.getenv("BBS_METABOLON_DIR"), "ReportData.Rdata")
+    # log_path      <- file.path(Sys.getenv("BBS_METABOLON_DIR"), "bbs_only_2024_06_25_logfile.txt")
+
+
 
   }
 
